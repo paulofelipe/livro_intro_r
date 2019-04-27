@@ -1,0 +1,54 @@
+
+# Escrevendo dados
+
+Já na fase final da sua análise, pode ser que apareça a necessidade de gerar-se arquivos: gráficos, relatórios, planilhas, pdf, arquivos de dados etc.
+
+Da mesma forma que você consome dados e relatórios, talvez você precise produzir e divulgar dados e relatórios para outras pessoas analisarem, ou mesmo para publicação.
+
+## Escrevendo csv
+
+O formato mais básico e mais utilizado, mundialmente, para envio e recebimento de dados entre instituições é o `csv`. Escrever um arquivo de dados em csv é muito simples. Utilizaremos uma função do R base para isso: `write.table()`.
+
+```{r}
+
+```
+
+## Rdata
+
+Caso seja necessário salvar um ou vários objetos para passar a alguém, ou até mesmo para continuar seu trabalho a partir de certo ponto, pode-se utilizar o formato de dados próprios do R: Rdata.
+
+Veja o seguinte exemplo:
+
+```{r}
+participantes <- data.frame(
+  Nome = c('Carlos', 'Maurício', 'Ana Maria', 'Rebeca', 'Patrícia'),
+  Estado = c('Brasília', 'Minas Gerais', 'Goiás', 'São Paulo', 'Ceará'),
+  Idade = c(23, 24, 22, 29, 28)
+)
+
+save(participantes, file = 'participantes.Rdata')
+
+rm(participantes) # removendo o objeto
+```
+
+Pronto, você salvou o objeto `participantes` no arquivo `participantes.Rdata`. Este arquivo é específico para ser lido pelo R e interpretado como objeto. Como excluímos o arquivo, tente exibí-lo para ver o que acontece: erro. Agora vejamos como carregá-lo novamente no R, utilizando o arquivo.
+
+```{r}
+load('participantes.Rdata')
+
+str(participantes)
+```
+
+## Escrevendo outros tipos de arquivos
+
+Outra forma bastante importante de escrever dados é em planilhas: o famoso Excel. Recomendamos o conhecimento do pacote `openxlsx`. É um pacote que lê e escreve arquivos Excel sem nenhuma dependência de Java, que pode acabar dando muita dor de cabeça para manter e normalmente consome bastante memória. Para Windows, o `openxlsx` precisa do `Rtools`: https://cran.r-project.org/bin/windows/Rtools/. Recomendamos a experiência com este pacote, pois com ele é possível a criação de planilhas bem acabadas, com cores e formatações complexas.
+
+Outra forma de escrita de dados é utilizando o RMarkdown, mas este formato merece um capítulo específico para detalhar seu uso.
+
+## Exercícios
+
+.1 Escolha qualquer dataframe já trabalhado até agora e escreva-o em csv.
+
+.2 Experimente algo semelhante ao exemplo a seguir: escolha qualquer dataframe, save-o como Rdata, remova-o com o `rm()` e, em seguida, carregue-o novamente com o `load()`.
+
+

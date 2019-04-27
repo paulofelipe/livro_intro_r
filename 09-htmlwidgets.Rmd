@@ -1,0 +1,353 @@
+# Visualizações Interativas {#htmlwidgets}
+
+```{r, include=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(fig.align='center', fig.width = 7, fig.asp = 0.618,
+                      out.width = '100%', message = FALSE)
+library(ggplot2)
+theme_set(theme_gray())
+```
+
+## Introdução
+
+No R, as visualizações interativas são, geralmente, criadas a partir de pacotes que utilizam um framework chamado `htmlwidgets`. O `hmtlwidgets` é um pacote/framework que facilita o uso de bibliotecas javascript de visualizações para o ambiente R, sendo possível usá-las no console, no [RMarkdown](http://rmarkdown.rstudio.com/) e no [Shiny](http://shiny.rstudio.com/). Basicamente, javascript é uma linguagem _client-side_, ou seja, aquelas onde o processamento ocorre no lado do cliente. É utilizada, principalmente, para alterar códigos HTML e CSS (estilos) interativamente.
+
+O `htmlwidgets` busca fazer a ponte entre o R e alguma biblioteca javascript de visualização, fazendo com que o usuário do R consiga utilizar essas bibliotecas sem necessariamente precisar escrever uma linha de código em javascript. Apesar de não ser necessário, pode ser que, em algum momento, a fim de customizar uma visualização, seja necessário algum código em javascript, mas isto não será tratado aqui.
+
+Abaixo estão listados alguns projetos de visualização de dados em javascript:
+
+1. [D3](https://d3js.org/)
+2. [D3plus](https://d3plus.org/)
+3. [Highcharts](http://www.highcharts.com/)
+4. [C3](http://c3js.org/)
+5. [Leaflet](http://leafletjs.com/)
+6. [Plotly](https://plot.ly)
+
+Existe uma quantidade significativa de pacotes que utilizam o `htmlwidgets`. Para se ter uma noção, visite [esta galeria](http://gallery.htmlwidgets.org/).
+
+O objetivo deste capítulo é fazer uma pequena apresentação sobre alguns pacotes. Cada pacote possui um conjunto de detalhes que torna inviável apresentá-los neste curso. Dessa forma, faremos um breve tour por alguns pacotes, começando com o plotly.
+
+## Plotly
+
+O `plotly` é um pacote interessante, uma vez que integra-se ao ggplot2:
+
+```{r, message=FALSE}
+library(plotly)
+library(tidyverse)
+
+p <- ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point()
+ggplotly(p)
+```
+
+Basta que o objeto criado com o ggplot2 seja passado para a função `ggplotly()`. Note que a visualização possui uma série de funcionalidades, como _tooltips_, possibilidade de zoom, download da imagem etc.
+
+## dygraphs
+
+O dygraphs é uma biblioteca para visualizações de séries temporais. Os detalhes do pacote estão disponíveis [neste link](https://rstudio.github.io/dygraphs/).
+
+Antes dos exemplos, será necessário falar sobre objetos de séries de tempo no R.
+
+Para criar um objeto de séries de tempo usaremos a função `ts()`:
+
+```{r, eval = FALSE}
+ts(data = NA, start = 1, end = numeric(), frequency = 1,
+   deltat = 1, ts.eps = getOption("ts.eps"), class = , names = )
+```
+
+Os parâmetros relevantes são:
+
+* `data`: um vetor ou uma matriz de valores da(s) série(s) de tempo. Um data.frame é transformado automaticamente em uma matriz;
+* `start`: o período da primeira observação. Pode ser um valor único ou um vetor de dois inteiros. Geralmente, utiliza-se a segunda opção. Por exemplo, Janeiro de 1997: `start = c(1997, 1)`;
+* `end`: o período da última observação. Similar ao `start`, porém não é obrigatório;
+* `frequency`: frequência dos dados. Mensal(12), Trimestral (4), Anual(1) etc.
+
+Exemplo de criação de uma série de tempo:
+```{r}
+x <- rnorm(24, mean = 100, sd = 10)
+# Trasnformando em série mensal a partir de janeiro de 2010
+x <- ts(x, freq = 12, start = c(2010, 1))
+plot(x)
+```
+
+Outra maneira de declarar um objeto de série de tempo é utilizando a função `xts()` do pacote de mesmo nome. No entanto, para essa função, precisamos de um vetor ordenado de datas do tipo `Date`, `POSIXct`, `timeDate`, `yearmon` e `yearqtr`.
+
+```{r}
+library(xts)
+xts_df <- data.frame(y = rnorm(365, 100, 10)) 
+xts_df$data <- seq.Date(as.Date("2011-01-01"), length.out = 365,
+                             by = "1 day")
+xts_df <- xts(x = xts_df[, "y"], order.by =  xts_df[, "data"])
+
+head(xts_df)
+```
+
+
+```{r}
+library(dygraphs)
+lungDeaths <- cbind(mdeaths, fdeaths)
+dygraph(lungDeaths, 
+        main = "Mortes por Doenças Pulmonares - Reino Unido - 1874-1979",
+        ylab = "Número de Morets") %>%
+  dySeries("mdeaths", color = "blue", label = "Homens") %>%
+  dySeries("fdeaths", color = "green", label = "Mulheres") %>% 
+  dyRangeSelector()
+```
+
+Aqui fica o código para alterar os padrões dos números e datas:
+
+```{r}
+
+# Alterar rótulos do eixo x e a legenda
+axlabform <- "function(date, granularity, opts, dygraph) {
+  var months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio',
+'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+return months[date.getMonth()] + \" \" + date.getFullYear()}"
+
+valueform <- "function(ms) {
+  var months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio',
+'Junho', 'Julho', 'Agosto', 'Setembro',
+'Outubro', 'Novembro', 'Dezembro'];
+var ms = new Date(ms);
+return months[ms.getMonth()] + '/' + ms.getFullYear()}"
+
+valueformy <- "function(value) {
+ return (Math.round(value * 100)/100).toString()
+.replace('.', ',')
+.replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.')}"
+
+
+dygraph(lungDeaths, 
+        main = "Mortes por Doenças Pulmonares - Reino Unido - 1874-1979",
+        ylab = "Número de Morets") %>%
+  dySeries("mdeaths", color = "blue", label = "Homens") %>%
+  dySeries("fdeaths", color = "green", label = "Mulheres") %>% 
+  dyAxis("y", valueFormatter = valueformy) %>%
+  dyAxis("x", axisLabelFormatter = axlabform, valueFormatter = valueform) %>% 
+  dyRangeSelector()
+```
+
+## Leaflet
+
+O leaflet é, provavelmente, a principal biblioteca javascript para visualizações interativas de mapas. Mais informações sobre o pacote estão disponíveis [neste link](https://rstudio.github.io/leaflet/). Para iniciarmos uma visualização com leaflet, basta executar o código abaixo. A função `addTiles()` adiciona uma camada de mapas ao leaflet que foi inicializado.
+
+
+```{r, eval=FALSE, message=FALSE}
+library(dplyr)
+library(leaflet)
+leaflet() %>%
+  addTiles()
+```
+
+```{r, echo=FALSE, message=FALSE}
+library(dplyr)
+library(leaflet)
+leaflet() %>%
+  addTiles(urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+```
+
+### Primeiro exemplo
+
+No primeiro exemplo, incluiremos um marcador na localização do IBPAD. Para isso, obteremos a latitude e a longitude usando a função `geocode()` do pacote `ggmap`. Além disso, foi incluída uma coluna chamada `popup`, que receberá um texto que será mostrado no mapa.
+
+```{r, eval=FALSE, message = FALSE}
+library(ggmap)
+# Pegar Localização do ibpad (Google desatualizado)
+#loc.ibpad <- geocode("IBPAD")
+loc.ibpad <- data.frame(lon = -47.8838813, lat = -15.8010146)
+loc.ibpad$popup <- "Estamos aqui! (teoricamente)"
+leaflet(loc.ibpad) %>%
+  addTiles() %>%
+  addMarkers(lat = ~lat, lng = ~lon, popup = ~popup)
+```
+
+```{r, echo=FALSE, message = FALSE}
+library(ggmap)
+# Pegar Localização do ibpad (Google desatualizado)
+#loc.ibpad <- geocode("IBPAD")
+loc.ibpad <- data.frame(lon = -47.8838813, lat = -15.8010146)
+loc.ibpad$popup <- "Estamos aqui! (teoricamente)"
+leaflet(loc.ibpad) %>%
+  addTiles(urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png') %>%
+  addMarkers(lat = ~lat, lng = ~lon, popup = ~popup)
+```
+
+### Marcadores
+
+No exemplo abaixo, criaremos uma visualização com a posição de algumas empresas exportadoras de Mato Grosso, a partir de [dados disponibilizados pelo MDIC](http://www.mdic.gov.br/comercio-exterior/estatisticas-de-comercio-exterior/empresas-brasileiras-exportadoras-e-importadoras). Como a busca da localização foi feita usando o endereço, nem sempre a localização estará perfeitamente correta. No entanto, para exemplificar o uso do pacote, não há problemas.
+
+```{r, eval=FALSE}
+dados.empresas.mt <- read_delim('dados/empresas_exp_mt.csv',
+                                delim = ";", 
+                                locale = locale(encoding = 'ISO-8859-1',
+                                                decimal_mark = ","))
+leaflet(dados.empresas.mt) %>%
+  addTiles() %>%
+  addMarkers(lat = ~lat, lng = ~lon, popup = ~EMPRESA)
+```
+
+```{r, echo=FALSE}
+dados.empresas.mt <- read_delim('dados/empresas_exp_mt.csv',
+                                delim = ";", 
+                                locale = locale(encoding = 'ISO-8859-1',
+                                                decimal_mark = ","))
+leaflet(dados.empresas.mt) %>%
+  addTiles('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png') %>%
+  addMarkers(lat = ~lat, lng = ~lon, popup = ~EMPRESA)
+```
+
+Podemos também adicionar outros tipos de marcadores, como círculos:
+
+```{r, eval=FALSE}
+leaflet(dados.empresas.mt) %>%
+  addTiles() %>%
+  addCircleMarkers(lat = ~lat, lng = ~lon, popup = ~EMPRESA, fillOpacity = 0.3)
+```
+
+```{r, echo=FALSE}
+leaflet(dados.empresas.mt) %>%
+  addTiles('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png') %>%
+  addCircleMarkers(lat = ~lat, lng = ~lon, popup = ~EMPRESA, fillOpacity = 0.3)
+```
+
+Adicionalmente, é possível agrupar pontos próximos em clusters.
+
+```{r, eval=FALSE}
+leaflet(dados.empresas.mt) %>%
+  addTiles() %>%
+  addCircleMarkers(lat = ~lat, lng = ~lon, popup = ~EMPRESA, fillOpacity = 0.3,
+                   clusterOptions = markerClusterOptions())
+```
+
+```{r, echo=FALSE}
+leaflet(dados.empresas.mt) %>%
+  addTiles(urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png') %>%
+  addCircleMarkers(lat = ~lat, lng = ~lon, popup = ~EMPRESA, fillOpacity = 0.3,
+                   clusterOptions = markerClusterOptions())
+```
+
+
+### Polígonos
+
+Também é possível criar-se polígonos a partir de shapefiles.
+
+```{r, eval=FALSE, message=FALSE}
+library(rgdal)
+library(maptools)
+library(rgeos)
+library(ggplot2)
+
+
+
+ogrListLayers('dados/mapas/mg_municipios/31MUE250GC_SIR_simplificado.shp')
+
+mg_mapa <- readOGR('dados/mapas/mg_municipios/31MUE250GC_SIR_simplificado.shp',
+                   layer = '31MUE250GC_SIR_simplificado')
+
+mg_mapa$Mun.Trab <- substr(mg_mapa$CD_GEOCMU, 1, 6)
+
+REM_RAIS_MG_2015 <- read_delim('dados/REM_RAIS_MG_2015.csv',
+                               delim = ";",
+                               locale = locale(encoding = "ISO-8859-1"),
+                               col_types = 'cd')
+
+colnames(REM_RAIS_MG_2015)[1] <- "Mun.Trab"
+summary(REM_RAIS_MG_2015$mediana)
+REM_RAIS_MG_2015 <- REM_RAIS_MG_2015 %>%
+  mutate(mediana.original = mediana,
+         mediana = ifelse(mediana > 1500, 1500, mediana))
+head(REM_RAIS_MG_2015)
+
+mg_mapa@data <- left_join(mg_mapa@data, REM_RAIS_MG_2015, by = "Mun.Trab")
+
+mg_mapa$POPUP <- paste0(mg_mapa$NM_MUNICIP, ": R$ ",
+                        format(round(mg_mapa$mediana.original, 2),
+                               big.mark = ".", decimal.mark = ","))
+
+viridis.colors<- viridis::viridis(n = 20)
+
+pal <- colorNumeric(viridis.colors, domain = mg_mapa$mediana)
+
+leaflet(mg_mapa) %>%
+  addTiles() %>%
+  addPolygons(weight = 0.8,
+              fillColor = ~pal(mediana), fillOpacity = 0.9,
+              popup = ~POPUP)
+```
+
+```{r, echo=FALSE, message=FALSE}
+library(rgdal)
+
+ogrListLayers('dados/mapas/mg_municipios/31MUE250GC_SIR_simplificado.shp')
+
+mg_mapa <- readOGR('dados/mapas/mg_municipios/31MUE250GC_SIR_simplificado.shp',
+                   layer = '31MUE250GC_SIR_simplificado')
+
+mg_mapa$Mun.Trab <- substr(mg_mapa$CD_GEOCMU, 1, 6)
+
+REM_RAIS_MG_2015 <- read_delim('dados/REM_RAIS_MG_2015.csv',
+                               delim = ";",
+                               locale = locale(encoding = "ISO-8859-1"),
+                               col_types = 'cd')
+
+colnames(REM_RAIS_MG_2015)[1] <- "Mun.Trab"
+summary(REM_RAIS_MG_2015$mediana)
+REM_RAIS_MG_2015 <- REM_RAIS_MG_2015 %>%
+  mutate(mediana.original = mediana,
+         mediana = ifelse(mediana > 1500, 1500, mediana))
+head(REM_RAIS_MG_2015)
+
+mg_mapa@data <- left_join(mg_mapa@data, REM_RAIS_MG_2015, by = "Mun.Trab")
+
+mg_mapa$POPUP <- paste0(mg_mapa$NM_MUNICIP, ": R$ ",
+                        format(round(mg_mapa$mediana.original, 2),
+                               big.mark = ".", decimal.mark = ","))
+
+viridis.colors<- viridis::viridis(n = 20)
+
+pal <- colorNumeric(viridis.colors, domain = mg_mapa$mediana)
+
+leaflet(mg_mapa) %>%
+  addTiles(urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png') %>%
+  addPolygons(weight = 0.8,
+              fillColor = ~pal(mediana), fillOpacity = 0.9,
+              popup = ~POPUP)
+```
+
+O `colorNumeric()` criou uma função que é usada para definir uma cor para cada valor usado como input, no caso a `mediana`. Além disso, pode-se adicionar uma legenda usando a função `addLegend()`.
+
+```{r}
+leaflet(mg_mapa) %>%
+  addTiles(urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png') %>%
+  addPolygons(weight = 0.8,
+              fillColor = ~pal(mediana), fillOpacity = 0.9,
+              popup = ~POPUP) %>% 
+  addLegend("topleft", title = "Remuneração (R$)",
+            colors = pal(seq(800, 1500, 100)),
+            values = seq(800, 1500, 100),
+            labels = c(seq(800, 1400, 100), "\u2265  1500"),
+            opacity = 1)
+```
+
+
+## Exercícios
+
+1. Usando os pacotes ggmap e leaflet, crie uma visualização marcando cinco localizações de Brasília.
+
+2. Utilizando a base `gapminder` (`library(gapminder)`), crie uma visualização usando o pacote `plotly`.
+
+3. A partir da base `economics` do pacote `ggplot2`, escolha uma variável e plote a série histórica utilizando o pacote `dygraphs`.
+
+4. Entre na galeria de htmlwidgets [neste link], escolha alguma htmlwidget que você tenha achado interessante e replique um exemplo.
+
+<style>
+  .ggiraph{
+    font-size: 8px !important;
+  }
+  .dygraph-axis-label{
+  	font-size: 60% !important;
+  }
+
+  .leaflet-control{
+    font-size: small !important;
+  }
+</style>

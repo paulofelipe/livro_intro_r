@@ -1,0 +1,183 @@
+# Revisão - Titanic
+
+```{r, include=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(fig.align='center', fig.width = 7, fig.asp = 0.618,
+                      out.width = '100%')
+```
+
+## Objetivo
+
+O objetivo deste capítulo é fazer uma breve revisão do que foi ensinado no curso. Para isso, será utilizada a base disponível no pacote `titanic`. É esperado que o aluno consiga realizar manipulações nos dados, visualizações e um modelo preditivo. A análise deve ser demonstrada em um documento criado com o RMarkdown.
+
+## Carregando os Dados
+
+```{r, message=FALSE}
+library(tidyverse)
+library(titanic)
+data("titanic_train")
+# Base de treinamento
+head(titanic_train)
+```
+
+```{r, echo=FALSE}
+var_desc <- data.frame(var = c("PassengerId", "Survived", "Pclass", "Name", "Sex", "Age", 
+                               "SibSp", "Parch", "Ticket", "Fare", "Cabin", "Embarked"),
+                       desc = c("Identificador do Passageiro",
+                                "Variável de indicadora de sobrevivência (0 = Não Sobreviveu, 1 = Sobreviveu)",
+                                "Classe do passageiro",
+                                "Nome do passageiro",
+                                "Sexo do passageiro",
+                                "Idade do passageiro",
+                                "Número de irmãos/cônjuge no navio",
+                                "Número de pais e filhos no navio",
+                                "Número da passagem",
+                                "Preço da passagem",
+                                "Código da cabine",
+                                "Porto de embarque")
+)
+
+knitr::kable(var_desc,
+             align = 'cc',
+             col.names = c("Variável", "Descrição"))
+```
+
+## Manipulando os dados
+
+Nesta seção, faremos alguma alteração nos dados. Veja o summary do dataset.
+
+```{r}
+summary(titanic_train)
+```
+
+### Variável Survived
+
+A variável `Survived` está definida como indicadora (1 ou 0). Como será usada em um modelo de classificação, é interessante que esta variável seja transformada ou que seja criada uma nova variável, tornando-a uma variável do tipo `factor` ou `character`.
+
+```{r}
+titanic_train <- titanic_train %>% 
+  mutate(Survived = factor(Survived))
+levels(titanic_train$Survived) <- c("Não", "Sim")
+```
+
+### Variável Name
+
+Na variável `Name`, percebe-se que os passageiros possuíam títulos: Mr., Miss., Mrs. etc. Seria interessante criar-se uma nova variável que possua apenas o título do passageiro. Para isto, precisaremos usar a função `str_extract()` do pacote `stringr` e um pouco de regex.
+
+```{r}
+titanic_train <- titanic_train %>% 
+  mutate(title = str_extract(tolower(Name), '[a-z]{1,}\\.'))
+```
+
+Quais são os títulos mais comuns?
+
+```{r}
+titanic_train %>% 
+  group_by(title) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n)
+```
+
+Faremos mais uma modificação. Pode ser interessante agregarmos os títulos menos frequentes em uma única categoria.
+
+```{r}
+classes_de_interesse <- c("mr.", "miss", "mrs.", "master.")
+titanic_train <- titanic_train %>% 
+  mutate(title = ifelse(title %in% classes_de_interesse,
+                         title,
+                         "other"))
+```
+
+
+## Idade
+
+Como vimos no summary, há alguns valores faltantes para a variável `Age`. Alguns modelos conseguem tratar internamente os missing values, outros não. Para o modelo que usaremos, não podemos ter missings. Assim, podemos eliminar essas observações ou atribuir-lhes um valor. Utilizaremos a segunda opção.
+
+Para imputação, existem inúmeros métodos, podendo até mesmo ser utilizado o modelo auxiliar. Aqui, vamos inserir a mediana da idade, separando por título e sexo.
+
+```{r}
+titanic_train <- titanic_train %>% 
+  group_by(Sex, title) %>% 
+  mutate(Age = ifelse(is.na(Age), median(Age, na.rm = TRUE), Age))
+
+summary(titanic_train$Age)
+```
+
+### Exercício
+
+1. Crie mais duas variáveis:
+
+## Visualizações
+
+Abaixo, criamos algumas visualizações iniciais. Explore as demais variáveis da base e mostre relações com a variável `Survived`.
+
+```{r}
+library(hrbrthemes)
+theme_set(theme_ipsum(base_size = 10))
+
+ggplot(titanic_train, aes(x = Age)) +
+  geom_histogram(boundary = 0, fill = "#223e63", bins = 20)
+
+ggplot(titanic_train, aes(x = Age, fill = Survived)) +
+  geom_histogram(boundary = 0, bins = 20) +
+  facet_wrap(~ Survived) +
+  scale_fill_ipsum()
+
+ggplot(titanic_train, aes(x = Sex, fill = Survived)) +
+  geom_bar() +
+  labs(title = "Número de passageiros por Sexo",
+       y = "Contagem",
+       x = "Sexo")
+
+titanic_train %>% 
+  group_by(Sex, Survived) %>% 
+  summarise(n = n()) %>% 
+  group_by(Sex) %>% 
+  mutate(prop = n/sum(n) * 100) %>% 
+  ggplot(aes(x = Sex, y = prop, fill = Survived)) +
+  geom_col() +
+  labs(title = "Proporção de Sobreviventes por Sexo",
+       y = "%",
+       x = "Sexo") +
+  scale_fill_ipsum("Sobreviveu")
+```
+
+
+2. Crie mais duas visualizações:
+
+## Modelo Preditivo
+
+1. Crie um modelo preditivo a partir da base de treinamento. Para isso, selecione um subconjunto de variáveis que você utilizará como input (features).
+2. Divida a base de treinamentos em duas: 70% para treinamento e 30% para a validação.
+3. Utilize a função `glm()` para estimar um modelo de regressão logística. 
+4. Calcule a acurácia do modelo.
+5. Treine o modelo na base `titanic_train` completa.
+6. Realize predições para base `titanic_test`.
+
+```{r, include=FALSE, eval=FALSE}
+titanic_train <- titanic_train %>% 
+  mutate(Fare = ifelse(is.na(Fare), median(Fare, na.rm = T), Fare))
+train_final <- titanic_train %>% filter(!is.na(Survived))
+test <- titanic_train %>% filter(is.na(Survived))
+train_final <- train_final %>% 
+  select(Survived, Sex, Age, Pclass, SibSp, Parch, Fare, title)
+idx <- sample(nrow(train_final), 0.7*nrow(train_final))
+train <- train_final[idx, ]
+val <- train_final[-idx, ]
+
+fit <- glm(Survived ~ ., data = train, family = binomial())
+
+pred <- predict(fit, val, type = "response")
+pred <- ifelse(pred < 0.5, "Não", "Sim")
+acertos <- pred == val$Survived
+mean(acertos)
+
+fit_final <- glm(Survived ~ ., data = train%>% 
+  select(Survived, Sex, Age, Pclass, SibSp, Parch, Fare, title),
+  family = binomial())
+
+pred <- predict(fit_final, test, type = "response")
+pred <- +(pred > 0.5)
+submission <- data.frame(PassengerId = test$PassengerId,
+                         Survived = pred)
+write.csv(submission, '~/Downloads/titanic_submission.csv', row.names = FALSE)
+```

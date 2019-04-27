@@ -1,0 +1,113 @@
+
+# Lendo os dados
+
+Após o entendimento do problema/projeto que se resolverá com a ciência de dados, será necessário fazer com que o R leia os dados. Seja lá qual for o assunto do projeto, é muito importante garantir uma boa fonte de dados. Dados ruins, inconsistentes, não confiáveis ou mal formatados podem gerar muita dor de cabeça para o analista.
+
+## Tipos de Estrutura dos Dados
+
+Os dados podem ser apresentados de diversas maneiras, não existe um padrão único para a difusão ou divulgação. Sendo assim, é bom que você esteja preparado para lidar com qualquer tipo de estrutura de dados.
+
+Existem diversas classificações de estrutura de dados. Vamos utilizar uma classificação mais generalista, que diz respeito a como os dados são disponibilizados. Sendo assim, podemos classificar os dados em três grandes tipos quanto à sua estrutura ou forma: dados estruturados, semiestruturados e não estruturados.
+
+### Dados Estruturados
+
+Talvez seja o formato de dados mais fácil de se trabalhar no R. São conjuntos de informações organizadas em colunas (atributos, variáveis, features etc.) e linhas (registros, itens, observações etc.). São dados mais comumente encontrados diretamente em bancos de dados, arquivos com algum tipo de separação entre as colunas, Excel, arquivos com campos de tamanho fixo etc.
+
+### Dados Não Estruturados
+
+Como o nome diz, estes dados não têm uma estrutura previsível, ou seja, cada conjunto de informações possui uma forma única. Geralmente são arquivos com forte teor textual. Não podemos dizer que são dados "desorganizados", e sim que são organizações particulares para cada conjunto de informações. Podemos citar, por exemplo, e-mails, twitters, PDF, imagens, vídeos etc.
+
+Analisar este tipo de dado é muito mais complexo e exige conhecimento avançado em mineração de dados. Apesar disso, é o tipo de dado mais abundante na realidade.
+
+### Dados Semiestruturados
+
+São dados que também possuem uma organização fixa, porém não seguem o padrão de estrutura linha/coluna, ou seja, seguem uma estrutura mais complexa e flexível, geralmente hierárquica, estruturada em tags ou marcadores de campos. São exemplos de arquivos semiestruturados: JSON, XML, HTML, YAML etc. É o formato mais usado em troca de dados pela internet e consumo de Application programming interface (API). Dados semiestruturados, algumas vezes, são facilmente transformados em dados estruturados.
+
+## Definindo o Local dos Dados
+
+O R sempre trabalha com o conceito de _Working direcotry_, ou seja, uma pasta de trabalho onde vai "ler" e "escrever" os dados. Para verificar qual o diretório que o R está "olhando", utilize o seguinte comando:
+
+```{r eval=FALSE}
+getwd() #Get Working Directory
+```
+
+Para informar ao R em qual pasta ele deve ler os arquivos, utilizamos o comando _set working directory_, que muda o diretório padrão do R para leitura e escrita:
+
+```{r eval=FALSE}
+setwd('D:/caminho/do/arquivo/arquivo.csv')
+```
+
+## Pacote para leitura dos dados
+
+O R base possui funções para a leitura dos principais tipos de arquivos. Um outro pacote específico, e muito bom para isso, é o `readr`. O Tidyverse inclui o carregamento do pacote `readr`.
+
+Diversos tipos de arquivos são lidos pelo R: Comma-Separated Values (csv), Excel, arquivos separados por delimitadores, colunas de tamanho fixo etc. Talvez o tipo de arquivo (estruturado) mais comum hoje em dia, e mais simples de trabalhar, seja o csv. Começaremos a importar dados com arquivos csv.
+
+```{r eval=FALSE}
+library(tidyverse) # já carrega o readr
+#ou
+library(readr)
+```
+
+Vamos importar um csv chamado `senado.csv`. Caso o arquivo esteja em seu working directory (`getwd()`), basta passar apenas o nome do arquivo para a função, caso contrário será necessário informar todo o caminho até a pasta do arquivo. Usamos o read_csv() para fazer isso.
+
+```{r eval=FALSE}
+senado <- read_csv("senado.csv")
+```
+
+```{r eval=TRUE, echo=FALSE, message=FALSE}
+library(readr)
+senado <- read_csv("dados/senado.csv")
+```
+
+Esse comando carrega o conteúdo do arquivo `senado.csv` para o objeto (variável) senado. Após o carregamento, começaremos a investigar o conteúdo desse objeto: os dados.
+
+O `head` e o `tail` são funções para ver a "cabeça" e o "rabo" dos seus dados, ou seja, o começo e o fim das amostras. É muito importante sempre observar a "aparência" dos dados após o carregamento. Essa observação ajuda a identificar erros básicos no carregamento, possibilitando ajustes o quanto antes, impedindo que esses erros se propaguem. Repare que na primeira linha temos os nomes das colunas e, em seguida, os registros.
+
+```{r}
+head(senado)
+```
+
+```{r}
+tail(senado)
+```
+
+Outros comandos muito importantes para começar a investigar os dados são o `str()`, o `class()` e o `summary()`.
+
+Para verificar o tipo do objeto, ou seja, sua classe, utilize:
+```{r}
+class(senado)
+```
+
+Já para verificar a estrutura do objeto, ou seja, seus campos (quando aplicável), insira:
+```{r}
+str(senado) #STRucture
+```
+
+Para verificar estatísticas básicas do objeto (média, mediana, quantis, mínimo, máximo etc.), quando aplicáveis:
+```{r}
+summary(senado)
+```
+
+Acontece que nem sempre o separador será o `;`, típico do csv. Nesse caso será necessário usar o `read_delim()`, onde você pode informar qualquer tipo de separador. Outro tipo de arquivo bastante comum é o de colunas com tamanho fixo (fixed width), também conhecido como colunas posicionais. Nesse caso, será necessário usar o `read_fwf()` informando o tamanho de cada coluna.
+
+Exemplo:
+
+```{r eval=FALSE}
+#lendo arquivo com delimitador #
+read_delim('caminho/do/arquivo/arquivo_separado_por#.txt', delim = '#')
+
+#lendo arquivo de coluna fixa
+#coluna 1 de tamanho 5, coluna 2 de tamanho 2 e coluna 3 de tamanho 10
+read_fwf('caminho/do/arquivo/arquivo_posicional.txt', col_positions = fwf_widths(c(5, 2, 10), c("col1", "col2", "col3")))
+```
+
+No capítulo a seguir exploraremos melhor os tipos de objetos mais comuns no R.
+
+## Exercícios:
+
+1. Leia o arquivo `TA_PRECOS_MEDICAMENTOS.csv`, cujo separador é uma barra `|`.
+
+2. Leia o arquivo de colunas fixas `fwf-sample.txt`, cuja primeira coluna (nomes) tem tamanho vinte, a segunda (estado) tem tamanho dez e a terceira (código) tem tamanho doze.
+
+3. Investigue os parâmetros das funções de leitura do R base: `read.csv()`, `read.delim()` e `read.fwf()`. Notou as diferenças das funções do `readr`?

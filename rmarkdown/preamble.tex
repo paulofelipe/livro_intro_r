@@ -1,0 +1,17 @@
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{floatrow}
+\usepackage[document]{ragged2e}
+
+\floatsetup[figure]{capposition=top}
+\floatsetup[table]{capposition=top}
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\makeatother
+
+\newcommand{\source}[1]{{
+	\begin{flushleft}
+		 \scriptsize{Fonte: {#1}}
+	\end{flushleft}
+ }}

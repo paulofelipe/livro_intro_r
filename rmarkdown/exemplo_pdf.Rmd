@@ -1,0 +1,171 @@
+---
+title: "`r paste0('Exportações de ', params$prod)`"
+author: "Paulo Alencar"
+date: "5 de novembro de 2016"
+lang: "pt-br"
+output:
+  pdf_document:
+    fig_caption: yes
+    fig_height: 3.5
+    fig_width: 10
+    number_sections: yes
+    keep_tex: yes
+    includes:
+      in_header: preamble.tex
+params:
+  prod: Soja mesmo triturada
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
+```
+
+# Dados
+
+Os dados desse exemplo foram extraídos das séries históricas disponíveis no site do [MDIC](www.mdic.gov.br).
+```{r, echo=FALSE}
+options(OutDec = ",", scipen = 999, xtable.comment = FALSE)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(forecast)
+library(tidyr)
+library(xtable)
+
+
+dados <- read_excel('../dados/FAT_PPE_PPI.xlsx', sheet = 1)
+
+# Dados apenas com todos anos e meses disponíveis. Será usado posteriormente.
+dados.base <- dados %>%
+  filter(TIPO == "EXP", `NO_PPE/NO_PPI` == "Soja Mesmo Triturada") %>%
+  select(CO_ANO, CO_MES)
+
+# Filtrar por TIPO == EXP
+dados <- dados %>%
+  filter(TIPO == "EXP") %>%
+  rename(CO_PPE = `CO_PPE/CO_PPI`,
+         NO_PPE = `NO_PPE/NO_PPI`)
+
+# Calcular o preço e a participação por PPE para cada Mês/Ano
+
+dados <- dados %>%
+  group_by(CO_ANO, CO_MES) %>%
+  mutate(PRECO = VL_FOB/KG_LIQUIDO,
+         PART = VL_FOB/sum(VL_FOB),
+         DATA = as.Date(paste0(CO_ANO, "-", CO_MES, "-01"))) %>%
+  ungroup()
+
+# Filtrar para Soja
+
+dados <- dados %>%
+  filter(NO_PPE == params$prod)
+
+recorde.valor <- dados %>% 
+  filter(VL_FOB == max(VL_FOB))
+
+recorde.peso <- dados %>% 
+  filter(KG_LIQUIDO == max(KG_LIQUIDO))
+
+recorde.preco <- dados %>% 
+  filter(PRECO == max(PRECO))
+```
+
+Amostra dos dados:
+```{r, results='asis'}
+format.number <- function(x){
+  if(x > 100){
+    format(round(x), big.mark = ".", decimal.mark = ",")
+  } else {
+    format(signif(x, 2), big.mark = ".", decimal.mark = ",")
+  }
+  
+}
+
+df <- dados %>%
+  select(DATA, VL_FOB, KG_LIQUIDO, PRECO) %>%
+  mutate(DATA = format.Date(DATA, "%b/%Y")) %>%
+  mutate_each(funs(format.number(.)), -DATA) %>%
+  head(10)
+print(xtable(df, 
+             align = c('c', 'c', 'r', 'r', 'r'),
+             caption = "Amostra de dados"),
+      include.rownames = FALSE,
+      hline.after = c(-1,0),
+      add.to.row = list(pos = list(10), 
+      command = "\\hline \\multicolumn{1}{l}{\\scriptsize{Fonte: MDIC}} \\\\"),
+      caption.placement = "top")
+```
+
+A figura \ref{fig:fig1} apresenta a evolução do valor exportado de `r params$prod`. O recorde de valor aconteceu em `r format.Date(recorde.valor$DATA, "%B")` de `r format.Date(recorde.valor$DATA, "%Y")`, sendo exportado o total de **US$ `r format(recorde.valor$VL_FOB, big.mark = ".")`**. 
+
+
+```{r fig1, fig.cap=paste0("Valor Exportado de ", params$prod), out.extra='', fig.pos='H'}
+# Valor
+ggplot(dados, aes(x = DATA, y = VL_FOB/1e6)) +
+  geom_line() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ".", decimal.mark = ",")) +
+  labs(caption = "Fonte: MDIC.",
+       subtitle = "US$ Milhões") +
+  theme_fivethirtyeight()
+```
+
+Em relação ao volume exportado, o recorde ocorreu em `r format.Date(recorde.peso$DATA, "%B")` de `r format.Date(recorde.peso$DATA, "%Y")`, com exportação de **`r format(recorde.peso$KG_LIQUIDO/1e3, big.mark = ".")` toneladas**. A figura \ref{fig:fig2} traz a evolução dessa variável.
+
+```{r fig2, fig.cap=paste0("Volume Exportado de ", params$prod), out.extra='', fig.pos='H'}
+# Volume
+ggplot(dados, aes(x = DATA, y = KG_LIQUIDO/1e3)) +
+  geom_line() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ".", decimal.mark = ",")) +
+  labs(caption = "Fonte: MDIC.",
+       subtitle = "Toneladas") +
+  theme_fivethirtyeight()
+```
+
+O recorde de preço (US\$/KG) ocorreu em  `r format.Date(recorde.preco$DATA, "%B")` de `r format.Date(recorde.preco$DATA, "%Y")`, chegando a **US$ `r round(recorde.preco$PRECO*1000, 2)`** por **tonelada** exportada. A figura \ref{fig:fig3} apresenta a série de preços.
+
+```{r fig3,fig.cap=paste0("Preço ", params$prod), out.extra="", fig.pos='H'}
+# Preço
+
+ggplot(dados, aes(x = DATA, y = PRECO)) +
+  geom_line() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ".", decimal.mark = ",")) +
+  labs(caption = "Fonte: MDIC.",
+       subtitle = "US$/KG",
+       x = "Data",
+       y = "US$ Milhões") +
+  theme_fivethirtyeight()
+```
+
+
+```{r}
+# Convertendo os dados para objeto ts para serem usados na função ggmonthplot
+dados.ts <- left_join(dados.base, dados) %>%
+  replace_na(list(VL_FOB = 0, KG_LIQUIDO = 0))
+
+
+dados.ts <- ts(dados %>%
+                 select(VL_FOB, KG_LIQUIDO, PRECO, PART),
+               start = c(1997, 1),
+               freq = 12)
+```
+
+
+## Investigando a existência de sazonalidade
+
+A figura \ref{fig:fig4}  pode ser utilizada para avaliar a possível presença de sazonalidade na série de volume de exportações de `r tolower(params$prod)`, Para cada mês é exibida a evolução do volume dentro do mês (linha preta) e a média daquela mês (linha azul). 
+
+```{r fig4, fig.cap="Comparação Mensal dos Volumes Exportados", out.extra="", fig.pos='H', include=FALSE}
+ggmonthplot(dados.ts[,"KG_LIQUIDO"]/1e3) +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ".", decimal.mark = ",")) +
+  labs(subtitle = "Toneladas",
+       x = "Data",
+       y = "Toneladas") +
+  theme_fivethirtyeight()
+```
+
+\begin{figure}[H]
+\includegraphics{exemplo_pdf_files/figure-latex/fig4-1}
+\caption{Comparação Mensal dos Volumes Exportados}\label{fig:fig4}
+\source{MDIC.}
+\end{figure}

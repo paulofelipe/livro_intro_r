@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>6 Juntando dados | Ciência de Dados com R - Introdução</title>
+  <meta name="description" content="Aprendendo a programar com R">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="6 Juntando dados | Ciência de Dados com R - Introdução" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Aprendendo a programar com R" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Juntando dados | Ciência de Dados com R - Introdução" />
+  
+  <meta name="twitter:description" content="Aprendendo a programar com R" />
+  
+
+<meta name="author" content="Saulo Guerra, Paulo Felipe de Oliveira e Robert McDonnell">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="limpando-dados.html">
+<link rel="next" href="escrevendo-dados.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.5/dygraphs.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+<link href="libs/leaflet-markercluster-1.0.5/MarkerCluster.css" rel="stylesheet" />
+<link href="libs/leaflet-markercluster-1.0.5/MarkerCluster.Default.css" rel="stylesheet" />
+<script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.js"></script>
+<script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.freezable.js"></script>
+<script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.layersupport.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-61574597-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-61574597-1');
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ciência de Dados com R - Introdução</a></li>
+<img src="hexcdr.png" class="hexcurso" alt="hex">
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefácio</a></li>
+<li class="chapter" data-level="1" data-path="introducao.html"><a href="introducao.html"><i class="fa fa-check"></i><b>1</b> Introdução</a><ul>
+<li class="chapter" data-level="1.1" data-path="introducao.html"><a href="introducao.html#o-que-e-ciencia-de-dados"><i class="fa fa-check"></i><b>1.1</b> O que é Ciência de Dados?</a></li>
+<li class="chapter" data-level="1.2" data-path="introducao.html"><a href="introducao.html#workflow-da-ciencia-de-dados"><i class="fa fa-check"></i><b>1.2</b> Workflow da Ciência de Dados</a></li>
+<li class="chapter" data-level="1.3" data-path="introducao.html"><a href="introducao.html#linguagens-para-ciencia-de-dados"><i class="fa fa-check"></i><b>1.3</b> Linguagens para Ciência de dados</a></li>
+<li class="chapter" data-level="1.4" data-path="introducao.html"><a href="introducao.html#o-que-e-r-e-por-que-devo-aprende-lo"><i class="fa fa-check"></i><b>1.4</b> O que é R e por que devo aprendê-lo?</a></li>
+<li class="chapter" data-level="1.5" data-path="introducao.html"><a href="introducao.html#rstudio"><i class="fa fa-check"></i><b>1.5</b> RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="introducao.html"><a href="introducao.html#buscando-ajuda"><i class="fa fa-check"></i><b>1.6</b> Buscando Ajuda</a></li>
+<li class="chapter" data-level="1.7" data-path="introducao.html"><a href="introducao.html#exercicios"><i class="fa fa-check"></i><b>1.7</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html"><i class="fa fa-check"></i><b>2</b> Conceitos Básicos</a><ul>
+<li class="chapter" data-level="2.1" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#console"><i class="fa fa-check"></i><b>2.1</b> Console</a></li>
+<li class="chapter" data-level="2.2" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#scripts"><i class="fa fa-check"></i><b>2.2</b> Scripts</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#salvando-scripts"><i class="fa fa-check"></i><b>2.2.1</b> Salvando Scripts</a></li>
+<li class="chapter" data-level="2.2.2" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#comentarios-de-codigo"><i class="fa fa-check"></i><b>2.2.2</b> Comentários de Código</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#objetos-variaveis"><i class="fa fa-check"></i><b>2.3</b> Objetos (Variáveis)</a></li>
+<li class="chapter" data-level="2.4" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#funcoes"><i class="fa fa-check"></i><b>2.4</b> Funções</a></li>
+<li class="chapter" data-level="2.5" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#pacotes"><i class="fa fa-check"></i><b>2.5</b> Pacotes</a></li>
+<li class="chapter" data-level="2.6" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#boas-praticas"><i class="fa fa-check"></i><b>2.6</b> Boas práticas</a></li>
+<li class="chapter" data-level="2.7" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#tidyverse"><i class="fa fa-check"></i><b>2.7</b> Tidyverse</a></li>
+<li class="chapter" data-level="2.8" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#exercicios-1"><i class="fa fa-check"></i><b>2.8</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html"><i class="fa fa-check"></i><b>3</b> Lendo os dados</a><ul>
+<li class="chapter" data-level="3.1" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#tipos-de-estrutura-dos-dados"><i class="fa fa-check"></i><b>3.1</b> Tipos de Estrutura dos Dados</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#dados-estruturados"><i class="fa fa-check"></i><b>3.1.1</b> Dados Estruturados</a></li>
+<li class="chapter" data-level="3.1.2" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#dados-nao-estruturados"><i class="fa fa-check"></i><b>3.1.2</b> Dados Não Estruturados</a></li>
+<li class="chapter" data-level="3.1.3" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#dados-semiestruturados"><i class="fa fa-check"></i><b>3.1.3</b> Dados Semiestruturados</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#definindo-o-local-dos-dados"><i class="fa fa-check"></i><b>3.2</b> Definindo o Local dos Dados</a></li>
+<li class="chapter" data-level="3.3" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#pacote-para-leitura-dos-dados"><i class="fa fa-check"></i><b>3.3</b> Pacote para leitura dos dados</a></li>
+<li class="chapter" data-level="3.4" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#exercicios-2"><i class="fa fa-check"></i><b>3.4</b> Exercícios:</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html"><i class="fa fa-check"></i><b>4</b> Manipulando os dados</a><ul>
+<li class="chapter" data-level="4.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#tipos-de-variaveis-e-colunas"><i class="fa fa-check"></i><b>4.1</b> Tipos de Variáveis e Colunas</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#conversoes-de-tipos-de-variaveis"><i class="fa fa-check"></i><b>4.1.1</b> Conversões de tipos de variáveis</a></li>
+<li class="chapter" data-level="4.1.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#outros-tipos-de-variaveis"><i class="fa fa-check"></i><b>4.1.2</b> Outros tipos de variáveis</a></li>
+<li class="chapter" data-level="4.1.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#valores-faltantes-e-o-na"><i class="fa fa-check"></i><b>4.1.3</b> Valores faltantes e o ‘NA’</a></li>
+<li class="chapter" data-level="4.1.4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#estruturas-de-controle-de-fluxo"><i class="fa fa-check"></i><b>4.1.4</b> Estruturas de Controle de Fluxo</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#if-e-else"><i class="fa fa-check"></i><b>4.2</b> If e Else</a></li>
+<li class="chapter" data-level="4.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#loops"><i class="fa fa-check"></i><b>4.3</b> Loops</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#for"><i class="fa fa-check"></i><b>4.3.1</b> For</a></li>
+<li class="chapter" data-level="4.3.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#while"><i class="fa fa-check"></i><b>4.3.2</b> While</a></li>
+<li class="chapter" data-level="4.3.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#funcoes-1"><i class="fa fa-check"></i><b>4.3.3</b> Funções</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#manipulacoes-com-r-base"><i class="fa fa-check"></i><b>4.4</b> Manipulações com R base</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#trabalhando-com-colunas-de-um-data.frame"><i class="fa fa-check"></i><b>4.4.1</b> Trabalhando com colunas de um data.frame</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#pacote-dplyr"><i class="fa fa-check"></i><b>4.5</b> Pacote dplyr</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#verbetes-do-dplyr-e-o-operador"><i class="fa fa-check"></i><b>4.5.1</b> Verbetes do dplyr e o operador <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="4.5.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#select"><i class="fa fa-check"></i><b>4.5.2</b> Select</a></li>
+<li class="chapter" data-level="4.5.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#filter"><i class="fa fa-check"></i><b>4.5.3</b> Filter</a></li>
+<li class="chapter" data-level="4.5.4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#mutate"><i class="fa fa-check"></i><b>4.5.4</b> Mutate</a></li>
+<li class="chapter" data-level="4.5.5" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#group-by-e-summarise"><i class="fa fa-check"></i><b>4.5.5</b> Group By e Summarise</a></li>
+<li class="chapter" data-level="4.5.6" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#arrange"><i class="fa fa-check"></i><b>4.5.6</b> Arrange</a></li>
+<li class="chapter" data-level="4.5.7" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#o-operador"><i class="fa fa-check"></i><b>4.5.7</b> O operador %&gt;%</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#exercicios-3"><i class="fa fa-check"></i><b>4.6</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="limpando-dados.html"><a href="limpando-dados.html"><i class="fa fa-check"></i><b>5</b> Limpando dados</a><ul>
+<li class="chapter" data-level="5.1" data-path="limpando-dados.html"><a href="limpando-dados.html#o-formato-ideal-dos-dados"><i class="fa fa-check"></i><b>5.1</b> O formato “ideal” dos dados</a></li>
+<li class="chapter" data-level="5.2" data-path="limpando-dados.html"><a href="limpando-dados.html#pacote-tidyr"><i class="fa fa-check"></i><b>5.2</b> Pacote tidyr</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="limpando-dados.html"><a href="limpando-dados.html#gather"><i class="fa fa-check"></i><b>5.2.1</b> Gather</a></li>
+<li class="chapter" data-level="5.2.2" data-path="limpando-dados.html"><a href="limpando-dados.html#spread"><i class="fa fa-check"></i><b>5.2.2</b> Spread</a></li>
+<li class="chapter" data-level="5.2.3" data-path="limpando-dados.html"><a href="limpando-dados.html#separate"><i class="fa fa-check"></i><b>5.2.3</b> Separate</a></li>
+<li class="chapter" data-level="5.2.4" data-path="limpando-dados.html"><a href="limpando-dados.html#unite"><i class="fa fa-check"></i><b>5.2.4</b> Unite</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="limpando-dados.html"><a href="limpando-dados.html#manipulacao-de-texto"><i class="fa fa-check"></i><b>5.3</b> Manipulação de texto</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="limpando-dados.html"><a href="limpando-dados.html#pacote-stringr"><i class="fa fa-check"></i><b>5.3.1</b> Pacote stringr</a></li>
+<li class="chapter" data-level="5.3.2" data-path="limpando-dados.html"><a href="limpando-dados.html#regex"><i class="fa fa-check"></i><b>5.3.2</b> Regex</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="limpando-dados.html"><a href="limpando-dados.html#exercicios-4"><i class="fa fa-check"></i><b>5.4</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="juntando-dados.html"><a href="juntando-dados.html"><i class="fa fa-check"></i><b>6</b> Juntando dados</a><ul>
+<li class="chapter" data-level="6.1" data-path="juntando-dados.html"><a href="juntando-dados.html#uniao-de-dados-union"><i class="fa fa-check"></i><b>6.1</b> União de dados (Union)</a></li>
+<li class="chapter" data-level="6.2" data-path="juntando-dados.html"><a href="juntando-dados.html#cruzamento-de-dados-join"><i class="fa fa-check"></i><b>6.2</b> Cruzamento de Dados (Join)</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="juntando-dados.html"><a href="juntando-dados.html#inner-join-ou-apenas-join"><i class="fa fa-check"></i><b>6.2.1</b> Inner Join (ou apenas Join)</a></li>
+<li class="chapter" data-level="6.2.2" data-path="juntando-dados.html"><a href="juntando-dados.html#left-outer-join"><i class="fa fa-check"></i><b>6.2.2</b> Left Outer Join</a></li>
+<li class="chapter" data-level="6.2.3" data-path="juntando-dados.html"><a href="juntando-dados.html#right-outer-join"><i class="fa fa-check"></i><b>6.2.3</b> Right Outer Join</a></li>
+<li class="chapter" data-level="6.2.4" data-path="juntando-dados.html"><a href="juntando-dados.html#full-outer-join"><i class="fa fa-check"></i><b>6.2.4</b> Full Outer Join</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="juntando-dados.html"><a href="juntando-dados.html#exercicios-5"><i class="fa fa-check"></i><b>6.3</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html"><i class="fa fa-check"></i><b>7</b> Escrevendo dados</a><ul>
+<li class="chapter" data-level="7.1" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#escrevendo-csv"><i class="fa fa-check"></i><b>7.1</b> Escrevendo csv</a></li>
+<li class="chapter" data-level="7.2" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#rdata"><i class="fa fa-check"></i><b>7.2</b> Rdata</a></li>
+<li class="chapter" data-level="7.3" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#escrevendo-outros-tipos-de-arquivos"><i class="fa fa-check"></i><b>7.3</b> Escrevendo outros tipos de arquivos</a></li>
+<li class="chapter" data-level="7.4" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#exercicios-6"><i class="fa fa-check"></i><b>7.4</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="obtendo-dados.html"><a href="obtendo-dados.html"><i class="fa fa-check"></i><b>8</b> Obtendo dados</a><ul>
+<li class="chapter" data-level="8.1" data-path="obtendo-dados.html"><a href="obtendo-dados.html#api"><i class="fa fa-check"></i><b>8.1</b> API</a></li>
+<li class="chapter" data-level="8.2" data-path="obtendo-dados.html"><a href="obtendo-dados.html#web-scrapping"><i class="fa fa-check"></i><b>8.2</b> Web Scrapping</a></li>
+<li class="chapter" data-level="8.3" data-path="obtendo-dados.html"><a href="obtendo-dados.html#exercicios-7"><i class="fa fa-check"></i><b>8.3</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>9</b> Visualizações de dados (ggplot2)</a><ul>
+<li class="chapter" data-level="9.1" data-path="ggplot2.html"><a href="ggplot2.html#mapeamento-estetico"><i class="fa fa-check"></i><b>9.1</b> Mapeamento Estético</a></li>
+<li class="chapter" data-level="9.2" data-path="ggplot2.html"><a href="ggplot2.html#objetos-geometricos"><i class="fa fa-check"></i><b>9.2</b> Objetos geométricos</a></li>
+<li class="chapter" data-level="9.3" data-path="ggplot2.html"><a href="ggplot2.html#escalas"><i class="fa fa-check"></i><b>9.3</b> Escalas</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="ggplot2.html"><a href="ggplot2.html#tipos-de-variaveis"><i class="fa fa-check"></i><b>9.3.1</b> Tipos de Variáveis</a></li>
+<li class="chapter" data-level="9.3.2" data-path="ggplot2.html"><a href="ggplot2.html#eixos"><i class="fa fa-check"></i><b>9.3.2</b> Eixos</a></li>
+<li class="chapter" data-level="9.3.3" data-path="ggplot2.html"><a href="ggplot2.html#escalas-de-cores-color-e-preenchimento-fill"><i class="fa fa-check"></i><b>9.3.3</b> Escalas de Cores (color) e Preenchimento (fill)</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="ggplot2.html"><a href="ggplot2.html#subplots-facet"><i class="fa fa-check"></i><b>9.4</b> Subplots (facet)</a></li>
+<li class="chapter" data-level="9.5" data-path="ggplot2.html"><a href="ggplot2.html#temas"><i class="fa fa-check"></i><b>9.5</b> Temas</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="ggplot2.html"><a href="ggplot2.html#temas-disponiveis-no-ggplot2"><i class="fa fa-check"></i><b>9.5.1</b> Temas disponíveis no ggplot2</a></li>
+<li class="chapter" data-level="9.5.2" data-path="ggplot2.html"><a href="ggplot2.html#temas-no-pacote-ggthemes"><i class="fa fa-check"></i><b>9.5.2</b> Temas no pacote ggthemes</a></li>
+<li class="chapter" data-level="9.5.3" data-path="ggplot2.html"><a href="ggplot2.html#hrbrthemes"><i class="fa fa-check"></i><b>9.5.3</b> hrbrthemes</a></li>
+<li class="chapter" data-level="9.5.4" data-path="ggplot2.html"><a href="ggplot2.html#setando-o-tema-globalmente"><i class="fa fa-check"></i><b>9.5.4</b> Setando o tema globalmente</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="ggplot2.html"><a href="ggplot2.html#legendas"><i class="fa fa-check"></i><b>9.6</b> Legendas</a></li>
+<li class="chapter" data-level="9.7" data-path="ggplot2.html"><a href="ggplot2.html#escolhendo-o-tipo-de-grafico"><i class="fa fa-check"></i><b>9.7</b> Escolhendo o tipo de gráfico</a></li>
+<li class="chapter" data-level="9.8" data-path="ggplot2.html"><a href="ggplot2.html#grafico-de-dispersao-geom_point"><i class="fa fa-check"></i><b>9.8</b> Gráfico de Dispersão (<code>geom_point()</code>)</a></li>
+<li class="chapter" data-level="9.9" data-path="ggplot2.html"><a href="ggplot2.html#graficos-de-bolhas"><i class="fa fa-check"></i><b>9.9</b> Gráficos de Bolhas</a></li>
+<li class="chapter" data-level="9.10" data-path="ggplot2.html"><a href="ggplot2.html#graficos-de-barras"><i class="fa fa-check"></i><b>9.10</b> Gráficos de Barras</a></li>
+<li class="chapter" data-level="9.11" data-path="ggplot2.html"><a href="ggplot2.html#graficos-de-linhas"><i class="fa fa-check"></i><b>9.11</b> Gráficos de linhas</a></li>
+<li class="chapter" data-level="9.12" data-path="ggplot2.html"><a href="ggplot2.html#histogramas-e-freqpoly"><i class="fa fa-check"></i><b>9.12</b> Histogramas e freqpoly</a></li>
+<li class="chapter" data-level="9.13" data-path="ggplot2.html"><a href="ggplot2.html#boxplots-jitterplots-e-violinplots"><i class="fa fa-check"></i><b>9.13</b> Boxplots, jitterplots e violinplots</a></li>
+<li class="chapter" data-level="9.14" data-path="ggplot2.html"><a href="ggplot2.html#anotacoes"><i class="fa fa-check"></i><b>9.14</b> Anotações</a></li>
+<li class="chapter" data-level="9.15" data-path="ggplot2.html"><a href="ggplot2.html#cleveland-dot-plot"><i class="fa fa-check"></i><b>9.15</b> Cleveland Dot Plot</a></li>
+<li class="chapter" data-level="9.16" data-path="ggplot2.html"><a href="ggplot2.html#textosrotulos"><i class="fa fa-check"></i><b>9.16</b> Textos/Rótulos</a></li>
+<li class="chapter" data-level="9.17" data-path="ggplot2.html"><a href="ggplot2.html#plotando-funcoes"><i class="fa fa-check"></i><b>9.17</b> Plotando funções</a></li>
+<li class="chapter" data-level="9.18" data-path="ggplot2.html"><a href="ggplot2.html#mapas"><i class="fa fa-check"></i><b>9.18</b> Mapas</a><ul>
+<li class="chapter" data-level="9.18.1" data-path="ggplot2.html"><a href="ggplot2.html#simplificando-o-shapefile"><i class="fa fa-check"></i><b>9.18.1</b> Simplificando o shapefile</a></li>
+<li class="chapter" data-level="9.18.2" data-path="ggplot2.html"><a href="ggplot2.html#encoding-dos-dados-do-shapefile"><i class="fa fa-check"></i><b>9.18.2</b> Encoding dos dados do shapefile</a></li>
+</ul></li>
+<li class="chapter" data-level="9.19" data-path="ggplot2.html"><a href="ggplot2.html#salvando-graficos"><i class="fa fa-check"></i><b>9.19</b> Salvando Gráficos</a></li>
+<li class="chapter" data-level="9.20" data-path="ggplot2.html"><a href="ggplot2.html#extensoes-do-ggplot2"><i class="fa fa-check"></i><b>9.20</b> Extensões do ggplot2</a><ul>
+<li class="chapter" data-level="9.20.1" data-path="ggplot2.html"><a href="ggplot2.html#ggrepel"><i class="fa fa-check"></i><b>9.20.1</b> ggrepel</a></li>
+<li class="chapter" data-level="9.20.2" data-path="ggplot2.html"><a href="ggplot2.html#gganimate"><i class="fa fa-check"></i><b>9.20.2</b> gganimate</a></li>
+</ul></li>
+<li class="chapter" data-level="9.21" data-path="ggplot2.html"><a href="ggplot2.html#exercicios-8"><i class="fa fa-check"></i><b>9.21</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="htmlwidgets.html"><a href="htmlwidgets.html"><i class="fa fa-check"></i><b>10</b> Visualizações Interativas</a><ul>
+<li class="chapter" data-level="10.1" data-path="htmlwidgets.html"><a href="htmlwidgets.html#introducao-1"><i class="fa fa-check"></i><b>10.1</b> Introdução</a></li>
+<li class="chapter" data-level="10.2" data-path="htmlwidgets.html"><a href="htmlwidgets.html#plotly"><i class="fa fa-check"></i><b>10.2</b> Plotly</a></li>
+<li class="chapter" data-level="10.3" data-path="htmlwidgets.html"><a href="htmlwidgets.html#dygraphs"><i class="fa fa-check"></i><b>10.3</b> dygraphs</a></li>
+<li class="chapter" data-level="10.4" data-path="htmlwidgets.html"><a href="htmlwidgets.html#leaflet"><i class="fa fa-check"></i><b>10.4</b> Leaflet</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="htmlwidgets.html"><a href="htmlwidgets.html#primeiro-exemplo"><i class="fa fa-check"></i><b>10.4.1</b> Primeiro exemplo</a></li>
+<li class="chapter" data-level="10.4.2" data-path="htmlwidgets.html"><a href="htmlwidgets.html#marcadores"><i class="fa fa-check"></i><b>10.4.2</b> Marcadores</a></li>
+<li class="chapter" data-level="10.4.3" data-path="htmlwidgets.html"><a href="htmlwidgets.html#poligonos"><i class="fa fa-check"></i><b>10.4.3</b> Polígonos</a></li>
+</ul></li>
+<li class="chapter" data-level="10.5" data-path="htmlwidgets.html"><a href="htmlwidgets.html#exercicios-9"><i class="fa fa-check"></i><b>10.5</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="rmarkdown.html"><a href="rmarkdown.html"><i class="fa fa-check"></i><b>11</b> RMarkdown</a><ul>
+<li class="chapter" data-level="11.1" data-path="rmarkdown.html"><a href="rmarkdown.html#usos-do-rmarkdown"><i class="fa fa-check"></i><b>11.1</b> Usos do RMarkdown</a></li>
+<li class="chapter" data-level="11.2" data-path="rmarkdown.html"><a href="rmarkdown.html#estrutura-de-um-rmarkdown"><i class="fa fa-check"></i><b>11.2</b> Estrutura de um RMarkdown</a></li>
+<li class="chapter" data-level="11.3" data-path="rmarkdown.html"><a href="rmarkdown.html#renderizando-um-documento"><i class="fa fa-check"></i><b>11.3</b> Renderizando um documento</a></li>
+<li class="chapter" data-level="11.4" data-path="rmarkdown.html"><a href="rmarkdown.html#sintaxe"><i class="fa fa-check"></i><b>11.4</b> Sintaxe</a></li>
+<li class="chapter" data-level="11.5" data-path="rmarkdown.html"><a href="rmarkdown.html#opcoes-de-chunk"><i class="fa fa-check"></i><b>11.5</b> Opções de Chunk</a></li>
+<li class="chapter" data-level="11.6" data-path="rmarkdown.html"><a href="rmarkdown.html#principais-formatos"><i class="fa fa-check"></i><b>11.6</b> Principais Formatos</a><ul>
+<li class="chapter" data-level="11.6.1" data-path="rmarkdown.html"><a href="rmarkdown.html#html"><i class="fa fa-check"></i><b>11.6.1</b> HTML</a></li>
+<li class="chapter" data-level="11.6.2" data-path="rmarkdown.html"><a href="rmarkdown.html#pdf"><i class="fa fa-check"></i><b>11.6.2</b> PDF</a></li>
+<li class="chapter" data-level="11.6.3" data-path="rmarkdown.html"><a href="rmarkdown.html#word"><i class="fa fa-check"></i><b>11.6.3</b> Word</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="rmarkdown.html"><a href="rmarkdown.html#excercicios"><i class="fa fa-check"></i><b>11.7</b> Excercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="modelos.html"><a href="modelos.html"><i class="fa fa-check"></i><b>12</b> Modelos</a><ul>
+<li class="chapter" data-level="12.1" data-path="modelos.html"><a href="modelos.html#modelo-linear"><i class="fa fa-check"></i><b>12.1</b> Modelo Linear</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="modelos.html"><a href="modelos.html#regressao"><i class="fa fa-check"></i><b>12.1.1</b> Regressão</a></li>
+<li class="chapter" data-level="12.1.2" data-path="modelos.html"><a href="modelos.html#classificacao"><i class="fa fa-check"></i><b>12.1.2</b> Classificação</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="modelos.html"><a href="modelos.html#exercicios-10"><i class="fa fa-check"></i><b>12.2</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="revisao-titanic.html"><a href="revisao-titanic.html"><i class="fa fa-check"></i><b>13</b> Revisão - Titanic</a><ul>
+<li class="chapter" data-level="13.1" data-path="revisao-titanic.html"><a href="revisao-titanic.html#objetivo"><i class="fa fa-check"></i><b>13.1</b> Objetivo</a></li>
+<li class="chapter" data-level="13.2" data-path="revisao-titanic.html"><a href="revisao-titanic.html#carregando-os-dados"><i class="fa fa-check"></i><b>13.2</b> Carregando os Dados</a></li>
+<li class="chapter" data-level="13.3" data-path="revisao-titanic.html"><a href="revisao-titanic.html#manipulando-os-dados-1"><i class="fa fa-check"></i><b>13.3</b> Manipulando os dados</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="revisao-titanic.html"><a href="revisao-titanic.html#variavel-survived"><i class="fa fa-check"></i><b>13.3.1</b> Variável Survived</a></li>
+<li class="chapter" data-level="13.3.2" data-path="revisao-titanic.html"><a href="revisao-titanic.html#variavel-name"><i class="fa fa-check"></i><b>13.3.2</b> Variável Name</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="revisao-titanic.html"><a href="revisao-titanic.html#idade"><i class="fa fa-check"></i><b>13.4</b> Idade</a><ul>
+<li class="chapter" data-level="13.4.1" data-path="revisao-titanic.html"><a href="revisao-titanic.html#exercicio"><i class="fa fa-check"></i><b>13.4.1</b> Exercício</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="revisao-titanic.html"><a href="revisao-titanic.html#visualizacoes"><i class="fa fa-check"></i><b>13.5</b> Visualizações</a></li>
+<li class="chapter" data-level="13.6" data-path="revisao-titanic.html"><a href="revisao-titanic.html#modelo-preditivo"><i class="fa fa-check"></i><b>13.6</b> Modelo Preditivo</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i><b>14</b> Referências</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado com bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ciência de Dados com R - Introdução</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="juntando-dados" class="section level1">
+<h1><span class="header-section-number">6</span> Juntando dados</h1>
+<p>Existem duas grandes formas de junção de dados: <strong>UNIÃO</strong> e <strong>CRUZAMENTO</strong>.</p>
+<p>Para que uma união seja possível, os dois conjuntos de dados precisam ter os mesmos campos. Para que um cruzamento seja possível, os dois conjuntos precisam ter pelo menos um campo em comum.</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-96"></span>
+<img src="imagens/union.png" alt="União de tabelas" width="100%" />
+<p class="caption">
+Figura 6.1: União de tabelas
+</p>
+</div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-97"></span>
+<img src="imagens/join.png" alt="Cruzamento de tabelas" width="100%" />
+<p class="caption">
+Figura 6.2: Cruzamento de tabelas
+</p>
+</div>
+<div id="uniao-de-dados-union" class="section level2">
+<h2><span class="header-section-number">6.1</span> União de dados (Union)</h2>
+<p>A união de dados é mais intuitiva. Basta ter a mesma quantidade de campos e que estes estejam “alinhados”. A função mais usada para isso é o famoso <code>rbind()</code> (Row Bind). Caso os campos tenham exatamente os mesmos nomes e tipo, o <code>rbind()</code> consegue fazer a união perfeitamente.</p>
+<pre class="sourceCode r"><code class="sourceCode r">dados2016 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">ano =</span> <span class="kw">c</span>(<span class="dv">2016</span>, <span class="dv">2016</span>, <span class="dv">2016</span>), 
+                        <span class="dt">valor =</span> <span class="kw">c</span>(<span class="dv">938</span>, <span class="dv">113</span>, <span class="dv">1748</span>), 
+                        <span class="dt">produto =</span> <span class="kw">c</span>(<span class="st">&#39;A&#39;</span>, <span class="st">&#39;B&#39;</span>, <span class="st">&#39;C&#39;</span>))
+
+dados2017 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">valor =</span> <span class="kw">c</span>(<span class="dv">8400</span>, <span class="dv">837</span>, <span class="dv">10983</span>), 
+                        <span class="dt">produto =</span> <span class="kw">c</span>(<span class="st">&#39;H&#39;</span>, <span class="st">&#39;Z&#39;</span>, <span class="st">&#39;X&#39;</span>),
+                        <span class="dt">ano =</span> <span class="kw">c</span>(<span class="dv">2017</span>, <span class="dv">2017</span>, <span class="dv">2017</span>))
+
+dados.finais &lt;-<span class="st"> </span><span class="kw">rbind</span>(dados2016, dados2017)
+
+dados.finais</code></pre>
+<pre><code>##    ano valor produto
+## 1 2016   938       A
+## 2 2016   113       B
+## 3 2016  1748       C
+## 4 2017  8400       H
+## 5 2017   837       Z
+## 6 2017 10983       X</code></pre>
+<p>A união de dados é a forma mais simples de juntá-los.</p>
+</div>
+<div id="cruzamento-de-dados-join" class="section level2">
+<h2><span class="header-section-number">6.2</span> Cruzamento de Dados (Join)</h2>
+<p>O cruzamento de dados é um pouco mais complexo, mas nem por isso chega a ser algo difícil.</p>
+<p>Para entender-se como fazer “joins” (cruzamentos), é preciso compreender-se o conceito de <strong>chave</strong>. Entenda chave como uma coluna que está presente da mesma forma em dois conjuntos de dados distintos. O conceito completo de chave é bem mais complexo que isto, mas, para começarmos a entender e usar os joins, basta usar essa intuição.</p>
+<p>Tendo esse conceito simplificado de chave em mente, a primeira coisa que se deve fazer quando for preciso cruzar dois conjuntos de dados é tentar identificar quais os campos chaves, ou seja, quais campos estão presentes nos dois grupos.</p>
+<p>O que acontece quando nem todos os códigos de um grupo estão no outro? E quando um grupo tem códigos repetidos em várias linhas? Para responder a essas e outras perguntas precisamos conhecer os diferentes tipos de joins. Existe pelo menos uma dezena de tipos de joins, mas 90% das vezes você precisará apenas dos tipos básicos que explicaremos a seguir. Usaremos o pacote <code>dplyr</code> para aplicar os joins. O R base possui a função <code>merge()</code> para joins, se tiver curiosidade procure mais sobre ela depois.</p>
+<div id="inner-join-ou-apenas-join" class="section level3">
+<h3><span class="header-section-number">6.2.1</span> Inner Join (ou apenas Join)</h3>
+<p>Trata-se do join mais simples, mais básico e mais usado dentre todos os outros tipos. O seu comportamento mantém no resultado apenas as linhas presentes nos dois conjuntos de dados que estão sendo cruzados. O inner join funciona da seguinte forma:</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-99"></span>
+<img src="imagens/inner_join.png" alt="Cruzamento de tabelas" width="100%" />
+<p class="caption">
+Figura 6.3: Cruzamento de tabelas
+</p>
+</div>
+<p>A tabela final, após o cruzamento, conterá as linhas com as chaves que estiverem em AMBOS os conjuntos de dados. As linhas com chaves que não estão em ambos serão descartadas. Esta característica torna o inner join muito útil para fazer-se filtros.</p>
+<p>Vamos utilizar dados já disponíveis no <code>dplyr</code> para testar os joins:</p>
+<pre class="sourceCode r"><code class="sourceCode r">band_members</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   name  band   
+##   &lt;chr&gt; &lt;chr&gt;  
+## 1 Mick  Stones 
+## 2 John  Beatles
+## 3 Paul  Beatles</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">band_instruments</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   name  plays 
+##   &lt;chr&gt; &lt;chr&gt; 
+## 1 John  guitar
+## 2 Paul  bass  
+## 3 Keith guitar</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(band_members)</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    3 obs. of  2 variables:
+##  $ name: chr  &quot;Mick&quot; &quot;John&quot; &quot;Paul&quot;
+##  $ band: chr  &quot;Stones&quot; &quot;Beatles&quot; &quot;Beatles&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(band_instruments)</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    3 obs. of  2 variables:
+##  $ name : chr  &quot;John&quot; &quot;Paul&quot; &quot;Keith&quot;
+##  $ plays: chr  &quot;guitar&quot; &quot;bass&quot; &quot;guitar&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#vamos juntar os dois conjuntos com um join</span>
+
+band_members <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">inner_join</span>(band_instruments) </code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   name  band    plays 
+##   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
+## 1 John  Beatles guitar
+## 2 Paul  Beatles bass</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#o dplyr &quot;adivinhou&quot; a coluna chave pelo nome</span></code></pre>
+<p>Repare que, nesse caso, a chave é a coluna <code>name</code>. Repare também que os dois conjuntos têm três registros. Então, por que o resultado final só tem dois registros? A resposta é simples: porque o comportamento do join é justamente retornar apenas as linhas em que as chaves coincidiram (efeito de filtro).</p>
+<p>Vamos fazer o mesmo experimento com <code>band_intruments2</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">band_instruments2</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   artist plays 
+##   &lt;chr&gt;  &lt;chr&gt; 
+## 1 John   guitar
+## 2 Paul   bass  
+## 3 Keith  guitar</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(band_instruments2) <span class="co">#o nome da coluna é diferente</span></code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    3 obs. of  2 variables:
+##  $ artist: chr  &quot;John&quot; &quot;Paul&quot; &quot;Keith&quot;
+##  $ plays : chr  &quot;guitar&quot; &quot;bass&quot; &quot;guitar&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">band_members <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">inner_join</span>(band_instruments2, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&#39;name&#39;</span> =<span class="st"> &#39;artist&#39;</span>))</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   name  band    plays 
+##   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
+## 1 John  Beatles guitar
+## 2 Paul  Beatles bass</code></pre>
+<p>Repare que, dessa vez, tivemos que especificar qual a coluna chave para que o join aconteça.</p>
+<p>Mais um exemplo:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setwd</span>(<span class="st">&#39;dados&#39;</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">empregados &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&#39;dados/Employees.csv&#39;</span>)
+departamentos &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&#39;dados/Departments.csv&#39;</span>)
+
+<span class="kw">str</span>(empregados)</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    6 obs. of  4 variables:
+##  $ Employee    : int  1 2 3 4 5 6
+##  $ EmployeeName: chr  &quot;Alice&quot; &quot;Bob&quot; &quot;Carla&quot; &quot;Daniel&quot; ...
+##  $ Department  : int  11 11 12 12 13 21
+##  $ Salary      : int  800 600 900 1000 800 700
+##  - attr(*, &quot;spec&quot;)=List of 2
+##   ..$ cols   :List of 4
+##   .. ..$ Employee    : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   .. ..$ EmployeeName: list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ Department  : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   .. ..$ Salary      : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   ..$ default: list()
+##   .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_guess&quot; &quot;collector&quot;
+##   ..- attr(*, &quot;class&quot;)= chr &quot;col_spec&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(departamentos)</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    4 obs. of  3 variables:
+##  $ Department    : int  11 12 13 14
+##  $ DepartmentName: chr  &quot;Production&quot; &quot;Sales&quot; &quot;Marketing&quot; &quot;Research&quot;
+##  $ Manager       : int  1 4 5 NA
+##  - attr(*, &quot;spec&quot;)=List of 2
+##   ..$ cols   :List of 3
+##   .. ..$ Department    : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   .. ..$ DepartmentName: list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ Manager       : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   ..$ default: list()
+##   .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_guess&quot; &quot;collector&quot;
+##   ..- attr(*, &quot;class&quot;)= chr &quot;col_spec&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">empregados</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   Employee EmployeeName Department Salary
+##      &lt;int&gt; &lt;chr&gt;             &lt;int&gt;  &lt;int&gt;
+## 1        1 Alice                11    800
+## 2        2 Bob                  11    600
+## 3        3 Carla                12    900
+## 4        4 Daniel               12   1000
+## 5        5 Evelyn               13    800
+## 6        6 Ferdinand            21    700</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">departamentos</code></pre>
+<pre><code>## # A tibble: 4 x 3
+##   Department DepartmentName Manager
+##        &lt;int&gt; &lt;chr&gt;            &lt;int&gt;
+## 1         11 Production           1
+## 2         12 Sales                4
+## 3         13 Marketing            5
+## 4         14 Research            NA</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">final &lt;-<span class="st"> </span>empregados <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">inner_join</span>(departamentos, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&#39;Employee&#39;</span> =<span class="st"> &#39;Manager&#39;</span>))
+
+final</code></pre>
+<pre><code>## # A tibble: 3 x 6
+##   Employee EmployeeName Department.x Salary Department.y DepartmentName
+##      &lt;int&gt; &lt;chr&gt;               &lt;int&gt;  &lt;int&gt;        &lt;int&gt; &lt;chr&gt;         
+## 1        1 Alice                  11    800           11 Production    
+## 2        4 Daniel                 12   1000           12 Sales         
+## 3        5 Evelyn                 13    800           13 Marketing</code></pre>
+<p>Novamente tivemos o mesmo efeito, listamos apenas os empregados que são gerentes de departamento.</p>
+<p>Acontece que existem situações em que esse descarte de registro do inner join não é interessante. Nesses casos usamos outros tipos de join: os Outer Joins. Existem três tipos básicos de outer join: left outer join (ou só left join), right outer join (ou só right join) e full outer join (ou apenas full join).</p>
+</div>
+<div id="left-outer-join" class="section level3">
+<h3><span class="header-section-number">6.2.2</span> Left Outer Join</h3>
+<p>Chama-se <strong>LEFT</strong> outer join pois todos os registros do “conjunto à esquerda” estarão presentes no resultado final, além dos registros à direita que coincidirem na chave. Podemos usar no caso a seguir:</p>
+<pre class="sourceCode r"><code class="sourceCode r">band_members <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">left_join</span>(band_instruments2, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&#39;name&#39;</span> =<span class="st"> &#39;artist&#39;</span>))</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   name  band    plays 
+##   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
+## 1 Mick  Stones  &lt;NA&gt;  
+## 2 John  Beatles guitar
+## 3 Paul  Beatles bass</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">band_instruments2</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   artist plays 
+##   &lt;chr&gt;  &lt;chr&gt; 
+## 1 John   guitar
+## 2 Paul   bass  
+## 3 Keith  guitar</code></pre>
+<p>Reparem no efeito: mesmo Mick não tendo referência no conjunto de dados “à direita” (band_instruments2), ele apareceu no registro final com <code>NA</code>, no campo que diz respeito ao conjunto à direita. Da mesma forma, Keith não está presente no conjunto final, pois não tem referência no conjunto à esquerda.</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-105"></span>
+<img src="imagens/left_join.png" alt="Cruzamento de tabelas" width="100%" />
+<p class="caption">
+Figura 6.4: Cruzamento de tabelas
+</p>
+</div>
+<p>Repare que a “posição” das tabelas faz diferença. No caso da nossa manipulação de exmeplo, aplicamos o left join pois a tabela que queríamos preservar estava “à esquerda” na manipulação.</p>
+<pre class="sourceCode r"><code class="sourceCode r">final2 &lt;-<span class="st"> </span>empregados <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">left_join</span>(departamentos, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&#39;Employee&#39;</span> =<span class="st"> &#39;Manager&#39;</span>))
+
+final2</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##   Employee EmployeeName Department.x Salary Department.y DepartmentName
+##      &lt;int&gt; &lt;chr&gt;               &lt;int&gt;  &lt;int&gt;        &lt;int&gt; &lt;chr&gt;         
+## 1        1 Alice                  11    800           11 Production    
+## 2        2 Bob                    11    600           NA &lt;NA&gt;          
+## 3        3 Carla                  12    900           NA &lt;NA&gt;          
+## 4        4 Daniel                 12   1000           12 Sales         
+## 5        5 Evelyn                 13    800           13 Marketing     
+## 6        6 Ferdinand              21    700           NA &lt;NA&gt;</code></pre>
+</div>
+<div id="right-outer-join" class="section level3">
+<h3><span class="header-section-number">6.2.3</span> Right Outer Join</h3>
+<p>O princípio é EXATAMENTE o mesmo do left join. A única diferença é a permanência dos registros do conjunto à direita. Podemos chegar ao mesmo resultado anterior apenas mudando os data frames de posição na manipulação.</p>
+<pre class="sourceCode r"><code class="sourceCode r">final3 &lt;-<span class="st"> </span>departamentos <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">right_join</span>(empregados, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&#39;Manager&#39;</span>=<span class="st">&#39;Employee&#39;</span>))
+
+final3</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##   Department.x DepartmentName Manager EmployeeName Department.y Salary
+##          &lt;int&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;               &lt;int&gt;  &lt;int&gt;
+## 1           11 Production           1 Alice                  11    800
+## 2           NA &lt;NA&gt;                 2 Bob                    11    600
+## 3           NA &lt;NA&gt;                 3 Carla                  12    900
+## 4           12 Sales                4 Daniel                 12   1000
+## 5           13 Marketing            5 Evelyn                 13    800
+## 6           NA &lt;NA&gt;                 6 Ferdinand              21    700</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">final2</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##   Employee EmployeeName Department.x Salary Department.y DepartmentName
+##      &lt;int&gt; &lt;chr&gt;               &lt;int&gt;  &lt;int&gt;        &lt;int&gt; &lt;chr&gt;         
+## 1        1 Alice                  11    800           11 Production    
+## 2        2 Bob                    11    600           NA &lt;NA&gt;          
+## 3        3 Carla                  12    900           NA &lt;NA&gt;          
+## 4        4 Daniel                 12   1000           12 Sales         
+## 5        5 Evelyn                 13    800           13 Marketing     
+## 6        6 Ferdinand              21    700           NA &lt;NA&gt;</code></pre>
+<p>A escolha entre right join e left join depende completamente da ordem em que você escolher realizar as operações. Via de regra, um pode ser substituído pelo outro, desde que a posição dos data frames se ajuste na sequência das manipulações.</p>
+</div>
+<div id="full-outer-join" class="section level3">
+<h3><span class="header-section-number">6.2.4</span> Full Outer Join</h3>
+<p>Existem, ainda, as situações em que é necessário preservar todos os registros de ambos os conjuntos de dados. O full join tem essa característica. Nenhum dos conjuntos de dados perderá registros no resultado final, isto é, quando as chaves forem iguais, todos os campos estarão preenchidos. Quando não houver ocorrência das chaves em ambos os lados, será informado <code>NA</code> em qualquer um deles.</p>
+<pre class="sourceCode r"><code class="sourceCode r">band_members <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">full_join</span>(band_instruments2, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&#39;name&#39;</span> =<span class="st"> &#39;artist&#39;</span>))</code></pre>
+<pre><code>## # A tibble: 4 x 3
+##   name  band    plays 
+##   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
+## 1 Mick  Stones  &lt;NA&gt;  
+## 2 John  Beatles guitar
+## 3 Paul  Beatles bass  
+## 4 Keith &lt;NA&gt;    guitar</code></pre>
+<p>Reparem que, dessa vez, não perdemos nenhum registro, de nenhum conjunto de dados, apenas teremos <code>NA</code> quando a ocorrência da chave não acontecer em alguns dos conjuntos.</p>
+<p>O full join funciona da seguinte forma:</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-109"></span>
+<img src="imagens/full_join.png" alt="Cruzamento de tabelas" width="100%" />
+<p class="caption">
+Figura 6.5: Cruzamento de tabelas
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r">final4 &lt;-<span class="st"> </span>departamentos <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">full_join</span>(empregados, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&#39;Manager&#39;</span>=<span class="st">&#39;Employee&#39;</span>))
+
+final4</code></pre>
+<pre><code>## # A tibble: 7 x 6
+##   Department.x DepartmentName Manager EmployeeName Department.y Salary
+##          &lt;int&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;               &lt;int&gt;  &lt;int&gt;
+## 1           11 Production           1 Alice                  11    800
+## 2           12 Sales                4 Daniel                 12   1000
+## 3           13 Marketing            5 Evelyn                 13    800
+## 4           14 Research            NA &lt;NA&gt;                   NA     NA
+## 5           NA &lt;NA&gt;                 2 Bob                    11    600
+## 6           NA &lt;NA&gt;                 3 Carla                  12    900
+## 7           NA &lt;NA&gt;                 6 Ferdinand              21    700</code></pre>
+<p>Do resultado desse full join, por exemplo, podemos concluir que não tem nenhum <em>Manager</em> no departamento <em>Resarch</em>, da mesma forma, os empregados Bob, Carla e Ferdinand não são <em>managers</em> de departamento nenhum.</p>
+</div>
+</div>
+<div id="exercicios-5" class="section level2">
+<h2><span class="header-section-number">6.3</span> Exercícios</h2>
+<ol style="list-style-type: decimal">
+<li>Utilizando as bases de dados do pacote <code>nycflights13</code>, encontre a tabela abaixo que mostra quais aeroportos (origem e destino) tiveram mais voos. Será necessário utilizar o dataframe <code>flights</code> e <code>airports</code>. <code>Dica: primeiro descubra as chaves.</code></li>
+</ol>
+<pre><code>## # A tibble: 217 x 3
+## # Groups:   Origem [3]
+##    Origem              Destino                              qtd
+##    &lt;chr&gt;               &lt;chr&gt;                              &lt;int&gt;
+##  1 John F Kennedy Intl Los Angeles Intl                   11262
+##  2 La Guardia          Hartsfield Jackson Atlanta Intl    10263
+##  3 La Guardia          Chicago Ohare Intl                  8857
+##  4 John F Kennedy Intl San Francisco Intl                  8204
+##  5 La Guardia          Charlotte Douglas Intl              6168
+##  6 Newark Liberty Intl Chicago Ohare Intl                  6100
+##  7 John F Kennedy Intl General Edward Lawrence Logan Intl  5898
+##  8 La Guardia          Miami Intl                          5781
+##  9 John F Kennedy Intl Orlando Intl                        5464
+## 10 Newark Liberty Intl General Edward Lawrence Logan Intl  5327
+## # ... with 207 more rows</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Utilizando os dataframes abaixo, chegue no resultado a seguir:</li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">participantes &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">Nome =</span> <span class="kw">c</span>(<span class="st">&#39;Carlos&#39;</span>, <span class="st">&#39;Maurício&#39;</span>, <span class="st">&#39;Ana Maria&#39;</span>, <span class="st">&#39;Rebeca&#39;</span>, <span class="st">&#39;Patrícia&#39;</span>),
+  <span class="dt">Estado =</span> <span class="kw">c</span>(<span class="st">&#39;Brasília&#39;</span>, <span class="st">&#39;Minas Gerais&#39;</span>, <span class="st">&#39;Goiás&#39;</span>, <span class="st">&#39;São Paulo&#39;</span>, <span class="st">&#39;Ceará&#39;</span>),
+  <span class="dt">Idade =</span> <span class="kw">c</span>(<span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">22</span>, <span class="dv">29</span>, <span class="dv">28</span>)
+)
+
+aprovados &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">Nome =</span> <span class="kw">c</span>(<span class="st">&#39;Carlos&#39;</span>, <span class="st">&#39;Patrícia&#39;</span>),
+  <span class="dt">Pontuacao =</span> <span class="kw">c</span>(<span class="dv">61</span>, <span class="dv">62</span>)
+)
+
+eliminados &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">Nome =</span> <span class="kw">c</span>(<span class="st">&#39;Maurício&#39;</span>, <span class="st">&#39;Ana Maria&#39;</span>, <span class="st">&#39;Rebeca&#39;</span>),
+  <span class="dt">Pontuacao =</span> <span class="kw">c</span>(<span class="dv">49</span>, <span class="dv">48</span>, <span class="dv">48</span>)
+)
+
+participantes</code></pre>
+<pre><code>##        Nome       Estado Idade
+## 1    Carlos     Brasília    23
+## 2  Maurício Minas Gerais    24
+## 3 Ana Maria        Goiás    22
+## 4    Rebeca    São Paulo    29
+## 5  Patrícia        Ceará    28</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">aprovados</code></pre>
+<pre><code>##       Nome Pontuacao
+## 1   Carlos        61
+## 2 Patrícia        62</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">eliminados</code></pre>
+<pre><code>##        Nome Pontuacao
+## 1  Maurício        49
+## 2 Ana Maria        48
+## 3    Rebeca        48</code></pre>
+<pre><code>## Warning: Column `Nome` joining factors with different levels, coercing to
+## character vector</code></pre>
+<pre><code>## Warning: Column `Nome` joining character vector and factor, coercing into
+## character vector</code></pre>
+<pre><code>##        Nome       Estado Idade Pontuacao Resultado
+## 1    Carlos     Brasília    23        61  Aprovado
+## 2  Maurício Minas Gerais    24        49 Eliminado
+## 3 Ana Maria        Goiás    22        48 Eliminado
+## 4    Rebeca    São Paulo    29        48 Eliminado
+## 5  Patrícia        Ceará    28        62  Aprovado</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="limpando-dados.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="escrevendo-dados.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["cdr-intro.pdf"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

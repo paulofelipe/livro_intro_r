@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="MDIC" />
+
+
+<title>Exportações de Minérios de ferro e seus concentrados</title>
+
+<script src="exemplo_html_files/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="exemplo_html_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="exemplo_html_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="exemplo_html_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="exemplo_html_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="exemplo_html_files/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="exemplo_html_files/datatables-binding-0.2/datatables.js"></script>
+<link href="exemplo_html_files/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="exemplo_html_files/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="exemplo_html_files/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+<link href="exemplo_html_files/dt-ext-colreorder-1.10.12/css/colReorder.dataTables.min.css" rel="stylesheet" />
+<script src="exemplo_html_files/dt-ext-colreorder-1.10.12/js/dataTables.colReorder.min.js"></script>
+<link href="exemplo_html_files/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="exemplo_html_files/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="exemplo_html_files/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="exemplo_html_files/selectize-0.12.0/selectize.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="exemplo_html_files/highlight/default.css"
+      type="text/css" />
+<script src="exemplo_html_files/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="exemplo_html_files/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Exportações de Minérios de ferro e seus concentrados</h1>
+<h4 class="author"><em>MDIC</em></h4>
+<h4 class="date"><em>5 de novembro de 2016</em></h4>
+
+</div>
+
+
+<div id="dados" class="section level1">
+<h1>Dados</h1>
+<p>Os dados desse exemplo foram extraídos das séries históricas disponíveis no site do <a href="www.mdic.gov.br">MDIC</a>.</p>
+<p>Amostra dos dados:</p>
+<pre class="r"><code>kable(dados %&gt;%
+        select(DATA, VL_FOB, KG_LIQUIDO, PRECO) %&gt;%
+        mutate(DATA = format.Date(DATA, &quot;%b/%Y&quot;)) %&gt;%
+        head(10), format.args = list(big.mark = &quot;.&quot;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">DATA</th>
+<th align="right">VL_FOB</th>
+<th align="right">KG_LIQUIDO</th>
+<th align="right">PRECO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Jan/1997</td>
+<td align="right">266.869.782</td>
+<td align="right">12.190.272.878</td>
+<td align="right">0,0218920</td>
+</tr>
+<tr class="even">
+<td align="left">Fev/1997</td>
+<td align="right">172.468.713</td>
+<td align="right">7.845.212.443</td>
+<td align="right">0,0219839</td>
+</tr>
+<tr class="odd">
+<td align="left">Mar/1997</td>
+<td align="right">265.033.886</td>
+<td align="right">13.041.094.690</td>
+<td align="right">0,0203230</td>
+</tr>
+<tr class="even">
+<td align="left">Abr/1997</td>
+<td align="right">229.954.303</td>
+<td align="right">10.368.844.046</td>
+<td align="right">0,0221774</td>
+</tr>
+<tr class="odd">
+<td align="left">Mai/1997</td>
+<td align="right">222.365.501</td>
+<td align="right">10.515.503.370</td>
+<td align="right">0,0211464</td>
+</tr>
+<tr class="even">
+<td align="left">Jun/1997</td>
+<td align="right">281.409.102</td>
+<td align="right">13.278.045.526</td>
+<td align="right">0,0211936</td>
+</tr>
+<tr class="odd">
+<td align="left">Jul/1997</td>
+<td align="right">261.705.472</td>
+<td align="right">12.452.278.986</td>
+<td align="right">0,0210167</td>
+</tr>
+<tr class="even">
+<td align="left">Ago/1997</td>
+<td align="right">207.029.373</td>
+<td align="right">9.810.599.506</td>
+<td align="right">0,0211026</td>
+</tr>
+<tr class="odd">
+<td align="left">Set/1997</td>
+<td align="right">227.474.215</td>
+<td align="right">10.764.039.314</td>
+<td align="right">0,0211328</td>
+</tr>
+<tr class="even">
+<td align="left">Out/1997</td>
+<td align="right">239.946.533</td>
+<td align="right">11.641.658.254</td>
+<td align="right">0,0206110</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Valor
+ggplot(dados, aes(x = DATA, y = VL_FOB/1e6)) +
+  geom_line() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;)) +
+  labs(title = paste0(&quot;Valor Exportado de &quot;, params$prod),
+       caption = &quot;Fonte: MDIC.&quot;,
+       subtitle = &quot;US$ Milhões&quot;) +
+  theme_fivethirtyeight()</code></pre>
+<p><img src="exemplo_html_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+<pre class="r"><code># Volume
+ggplot(dados, aes(x = DATA, y = KG_LIQUIDO/1e3)) +
+  geom_line() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;)) +
+  labs(title = paste0(&quot;Volume Exportado de &quot;, params$prod),
+       caption = &quot;Fonte: MDIC.&quot;,
+       caption = &quot;Toneladas&quot;) +
+  theme_fivethirtyeight()</code></pre>
+<p><img src="exemplo_html_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<pre class="r"><code># Preço
+
+ggplot(dados, aes(x = DATA, y = PRECO)) +
+  geom_line() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;)) +
+  labs(title = paste0(&quot;Preço &quot;, params$prod),
+       caption = &quot;Fonte: MDIC.&quot;,
+       subtitle = &quot;US$/KG&quot;,
+       x = &quot;Data&quot;,
+       y = &quot;US$ Milhões&quot;) +
+  theme_fivethirtyeight()</code></pre>
+<p><img src="exemplo_html_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+<div id="convertendo-em-objeto-ts" class="section level2">
+<h2>Convertendo em objeto ts</h2>
+<p>Antes de converter para um objeto da classe <code>ts</code> é necessário garantir que o objeto <code>dados</code> possua uma linha para cada mês/ano do período. No arquivo original, se a exportação de um produto foi zero em um determinado mês, não haverá uma linha para aquele mês. Dessa forma, se fizermos algo do tipo <code>x &lt;- ts(dados, start = c(1997, 1), freq = 12)</code> e existirem apenas 12 observações, o R entenderá que há observações de jan/1997 a dez/1997, o que pode não ser o caso. Assim, usaremos o data.frame <code>dados.base</code> que possui uma linha para cada período entre jan/1997 e o último mês disponível.</p>
+<pre class="r"><code>dados.ts &lt;- left_join(dados.base, dados) %&gt;%
+  replace_na(list(VL_FOB = 0, KG_LIQUIDO = 0))
+
+
+dados.ts &lt;- ts(dados %&gt;% 
+               select(VL_FOB, KG_LIQUIDO, PRECO, PART),
+               start = c(1997, 1), 
+               freq = 12)</code></pre>
+</div>
+<div id="investigando-a-existencia-de-sazonalidade" class="section level2">
+<h2>Investigando a existência de sazonalidade</h2>
+<pre class="r"><code>ggmonthplot(dados.ts[,&quot;KG_LIQUIDO&quot;]/1e3) +
+  scale_y_continuous(labels = function(x) format(x, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;)) +
+  labs(title = paste0(&quot;Volume Exportado &quot;, params$prod),
+       caption = &quot;Fonte: MDIC.&quot;,
+       subtitle = &quot;Toneladas&quot;,
+       x = &quot;Data&quot;,
+       y = &quot;Toneladas&quot;) +
+  theme_fivethirtyeight() </code></pre>
+<p><img src="exemplo_html_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
+</div>
+<div id="tabela-interativa" class="section level2">
+<h2>Tabela interativa</h2>
+<pre class="r"><code>pt &lt;- jsonlite::fromJSON(url(&quot;https://cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json&quot;))
+pt$buttons &lt;- list(&#39;copy&#39; = &#39;Copiar&#39;, &#39;print&#39; = &#39;Imprimir&#39;)
+
+datatable(dados %&gt;% 
+            mutate(TON = KG_LIQUIDO/1e3,
+                   PART = PART * 100) %&gt;%
+            select(-NO_FAT_AGREG, -CO_FAT_AGREG, -DATA,
+                   -KG_LIQUIDO),
+          filter = &#39;bottom&#39;, rownames = FALSE,
+          extensions = &#39;ColReorder&#39;,
+          options = list(pageLength = 12,
+                         columnDefs = list(list(className = &#39;dt-center&#39;,
+                                                targets = c(0, 1, 2, 3, 4))),
+                         language = pt,
+                         colReorder = TRUE),
+          colnames = c(&quot;Tipo&quot;, &quot;Ano&quot;, &quot;Mês&quot;, &quot;Codigo PPE&quot;, &quot;PPE&quot;,
+                       &quot;Valor FOB&quot;, &quot;Preço&quot;, &quot;Participação&quot;, &quot;Toneladas&quot;),
+          class = &#39;stripe hover&#39;) %&gt;% 
+  formatCurrency(&quot;VL_FOB&quot;, currency = &quot;US$ &quot;, mark = &quot;.&quot;, digits = 0) %&gt;% 
+  formatCurrency(c(&quot;TON&quot;, &quot;PRECO&quot;), currency =&quot;&quot;, digits = 3, mark = &quot;.&quot;, dec.mark = &quot;,&quot;) %&gt;%
+  formatCurrency(&quot;PART&quot;, currency = &quot;%&quot;, digits = 3, , mark = &quot;.&quot;, dec.mark = &quot;,&quot;,
+                 before = FALSE)</code></pre>
+<div id="htmlwidget-45cf9c90966102729146" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-45cf9c90966102729146">{"x":{"filter":"bottom","filterHTML":"<tr>\n  <td data-type=\"disabled\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\">\u003c/span>\n    \u003c/div>\n  \u003c/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\">\u003c/span>\n    \u003c/div>\n  \u003c/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\">\u003c/span>\n    \u003c/div>\n  \u003c/td>\n  <td data-type=\"disabled\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\">\u003c/span>\n    \u003c/div>\n  \u003c/td>\n  <td data-type=\"disabled\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\">\u003c/span>\n    \u003c/div>\n  \u003c/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\">\u003c/span>\n    \u003c/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"60821793\" data-max=\"4469094839\">\u003c/div>\n      <span style=\"float: left;\">\u003c/span>\n      <span style=\"float: right;\">\u003c/span>\n    \u003c/div>\n  \u003c/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\">\u003c/span>\n    \u003c/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"0,015276654531779\" data-max=\"0,137600645382435\" data-scale=\"15\">\u003c/div>\n      <span style=\"float: left;\">\u003c/span>\n      <span style=\"float: right;\">\u003c/span>\n    \u003c/div>\n  \u003c/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\">\u003c/span>\n    \u003c/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"1,48905694394257\" data-max=\"18,6883516305073\" data-scale=\"15\">\u003c/div>\n      <span style=\"float: left;\">\u003c/span>\n      <span style=\"float: right;\">\u003c/span>\n    \u003c/div>\n  \u003c/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\">\u003c/span>\n    \u003c/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"3981355,53\" data-max=\"39507790,041\" data-scale=\"3\">\u003c/div>\n      <span style=\"float: left;\">\u003c/span>\n      <span style=\"float: right;\">\u003c/span>\n    \u003c/div>\n  \u003c/td>\n\u003c/tr>","extensions":["ColReorder"],"data":[["EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP","EXP"],["1997","1997","1997","1997","1997","1997","1997","1997","1997","1997","1997","1997","1998","1998","1998","1998","1998","1998","1998","1998","1998","1998","1998","1998","1999","1999","1999","1999","1999","1999","1999","1999","1999","1999","1999","1999","2000","2000","2000","2000","2000","2000","2000","2000","2000","2000","2000","2000","2001","2001","2001","2001","2001","2001","2001","2001","2001","2001","2001","2001","2002","2002","2002","2002","2002","2002","2002","2002","2002","2002","2002","2002","2003","2003","2003","2003","2003","2003","2003","2003","2003","2003","2003","2003","2004","2004","2004","2004","2004","2004","2004","2004","2004","2004","2004","2004","2005","2005","2005","2005","2005","2005","2005","2005","2005","2005","2005","2005","2006","2006","2006","2006","2006","2006","2006","2006","2006","2006","2006","2006","2007","2007","2007","2007","2007","2007","2007","2007","2007","2007","2007","2007","2008","2008","2008","2008","2008","2008","2008","2008","2008","2008","2008","2008","2009","2009","2009","2009","2009","2009","2009","2009","2009","2009","2009","2009","2010","2010","2010","2010","2010","2010","2010","2010","2010","2010","2010","2010","2011","2011","2011","2011","2011","2011","2011","2011","2011","2011","2011","2011","2012","2012","2012","2012","2012","2012","2012","2012","2012","2012","2012","2012","2013","2013","2013","2013","2013","2013","2013","2013","2013","2013","2013","2013","2014","2014","2014","2014","2014","2014","2014","2014","2014","2014","2014","2014","2015","2015","2015","2015","2015","2015","2015","2015","2015","2015","2015","2015","2016","2016","2016","2016","2016","2016","2016","2016","2016"],["01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09","10","11","12","01","02","03","04","05","06","07","08","09"],["1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258","1258"],["Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados","Minérios de ferro e seus concentrados"],[266869782,172468713,265033886,229954303,222365501,281409102,261705472,207029373,227474215,239946533,249945209,221967675,408030432,206077581,321348693,264085921,268723796,275243226,314499093,243536129,246995982,268483610,178614052,257413084,187241770,224651263,216159244,167354632,304846866,221665600,257806587,238198644,248618121,230650795,205807397,243015369,256910176,188297971,269374011,227359555,306778408,256030011,252661162,286715876,249105401,291083379,232935017,230989129,320824466,184787812,284171828,208956350,270425701,232537126,280662389,253708277,209206237,277010339,210112839,199138802,218123301,199964262,238544172,267043902,188515319,60821793,412530000,390037926,315501711,262317965,261065421,234384653,297849762,263117374,271919657,287114009,290711429,217323150,242610940,220566460,393245738,491411363,282498244,197552394,439895545,282396619,450429529,211224560,301658994,394248972,489420819,505739417,413057313,407411003,446745135,416648421,355237719,417022083,416993980,581312383,616498928,686228123,652821732,701746093,628264690,700518209,746982300,793013709,607706998,576832015,835991094,545378409,457643288,790138827,1069616747,860180294,786793164,913696848,793800366,711093267,866132381,718149904,827541851,767607425,891562872,735935825,1089285350,995296167,890848213,992179346,858182806,925189314,962205273,921420952,533887444,682205769,1517848075,1626065263,1975865187,1908527309,2137911295,1916838521,1372279398,983488091,1029200062,993873188,1318969157,1401430447,803343943,1010765844,1181081346,1040735107,1252950493,1137282758,978751262,1098520069,962088687,1165060812,1429278088,1439588863,2190127351,2324555243,2839883317,3574497790,3308731021,3434997184,2703607389,3539466264,2538728069,2734505152,2885060835,3129301936,3607067329,3486533431,3741503803,4469094839,4083706483,3798356330,3670797474,3672595441,1834601691,2187260202,2775669082,2566938042,2752947996,2747893180,2843109430,2757446551,2432265981,2642347027,2637408019,2811405316,2257895056,2127173825,2500197565,2535726834,2950349608,2591040236,2665901411,2640517920,2789840363,3219179400,3008831750,3204876763,2482323823,2192735504,2391705899,2063402929,2593557860,2311931389,2185525680,1908706377,2226334730,1890397062,1579645195,1992823728,1196692144,1268483729,1387464343,1162027319,930577393,1217944107,1365214302,971294358,1265744362,1134969920,900816371,1274875275,656110252,685591650,776310009,960801108,1341709575,1082605210,996427625,1255996603,1420275773],[0.0218920269193994,0.0219839442530186,0.020322978423217,0.0221774290345036,0.0211464437959664,0.0211935635744709,0.0210166727146279,0.0211026220032103,0.0211327930309713,0.020611027034534,0.020817951155223,0.0218068875888939,0.0217466418190446,0.0218372989520792,0.0219774128103631,0.0214099750394701,0.0223341203525308,0.0209114839841445,0.0223939869073694,0.0229343627420841,0.0206351885149495,0.0217199763298156,0.0221897343660571,0.0200841902502599,0.0222150038010463,0.0208690060580761,0.0206007343043823,0.0206722583389609,0.0195282750453439,0.0193752783226964,0.0187068584372425,0.0194239438370953,0.0192002754877769,0.0195825615242611,0.0180816845571669,0.0189637051257175,0.0186762619401191,0.0193362870977872,0.0192292862715532,0.0196213359948285,0.0196464531943027,0.0192250195789805,0.0192042713077611,0.01967936626047,0.0192714698989275,0.0196273721543077,0.0196444969013789,0.0200329048610844,0.0195360754792354,0.0181976504531947,0.0194642430100882,0.0187942353808987,0.0188882080946225,0.0194958807737334,0.0182675621197177,0.0193832231230067,0.0180494247090722,0.0192650499511474,0.0178451571120904,0.0180867003383266,0.0175890370372472,0.0185585382337788,0.0192872512204584,0.0185217909908124,0.0179232355311581,0.0152766545317795,0.0181296091217011,0.0193599776152836,0.0173442225176051,0.0180766246598641,0.0190363831744003,0.0183840092941117,0.0185759710055959,0.0181039397366971,0.0184805678968618,0.0179105441544495,0.0184067070679784,0.0179695512684117,0.0193312951555823,0.0195582316659645,0.0214819468919869,0.0236271522128944,0.0208565736024584,0.0215448913641791,0.0206020829073092,0.0195857620313198,0.020821720250333,0.0230208958203756,0.0252088167929366,0.0240492373959647,0.0226071999210097,0.0224954745114892,0.0226810865402347,0.0236291462809811,0.0231589698729335,0.0236399460806333,0.0233947471693208,0.0237474748027681,0.0237500481722148,0.0297944055587436,0.0360978473835824,0.0375574680178626,0.0350964637024624,0.0340590502393178,0.03477019491066,0.0371045793346071,0.0359752825909321,0.0359128677302734,0.0354618543231656,0.0331211081905788,0.0357337831582705,0.0344686433675376,0.0348886583604713,0.0378552580423075,0.0359161685675453,0.0386074930244333,0.038288513330526,0.0398256525563223,0.0379839096229833,0.0388240660192836,0.0391876017871071,0.0375310513853631,0.038845401242462,0.0382450279361497,0.0396253728675808,0.0389415270976926,0.0399489537777217,0.0398245457113049,0.0390902706665469,0.0395184046269287,0.038412733210302,0.0403270982720772,0.039240177395937,0.0397931640276279,0.0368279076530562,0.038466880459604,0.0432274715398403,0.0635385798699976,0.0728253658658983,0.0725558033290372,0.0731340229568484,0.0716908317469568,0.0766025873106602,0.0715232871625228,0.0587612913796901,0.0568608422198657,0.0595584412686572,0.0597009343558968,0.0523965510897357,0.0472725658781521,0.0464272267220612,0.0446710058875822,0.0443614434565523,0.0443821129074974,0.0446565487953622,0.045414816127732,0.0456365286935171,0.0497414279171487,0.052256993183355,0.0673862844739576,0.0934484352841571,0.0950720887559553,0.111029246362134,0.119814424166863,0.121047950450106,0.113798768267069,0.109372761673673,0.110002819562768,0.111659847383019,0.11746986832716,0.116415355397941,0.12687178487238,0.136474114854402,0.136684645409045,0.136940875086492,0.137600645382435,0.135879435111892,0.136604558125986,0.115580903917108,0.107986733629417,0.100907410476891,0.0965657272414352,0.100800373354303,0.100482418831398,0.102712809739316,0.106153772808021,0.104331071046029,0.100152540618758,0.0879020479102527,0.0809376630485597,0.0809775666931567,0.0871572642173692,0.0915748308718037,0.102895214952345,0.110753025202306,0.108610514660825,0.108569930411172,0.0992480952706778,0.0897765600458706,0.0847334208375074,0.0961475292456769,0.0990053033932543,0.0973436342197175,0.10075689434655,0.100479919585528,0.0968997773696204,0.0977502107586843,0.0835307331395502,0.0845204661322257,0.0782340809707175,0.070083445183629,0.0675383385902931,0.0673085154705834,0.0594970988067181,0.0608593956414894,0.0532932473573762,0.0513552927138172,0.0502177686514193,0.0450720275136118,0.0404389609965644,0.0336060527078653,0.0380268067598803,0.0401447056154774,0.0358093152557367,0.0355489428185284,0.0332354288674134,0.0321716013156249,0.0322689594552612,0.026205364680963,0.0228939299109863,0.0256059147262538,0.0331454677091339,0.0394554231853345,0.0373071254377576,0.032938162285286,0.0364030982746826,0.0402022299413048],[7.24286956990444,5.48279205212234,6.93181012292511,4.97254996622691,4.77606178405192,5.80989905089497,4.99552725551844,4.07955783933436,4.95768951827139,5.00617389709386,6.2864583073554,4.89531566878013,10.4172811499935,5.54579337857453,7.51871299048367,5.77037687065514,5.82670609735008,5.63288362492574,6.32780939572935,6.11036742342252,5.44272509964737,6.68386110632047,4.82283872225069,6.52672259956888,6.34899773737748,6.87665773066472,5.64470964799291,4.51486053067278,6.9497136079525,5.1399373088785,6.26185377586823,5.56917647282142,5.93773379421367,5.35882188844572,5.14287396686868,5.19894466805639,7.43830749913472,4.56492118534526,6.02189243531834,5.43435987362906,6.05619699513615,5.26424235737968,5.0471759772067,5.19187655525339,5.26935912094469,6.2716065425301,5.30068611950055,4.95415901883849,7.06409167009987,4.52158797755818,5.49333685201555,4.4127158401345,5.03340366290525,4.60673551624106,5.64695238669368,4.42536037300736,4.39522677711023,5.53074132991331,4.66266306664263,4.57628172313132,5.4860432902678,5.45904498756623,5.5916117084322,5.74558125069457,4.23845101350906,1.48905694394257,6.62106218305248,6.77378058542901,4.8553850354331,4.04675355242709,5.0842476223918,4.46457482161087,6.19078221609484,5.25286241260587,5.18298051060738,5.01947093174892,4.5555428848433,3.69412288702905,3.9677816423842,3.43904014642892,5.39342987040228,6.48412194503276,4.7137018830307,2.92192552315971,7.57206564453609,4.92560412243591,5.66996239398388,3.19732380529167,3.78967473567038,4.21772457834977,5.43119937592674,5.57364999802835,4.62054592709088,4.5974622593959,5.46322899854852,4.52222717960947,4.76369414844493,5.3657821471214,4.49810589609439,6.30451902623547,6.26795582024115,6.7113874292524,5.89214033670952,6.17393904981768,5.89686091881251,7.05958053851901,6.91058173248147,7.26446516065985,6.54373641763853,6.57398823998176,7.335336401822,5.54771035013337,4.44103262943368,6.89280087846603,7.83541880694976,6.29168506862441,6.2558807320396,7.20055540905414,6.67234362086992,5.79782259286478,7.88549545417231,7.08968393856133,6.42054992348106,6.16741762555032,6.53289732324794,5.61008653775208,7.71473262129754,6.59135278151437,6.28878048931123,6.29243122679085,6.10748438084743,6.50131468796433,7.24722192016027,7.19864626902226,4.23291038955923,4.85264543393821,7.86312746870303,8.7454330808222,9.66126615905111,9.66496277148074,10.6803673475351,10.3544007773263,9.30196675868096,7.11775156344998,10.5214524465369,10.3675269980829,11.1689726405288,11.3737541070239,6.70314343653567,6.98632076350345,8.35162766904942,7.51930034072185,9.03794586567034,8.07632519604838,7.73539549648349,7.59557933355531,8.51024316588072,9.55184173254705,9.08776451999674,9.49521003027309,12.3718533400067,13.5987321345418,16.0691191033535,18.5820900150155,17.5689897631219,18.6883516305073,15.2855576591234,16.9205588557413,16.6864018273368,16.3425071516901,14.9593709565811,15.512345747869,15.5419046283467,14.7178936813831,16.8143290963457,17.0846707069002,17.5378840702851,17.1561174673517,16.8590430886755,16.5976480796975,11.3665585736009,12.1327126482272,13.2738971197407,13.1191806278207,11.859036797982,14.1989184109022,13.5365295574071,12.3205285315388,12.1623132864083,12.1412597289583,12.8830668490904,14.2361954418609,14.1412508187039,13.6800455270417,12.9406961075253,12.2908334887926,13.5198097324936,12.2600319624887,12.8126664799732,12.3250340069419,13.3802333520335,14.1062137579518,14.4229843239124,15.3741808871491,15.4891692872506,13.761507309003,13.5677036945932,10.4614210792737,12.4978190166006,11.2959439576142,9.49235072196315,9.32745782436992,11.3492357447677,10.3133288080259,10.0963985597562,11.3935950144577,8.73240114513554,10.4900722093155,8.17166444504547,7.66697184409787,5.54933046901493,6.20499747068723,7.36637065500115,6.27234234778489,7.83830824345124,7.07191015720483,6.52464563995924,7.5961252679437,5.83755824918282,5.13803431386114,4.85442246198855,6.25182056531735,7.63707676794236,6.46794291251098,6.10245129320256,7.39398697884123,8.98798435942667],[12190272.878,7845212.443,13041094.69,10368844.046,10515503.37,13278045.526,12452278.986,9810599.506,10764039.314,11641658.254,12006234.77,10178787.509,18762916.84,9436953.785,14621770.805,12334714.1,12031984.773,13162300.017,14043908.05,10618831.303,11969649.893,12361137.32,8049400.189,12816702.132,8428617.509,10764828.108,10492793.16,8095614.386,15610537.3,11440640.816,13781394.02,12263145.219,12948674.677,11778377.14,11382091.992,12814762.062,13755974.125,9738062.434,14008528.824,11587363.626,15614951.206,13317542.276,13156508.672,14569365.304,12926123.555,14830481.468,11857520.107,11530485.998,16422155.327,10154487.387,14599685.58,11118108.599,14317170.779,11927500.414,15363976.165,13089065.497,11590742.662,14378905.827,11774221.862,11010233.944,12401093.962,10774785.141,12367971.427,14417822.884,10517929.013,3981355.53,22754489.478,20146610.381,18190594.054,14511446.132,13714024.277,12749376.333,16034142.275,14533708.012,14713814.993,16030445.894,15793777.123,12093966.441,12550164.8,11277423.428,18305870.505,20798586.244,13544806.035,9169338.135,21351993.727,14418464.727,21632676.051,9175340.597,11966408.28,16393408.469,21648891.535,22481829.256,18211531.104,17241884.161,19290371.612,17624761.9,15184507.72,17560691.672,17557605.651,19510789.764,17078551.013,18271416.025,18600783.758,20603806.861,18069058.618,18879562.08,20763764.624,22081603.59,17136921.055,17415842.842,23394978.648,15822450.66,13117250.978,20872630.854,29780925.685,22280138.559,20549065.387,22942420.007,20898332.317,18315785.54,22102204.307,19134819.769,21303470.283,20070776.946,22499797.667,18898483.954,27266930.595,24992028.138,22789512.526,25106766.211,22341102.397,22942124.617,24520920.568,23155257.304,14496817.17,17734886.761,35113043.186,25591778.512,27131551.809,26304268.183,29232786.719,26737568.449,17914269.559,13750599.7,17514932.668,17479044.439,22145797.118,23474179.46,15332000.414,21381658.161,25439411.944,23297776.406,28244132.638,25624799.801,21917306.384,24188583.433,21081548.368,23422343.523,27350943.882,21363232.507,23436747.168,24450448.848,25577795.131,29833618.238,27334052.404,30184836.236,24719201.999,32176141.285,22736266.693,23278353.768,24782476.72,24665073.792,26430413.803,25507864.622,27322038.074,32478734.577,30053896.527,27805487.475,31759549.801,34009690.983,18181040.246,22650481.33,27536297.631,25546141.025,26802382.322,25885968.132,27250841.015,27532467.314,27670185.608,32646692.868,32569613.125,32256695.311,24656284.205,20673204.541,22574530.677,23346973.743,27174647.684,26106699.871,29694849.186,31162649.801,29016246.022,32515221.808,30909383.794,31808014.566,24704675.653,22628901.361,24467526.775,24702320.349,30685560.299,29551460.953,31184621.051,28261079.808,33076568.61,31772928.427,25955650.37,37393550.343,23302216.398,25259659.341,30783268.904,28735340.631,27690767.526,32028566.445,34007331.255,27124069.563,35605682.241,34149398.96,28000358.52,39507790.041,25037249.433,29946437.884,30317605.026,28987405.35,34005707.37,29018724.903,30251463.83,34502464.42,35328283.408]],"container":"<table class=\"stripe hover\">\n  <thead>\n    <tr>\n      <th>Tipo\u003c/th>\n      <th>Ano\u003c/th>\n      <th>Mês\u003c/th>\n      <th>Codigo PPE\u003c/th>\n      <th>PPE\u003c/th>\n      <th>Valor FOB\u003c/th>\n      <th>Preço\u003c/th>\n      <th>Participação\u003c/th>\n      <th>Toneladas\u003c/th>\n    \u003c/tr>\n  \u003c/thead>\n\u003c/table>","options":{"pageLength":12,"columnDefs":[{"className":"dt-center","targets":[0,1,2,3,4]},{"className":"dt-right","targets":[5,6,7,8]}],"language":{"sEmptyTable":"Nenhum registro encontrado","sInfo":"Mostrando de _START_ até _END_ de _TOTAL_ registros","sInfoEmpty":"Mostrando 0 até 0 de 0 registros","sInfoFiltered":"(Filtrados de _MAX_ registros)","sInfoPostFix":"","sInfoThousands":".","sLengthMenu":"_MENU_ resultados por página","sLoadingRecords":"Carregando...","sProcessing":"Processando...","sZeroRecords":"Nenhum registro encontrado","sSearch":"Pesquisar","oPaginate":{"sNext":"Próximo","sPrevious":"Anterior","sFirst":"Primeiro","sLast":"Último"},"oAria":{"sSortAscending":": Ordenar colunas de forma ascendente","sSortDescending":": Ordenar colunas de forma descendente"},"buttons":{"copy":"Copiar","print":"Imprimir"}},"colReorder":true,"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,12,25,50,100],"rowCallback":"function(row, data) {\nDTWidget.formatCurrency(this, row, data, 7, '%', 3, 3, '.', ',', false);\nDTWidget.formatCurrency(this, row, data, 8, '', 3, 3, '.', ',', true);\nDTWidget.formatCurrency(this, row, data, 6, '', 3, 3, '.', ',', true);\nDTWidget.formatCurrency(this, row, data, 5, 'US$ ', 0, 3, '.', ',', true);\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

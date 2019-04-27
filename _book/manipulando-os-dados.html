@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>4 Manipulando os dados | Ciência de Dados com R - Introdução</title>
+  <meta name="description" content="Aprendendo a programar com R">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="4 Manipulando os dados | Ciência de Dados com R - Introdução" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Aprendendo a programar com R" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Manipulando os dados | Ciência de Dados com R - Introdução" />
+  
+  <meta name="twitter:description" content="Aprendendo a programar com R" />
+  
+
+<meta name="author" content="Saulo Guerra, Paulo Felipe de Oliveira e Robert McDonnell">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="lendo-os-dados.html">
+<link rel="next" href="limpando-dados.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.5/dygraphs.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+<link href="libs/leaflet-markercluster-1.0.5/MarkerCluster.css" rel="stylesheet" />
+<link href="libs/leaflet-markercluster-1.0.5/MarkerCluster.Default.css" rel="stylesheet" />
+<script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.js"></script>
+<script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.freezable.js"></script>
+<script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.layersupport.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-61574597-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-61574597-1');
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ciência de Dados com R - Introdução</a></li>
+<img src="hexcdr.png" class="hexcurso" alt="hex">
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefácio</a></li>
+<li class="chapter" data-level="1" data-path="introducao.html"><a href="introducao.html"><i class="fa fa-check"></i><b>1</b> Introdução</a><ul>
+<li class="chapter" data-level="1.1" data-path="introducao.html"><a href="introducao.html#o-que-e-ciencia-de-dados"><i class="fa fa-check"></i><b>1.1</b> O que é Ciência de Dados?</a></li>
+<li class="chapter" data-level="1.2" data-path="introducao.html"><a href="introducao.html#workflow-da-ciencia-de-dados"><i class="fa fa-check"></i><b>1.2</b> Workflow da Ciência de Dados</a></li>
+<li class="chapter" data-level="1.3" data-path="introducao.html"><a href="introducao.html#linguagens-para-ciencia-de-dados"><i class="fa fa-check"></i><b>1.3</b> Linguagens para Ciência de dados</a></li>
+<li class="chapter" data-level="1.4" data-path="introducao.html"><a href="introducao.html#o-que-e-r-e-por-que-devo-aprende-lo"><i class="fa fa-check"></i><b>1.4</b> O que é R e por que devo aprendê-lo?</a></li>
+<li class="chapter" data-level="1.5" data-path="introducao.html"><a href="introducao.html#rstudio"><i class="fa fa-check"></i><b>1.5</b> RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="introducao.html"><a href="introducao.html#buscando-ajuda"><i class="fa fa-check"></i><b>1.6</b> Buscando Ajuda</a></li>
+<li class="chapter" data-level="1.7" data-path="introducao.html"><a href="introducao.html#exercicios"><i class="fa fa-check"></i><b>1.7</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html"><i class="fa fa-check"></i><b>2</b> Conceitos Básicos</a><ul>
+<li class="chapter" data-level="2.1" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#console"><i class="fa fa-check"></i><b>2.1</b> Console</a></li>
+<li class="chapter" data-level="2.2" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#scripts"><i class="fa fa-check"></i><b>2.2</b> Scripts</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#salvando-scripts"><i class="fa fa-check"></i><b>2.2.1</b> Salvando Scripts</a></li>
+<li class="chapter" data-level="2.2.2" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#comentarios-de-codigo"><i class="fa fa-check"></i><b>2.2.2</b> Comentários de Código</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#objetos-variaveis"><i class="fa fa-check"></i><b>2.3</b> Objetos (Variáveis)</a></li>
+<li class="chapter" data-level="2.4" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#funcoes"><i class="fa fa-check"></i><b>2.4</b> Funções</a></li>
+<li class="chapter" data-level="2.5" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#pacotes"><i class="fa fa-check"></i><b>2.5</b> Pacotes</a></li>
+<li class="chapter" data-level="2.6" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#boas-praticas"><i class="fa fa-check"></i><b>2.6</b> Boas práticas</a></li>
+<li class="chapter" data-level="2.7" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#tidyverse"><i class="fa fa-check"></i><b>2.7</b> Tidyverse</a></li>
+<li class="chapter" data-level="2.8" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#exercicios-1"><i class="fa fa-check"></i><b>2.8</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html"><i class="fa fa-check"></i><b>3</b> Lendo os dados</a><ul>
+<li class="chapter" data-level="3.1" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#tipos-de-estrutura-dos-dados"><i class="fa fa-check"></i><b>3.1</b> Tipos de Estrutura dos Dados</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#dados-estruturados"><i class="fa fa-check"></i><b>3.1.1</b> Dados Estruturados</a></li>
+<li class="chapter" data-level="3.1.2" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#dados-nao-estruturados"><i class="fa fa-check"></i><b>3.1.2</b> Dados Não Estruturados</a></li>
+<li class="chapter" data-level="3.1.3" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#dados-semiestruturados"><i class="fa fa-check"></i><b>3.1.3</b> Dados Semiestruturados</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#definindo-o-local-dos-dados"><i class="fa fa-check"></i><b>3.2</b> Definindo o Local dos Dados</a></li>
+<li class="chapter" data-level="3.3" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#pacote-para-leitura-dos-dados"><i class="fa fa-check"></i><b>3.3</b> Pacote para leitura dos dados</a></li>
+<li class="chapter" data-level="3.4" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#exercicios-2"><i class="fa fa-check"></i><b>3.4</b> Exercícios:</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html"><i class="fa fa-check"></i><b>4</b> Manipulando os dados</a><ul>
+<li class="chapter" data-level="4.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#tipos-de-variaveis-e-colunas"><i class="fa fa-check"></i><b>4.1</b> Tipos de Variáveis e Colunas</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#conversoes-de-tipos-de-variaveis"><i class="fa fa-check"></i><b>4.1.1</b> Conversões de tipos de variáveis</a></li>
+<li class="chapter" data-level="4.1.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#outros-tipos-de-variaveis"><i class="fa fa-check"></i><b>4.1.2</b> Outros tipos de variáveis</a></li>
+<li class="chapter" data-level="4.1.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#valores-faltantes-e-o-na"><i class="fa fa-check"></i><b>4.1.3</b> Valores faltantes e o ‘NA’</a></li>
+<li class="chapter" data-level="4.1.4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#estruturas-de-controle-de-fluxo"><i class="fa fa-check"></i><b>4.1.4</b> Estruturas de Controle de Fluxo</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#if-e-else"><i class="fa fa-check"></i><b>4.2</b> If e Else</a></li>
+<li class="chapter" data-level="4.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#loops"><i class="fa fa-check"></i><b>4.3</b> Loops</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#for"><i class="fa fa-check"></i><b>4.3.1</b> For</a></li>
+<li class="chapter" data-level="4.3.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#while"><i class="fa fa-check"></i><b>4.3.2</b> While</a></li>
+<li class="chapter" data-level="4.3.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#funcoes-1"><i class="fa fa-check"></i><b>4.3.3</b> Funções</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#manipulacoes-com-r-base"><i class="fa fa-check"></i><b>4.4</b> Manipulações com R base</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#trabalhando-com-colunas-de-um-data.frame"><i class="fa fa-check"></i><b>4.4.1</b> Trabalhando com colunas de um data.frame</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#pacote-dplyr"><i class="fa fa-check"></i><b>4.5</b> Pacote dplyr</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#verbetes-do-dplyr-e-o-operador"><i class="fa fa-check"></i><b>4.5.1</b> Verbetes do dplyr e o operador <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="4.5.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#select"><i class="fa fa-check"></i><b>4.5.2</b> Select</a></li>
+<li class="chapter" data-level="4.5.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#filter"><i class="fa fa-check"></i><b>4.5.3</b> Filter</a></li>
+<li class="chapter" data-level="4.5.4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#mutate"><i class="fa fa-check"></i><b>4.5.4</b> Mutate</a></li>
+<li class="chapter" data-level="4.5.5" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#group-by-e-summarise"><i class="fa fa-check"></i><b>4.5.5</b> Group By e Summarise</a></li>
+<li class="chapter" data-level="4.5.6" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#arrange"><i class="fa fa-check"></i><b>4.5.6</b> Arrange</a></li>
+<li class="chapter" data-level="4.5.7" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#o-operador"><i class="fa fa-check"></i><b>4.5.7</b> O operador %&gt;%</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#exercicios-3"><i class="fa fa-check"></i><b>4.6</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="limpando-dados.html"><a href="limpando-dados.html"><i class="fa fa-check"></i><b>5</b> Limpando dados</a><ul>
+<li class="chapter" data-level="5.1" data-path="limpando-dados.html"><a href="limpando-dados.html#o-formato-ideal-dos-dados"><i class="fa fa-check"></i><b>5.1</b> O formato “ideal” dos dados</a></li>
+<li class="chapter" data-level="5.2" data-path="limpando-dados.html"><a href="limpando-dados.html#pacote-tidyr"><i class="fa fa-check"></i><b>5.2</b> Pacote tidyr</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="limpando-dados.html"><a href="limpando-dados.html#gather"><i class="fa fa-check"></i><b>5.2.1</b> Gather</a></li>
+<li class="chapter" data-level="5.2.2" data-path="limpando-dados.html"><a href="limpando-dados.html#spread"><i class="fa fa-check"></i><b>5.2.2</b> Spread</a></li>
+<li class="chapter" data-level="5.2.3" data-path="limpando-dados.html"><a href="limpando-dados.html#separate"><i class="fa fa-check"></i><b>5.2.3</b> Separate</a></li>
+<li class="chapter" data-level="5.2.4" data-path="limpando-dados.html"><a href="limpando-dados.html#unite"><i class="fa fa-check"></i><b>5.2.4</b> Unite</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="limpando-dados.html"><a href="limpando-dados.html#manipulacao-de-texto"><i class="fa fa-check"></i><b>5.3</b> Manipulação de texto</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="limpando-dados.html"><a href="limpando-dados.html#pacote-stringr"><i class="fa fa-check"></i><b>5.3.1</b> Pacote stringr</a></li>
+<li class="chapter" data-level="5.3.2" data-path="limpando-dados.html"><a href="limpando-dados.html#regex"><i class="fa fa-check"></i><b>5.3.2</b> Regex</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="limpando-dados.html"><a href="limpando-dados.html#exercicios-4"><i class="fa fa-check"></i><b>5.4</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="juntando-dados.html"><a href="juntando-dados.html"><i class="fa fa-check"></i><b>6</b> Juntando dados</a><ul>
+<li class="chapter" data-level="6.1" data-path="juntando-dados.html"><a href="juntando-dados.html#uniao-de-dados-union"><i class="fa fa-check"></i><b>6.1</b> União de dados (Union)</a></li>
+<li class="chapter" data-level="6.2" data-path="juntando-dados.html"><a href="juntando-dados.html#cruzamento-de-dados-join"><i class="fa fa-check"></i><b>6.2</b> Cruzamento de Dados (Join)</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="juntando-dados.html"><a href="juntando-dados.html#inner-join-ou-apenas-join"><i class="fa fa-check"></i><b>6.2.1</b> Inner Join (ou apenas Join)</a></li>
+<li class="chapter" data-level="6.2.2" data-path="juntando-dados.html"><a href="juntando-dados.html#left-outer-join"><i class="fa fa-check"></i><b>6.2.2</b> Left Outer Join</a></li>
+<li class="chapter" data-level="6.2.3" data-path="juntando-dados.html"><a href="juntando-dados.html#right-outer-join"><i class="fa fa-check"></i><b>6.2.3</b> Right Outer Join</a></li>
+<li class="chapter" data-level="6.2.4" data-path="juntando-dados.html"><a href="juntando-dados.html#full-outer-join"><i class="fa fa-check"></i><b>6.2.4</b> Full Outer Join</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="juntando-dados.html"><a href="juntando-dados.html#exercicios-5"><i class="fa fa-check"></i><b>6.3</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html"><i class="fa fa-check"></i><b>7</b> Escrevendo dados</a><ul>
+<li class="chapter" data-level="7.1" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#escrevendo-csv"><i class="fa fa-check"></i><b>7.1</b> Escrevendo csv</a></li>
+<li class="chapter" data-level="7.2" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#rdata"><i class="fa fa-check"></i><b>7.2</b> Rdata</a></li>
+<li class="chapter" data-level="7.3" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#escrevendo-outros-tipos-de-arquivos"><i class="fa fa-check"></i><b>7.3</b> Escrevendo outros tipos de arquivos</a></li>
+<li class="chapter" data-level="7.4" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#exercicios-6"><i class="fa fa-check"></i><b>7.4</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="obtendo-dados.html"><a href="obtendo-dados.html"><i class="fa fa-check"></i><b>8</b> Obtendo dados</a><ul>
+<li class="chapter" data-level="8.1" data-path="obtendo-dados.html"><a href="obtendo-dados.html#api"><i class="fa fa-check"></i><b>8.1</b> API</a></li>
+<li class="chapter" data-level="8.2" data-path="obtendo-dados.html"><a href="obtendo-dados.html#web-scrapping"><i class="fa fa-check"></i><b>8.2</b> Web Scrapping</a></li>
+<li class="chapter" data-level="8.3" data-path="obtendo-dados.html"><a href="obtendo-dados.html#exercicios-7"><i class="fa fa-check"></i><b>8.3</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>9</b> Visualizações de dados (ggplot2)</a><ul>
+<li class="chapter" data-level="9.1" data-path="ggplot2.html"><a href="ggplot2.html#mapeamento-estetico"><i class="fa fa-check"></i><b>9.1</b> Mapeamento Estético</a></li>
+<li class="chapter" data-level="9.2" data-path="ggplot2.html"><a href="ggplot2.html#objetos-geometricos"><i class="fa fa-check"></i><b>9.2</b> Objetos geométricos</a></li>
+<li class="chapter" data-level="9.3" data-path="ggplot2.html"><a href="ggplot2.html#escalas"><i class="fa fa-check"></i><b>9.3</b> Escalas</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="ggplot2.html"><a href="ggplot2.html#tipos-de-variaveis"><i class="fa fa-check"></i><b>9.3.1</b> Tipos de Variáveis</a></li>
+<li class="chapter" data-level="9.3.2" data-path="ggplot2.html"><a href="ggplot2.html#eixos"><i class="fa fa-check"></i><b>9.3.2</b> Eixos</a></li>
+<li class="chapter" data-level="9.3.3" data-path="ggplot2.html"><a href="ggplot2.html#escalas-de-cores-color-e-preenchimento-fill"><i class="fa fa-check"></i><b>9.3.3</b> Escalas de Cores (color) e Preenchimento (fill)</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="ggplot2.html"><a href="ggplot2.html#subplots-facet"><i class="fa fa-check"></i><b>9.4</b> Subplots (facet)</a></li>
+<li class="chapter" data-level="9.5" data-path="ggplot2.html"><a href="ggplot2.html#temas"><i class="fa fa-check"></i><b>9.5</b> Temas</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="ggplot2.html"><a href="ggplot2.html#temas-disponiveis-no-ggplot2"><i class="fa fa-check"></i><b>9.5.1</b> Temas disponíveis no ggplot2</a></li>
+<li class="chapter" data-level="9.5.2" data-path="ggplot2.html"><a href="ggplot2.html#temas-no-pacote-ggthemes"><i class="fa fa-check"></i><b>9.5.2</b> Temas no pacote ggthemes</a></li>
+<li class="chapter" data-level="9.5.3" data-path="ggplot2.html"><a href="ggplot2.html#hrbrthemes"><i class="fa fa-check"></i><b>9.5.3</b> hrbrthemes</a></li>
+<li class="chapter" data-level="9.5.4" data-path="ggplot2.html"><a href="ggplot2.html#setando-o-tema-globalmente"><i class="fa fa-check"></i><b>9.5.4</b> Setando o tema globalmente</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="ggplot2.html"><a href="ggplot2.html#legendas"><i class="fa fa-check"></i><b>9.6</b> Legendas</a></li>
+<li class="chapter" data-level="9.7" data-path="ggplot2.html"><a href="ggplot2.html#escolhendo-o-tipo-de-grafico"><i class="fa fa-check"></i><b>9.7</b> Escolhendo o tipo de gráfico</a></li>
+<li class="chapter" data-level="9.8" data-path="ggplot2.html"><a href="ggplot2.html#grafico-de-dispersao-geom_point"><i class="fa fa-check"></i><b>9.8</b> Gráfico de Dispersão (<code>geom_point()</code>)</a></li>
+<li class="chapter" data-level="9.9" data-path="ggplot2.html"><a href="ggplot2.html#graficos-de-bolhas"><i class="fa fa-check"></i><b>9.9</b> Gráficos de Bolhas</a></li>
+<li class="chapter" data-level="9.10" data-path="ggplot2.html"><a href="ggplot2.html#graficos-de-barras"><i class="fa fa-check"></i><b>9.10</b> Gráficos de Barras</a></li>
+<li class="chapter" data-level="9.11" data-path="ggplot2.html"><a href="ggplot2.html#graficos-de-linhas"><i class="fa fa-check"></i><b>9.11</b> Gráficos de linhas</a></li>
+<li class="chapter" data-level="9.12" data-path="ggplot2.html"><a href="ggplot2.html#histogramas-e-freqpoly"><i class="fa fa-check"></i><b>9.12</b> Histogramas e freqpoly</a></li>
+<li class="chapter" data-level="9.13" data-path="ggplot2.html"><a href="ggplot2.html#boxplots-jitterplots-e-violinplots"><i class="fa fa-check"></i><b>9.13</b> Boxplots, jitterplots e violinplots</a></li>
+<li class="chapter" data-level="9.14" data-path="ggplot2.html"><a href="ggplot2.html#anotacoes"><i class="fa fa-check"></i><b>9.14</b> Anotações</a></li>
+<li class="chapter" data-level="9.15" data-path="ggplot2.html"><a href="ggplot2.html#cleveland-dot-plot"><i class="fa fa-check"></i><b>9.15</b> Cleveland Dot Plot</a></li>
+<li class="chapter" data-level="9.16" data-path="ggplot2.html"><a href="ggplot2.html#textosrotulos"><i class="fa fa-check"></i><b>9.16</b> Textos/Rótulos</a></li>
+<li class="chapter" data-level="9.17" data-path="ggplot2.html"><a href="ggplot2.html#plotando-funcoes"><i class="fa fa-check"></i><b>9.17</b> Plotando funções</a></li>
+<li class="chapter" data-level="9.18" data-path="ggplot2.html"><a href="ggplot2.html#mapas"><i class="fa fa-check"></i><b>9.18</b> Mapas</a><ul>
+<li class="chapter" data-level="9.18.1" data-path="ggplot2.html"><a href="ggplot2.html#simplificando-o-shapefile"><i class="fa fa-check"></i><b>9.18.1</b> Simplificando o shapefile</a></li>
+<li class="chapter" data-level="9.18.2" data-path="ggplot2.html"><a href="ggplot2.html#encoding-dos-dados-do-shapefile"><i class="fa fa-check"></i><b>9.18.2</b> Encoding dos dados do shapefile</a></li>
+</ul></li>
+<li class="chapter" data-level="9.19" data-path="ggplot2.html"><a href="ggplot2.html#salvando-graficos"><i class="fa fa-check"></i><b>9.19</b> Salvando Gráficos</a></li>
+<li class="chapter" data-level="9.20" data-path="ggplot2.html"><a href="ggplot2.html#extensoes-do-ggplot2"><i class="fa fa-check"></i><b>9.20</b> Extensões do ggplot2</a><ul>
+<li class="chapter" data-level="9.20.1" data-path="ggplot2.html"><a href="ggplot2.html#ggrepel"><i class="fa fa-check"></i><b>9.20.1</b> ggrepel</a></li>
+<li class="chapter" data-level="9.20.2" data-path="ggplot2.html"><a href="ggplot2.html#gganimate"><i class="fa fa-check"></i><b>9.20.2</b> gganimate</a></li>
+</ul></li>
+<li class="chapter" data-level="9.21" data-path="ggplot2.html"><a href="ggplot2.html#exercicios-8"><i class="fa fa-check"></i><b>9.21</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="htmlwidgets.html"><a href="htmlwidgets.html"><i class="fa fa-check"></i><b>10</b> Visualizações Interativas</a><ul>
+<li class="chapter" data-level="10.1" data-path="htmlwidgets.html"><a href="htmlwidgets.html#introducao-1"><i class="fa fa-check"></i><b>10.1</b> Introdução</a></li>
+<li class="chapter" data-level="10.2" data-path="htmlwidgets.html"><a href="htmlwidgets.html#plotly"><i class="fa fa-check"></i><b>10.2</b> Plotly</a></li>
+<li class="chapter" data-level="10.3" data-path="htmlwidgets.html"><a href="htmlwidgets.html#dygraphs"><i class="fa fa-check"></i><b>10.3</b> dygraphs</a></li>
+<li class="chapter" data-level="10.4" data-path="htmlwidgets.html"><a href="htmlwidgets.html#leaflet"><i class="fa fa-check"></i><b>10.4</b> Leaflet</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="htmlwidgets.html"><a href="htmlwidgets.html#primeiro-exemplo"><i class="fa fa-check"></i><b>10.4.1</b> Primeiro exemplo</a></li>
+<li class="chapter" data-level="10.4.2" data-path="htmlwidgets.html"><a href="htmlwidgets.html#marcadores"><i class="fa fa-check"></i><b>10.4.2</b> Marcadores</a></li>
+<li class="chapter" data-level="10.4.3" data-path="htmlwidgets.html"><a href="htmlwidgets.html#poligonos"><i class="fa fa-check"></i><b>10.4.3</b> Polígonos</a></li>
+</ul></li>
+<li class="chapter" data-level="10.5" data-path="htmlwidgets.html"><a href="htmlwidgets.html#exercicios-9"><i class="fa fa-check"></i><b>10.5</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="rmarkdown.html"><a href="rmarkdown.html"><i class="fa fa-check"></i><b>11</b> RMarkdown</a><ul>
+<li class="chapter" data-level="11.1" data-path="rmarkdown.html"><a href="rmarkdown.html#usos-do-rmarkdown"><i class="fa fa-check"></i><b>11.1</b> Usos do RMarkdown</a></li>
+<li class="chapter" data-level="11.2" data-path="rmarkdown.html"><a href="rmarkdown.html#estrutura-de-um-rmarkdown"><i class="fa fa-check"></i><b>11.2</b> Estrutura de um RMarkdown</a></li>
+<li class="chapter" data-level="11.3" data-path="rmarkdown.html"><a href="rmarkdown.html#renderizando-um-documento"><i class="fa fa-check"></i><b>11.3</b> Renderizando um documento</a></li>
+<li class="chapter" data-level="11.4" data-path="rmarkdown.html"><a href="rmarkdown.html#sintaxe"><i class="fa fa-check"></i><b>11.4</b> Sintaxe</a></li>
+<li class="chapter" data-level="11.5" data-path="rmarkdown.html"><a href="rmarkdown.html#opcoes-de-chunk"><i class="fa fa-check"></i><b>11.5</b> Opções de Chunk</a></li>
+<li class="chapter" data-level="11.6" data-path="rmarkdown.html"><a href="rmarkdown.html#principais-formatos"><i class="fa fa-check"></i><b>11.6</b> Principais Formatos</a><ul>
+<li class="chapter" data-level="11.6.1" data-path="rmarkdown.html"><a href="rmarkdown.html#html"><i class="fa fa-check"></i><b>11.6.1</b> HTML</a></li>
+<li class="chapter" data-level="11.6.2" data-path="rmarkdown.html"><a href="rmarkdown.html#pdf"><i class="fa fa-check"></i><b>11.6.2</b> PDF</a></li>
+<li class="chapter" data-level="11.6.3" data-path="rmarkdown.html"><a href="rmarkdown.html#word"><i class="fa fa-check"></i><b>11.6.3</b> Word</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="rmarkdown.html"><a href="rmarkdown.html#excercicios"><i class="fa fa-check"></i><b>11.7</b> Excercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="modelos.html"><a href="modelos.html"><i class="fa fa-check"></i><b>12</b> Modelos</a><ul>
+<li class="chapter" data-level="12.1" data-path="modelos.html"><a href="modelos.html#modelo-linear"><i class="fa fa-check"></i><b>12.1</b> Modelo Linear</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="modelos.html"><a href="modelos.html#regressao"><i class="fa fa-check"></i><b>12.1.1</b> Regressão</a></li>
+<li class="chapter" data-level="12.1.2" data-path="modelos.html"><a href="modelos.html#classificacao"><i class="fa fa-check"></i><b>12.1.2</b> Classificação</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="modelos.html"><a href="modelos.html#exercicios-10"><i class="fa fa-check"></i><b>12.2</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="revisao-titanic.html"><a href="revisao-titanic.html"><i class="fa fa-check"></i><b>13</b> Revisão - Titanic</a><ul>
+<li class="chapter" data-level="13.1" data-path="revisao-titanic.html"><a href="revisao-titanic.html#objetivo"><i class="fa fa-check"></i><b>13.1</b> Objetivo</a></li>
+<li class="chapter" data-level="13.2" data-path="revisao-titanic.html"><a href="revisao-titanic.html#carregando-os-dados"><i class="fa fa-check"></i><b>13.2</b> Carregando os Dados</a></li>
+<li class="chapter" data-level="13.3" data-path="revisao-titanic.html"><a href="revisao-titanic.html#manipulando-os-dados-1"><i class="fa fa-check"></i><b>13.3</b> Manipulando os dados</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="revisao-titanic.html"><a href="revisao-titanic.html#variavel-survived"><i class="fa fa-check"></i><b>13.3.1</b> Variável Survived</a></li>
+<li class="chapter" data-level="13.3.2" data-path="revisao-titanic.html"><a href="revisao-titanic.html#variavel-name"><i class="fa fa-check"></i><b>13.3.2</b> Variável Name</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="revisao-titanic.html"><a href="revisao-titanic.html#idade"><i class="fa fa-check"></i><b>13.4</b> Idade</a><ul>
+<li class="chapter" data-level="13.4.1" data-path="revisao-titanic.html"><a href="revisao-titanic.html#exercicio"><i class="fa fa-check"></i><b>13.4.1</b> Exercício</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="revisao-titanic.html"><a href="revisao-titanic.html#visualizacoes"><i class="fa fa-check"></i><b>13.5</b> Visualizações</a></li>
+<li class="chapter" data-level="13.6" data-path="revisao-titanic.html"><a href="revisao-titanic.html#modelo-preditivo"><i class="fa fa-check"></i><b>13.6</b> Modelo Preditivo</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i><b>14</b> Referências</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado com bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ciência de Dados com R - Introdução</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="manipulando-os-dados" class="section level1">
+<h1><span class="header-section-number">4</span> Manipulando os dados</h1>
+<p>Após obter uma boa fonte de dados, e carregá-los para poder trabalhá-los no R, você certamente precisará realizar algumas limpezas e manipulações para que os dados estejam no ponto ideal para as fases finais de uma análise: execução de modelos econométricos, visualizações de dados, tabelas agregadas, relatórios etc. A realidade é que, na prática, os dados nunca estarão do jeito que você de fato precisa. Portanto, é fundamental dominar técnicas de manipulação de dados.</p>
+<p>Entendamos a manipulação de dados como o ato de transformar, reestruturar, limpar, agregar e juntar os dados. Para se ter uma noção da importância dessa fase, alguns estudiosos da área de Ciência de Dados costumam afirmar que 80% do trabalho é encontrar uma boa fonte de dados, limpar e preparar os dados, sendo que os 20% restantes seriam o trabalho de aplicar modelos e realizar alguma análise propriamente dita.</p>
+<blockquote>
+<p>80% of data analysis is spent on the process of cleaning and preparing the data (Dasu and Johnson, 2003).</p>
+</blockquote>
+<blockquote>
+<p>Data preparation is not just a first step, but must be repeated many over the course of analysis as new problems come to light or new data is collected (Hadley Wickham).</p>
+</blockquote>
+<div id="tipos-de-variaveis-e-colunas" class="section level2">
+<h2><span class="header-section-number">4.1</span> Tipos de Variáveis e Colunas</h2>
+<p>Existem diversos tipos de objetos, e cada tipo “armazena” um conteúdo diferente, desde tabelas de dados recém-carregados a textos, números, ou simplesmente a afirmação de verdadeiro ou falso (Boleano).</p>
+<pre class="sourceCode r"><code class="sourceCode r">inteiro &lt;-<span class="st"> </span><span class="dv">928</span>
+outro.inteiro &lt;-<span class="st"> </span><span class="fl">5e2</span>
+decimal &lt;-<span class="st"> </span><span class="fl">182.93</span>
+caracter &lt;-<span class="st"> &#39;exportação&#39;</span>
+logico &lt;-<span class="st"> </span><span class="ot">TRUE</span>
+outro.logico &lt;-<span class="st"> </span><span class="ot">FALSE</span></code></pre>
+<p>Repare nas atribuições acima. Usaremos a função <code>class()</code> para ver o tipo de cada uma:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(inteiro)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(outro.inteiro)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(decimal)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(caracter)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(logico)</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(outro.logico)</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<p>Esses são alguns dos tipos básicos de objetos/variáveis no R. Para valores inteiros ou decimais, <code>numeric</code> , <code>character</code> para valores textuais e <code>logical</code> para valores lógicos (verdadeiro ou falso). Existe também o tipo <code>integer</code>, que representa apenas números inteiros, sem decimais, porém, na maioria das vezes, o R interpreta o <code>integer</code> como <code>numeric</code>, pois o <code>integer</code> também é um <code>numeric</code>.</p>
+<p>Além dos tipos básicos, existem também os tipos “complexos”, que são <code>vector</code>, <code>array</code>, <code>matrix</code>, <code>list</code>, <code>data.frame</code> e <code>factor</code>.</p>
+<p>Data frame é, provavelmente, o tipo de dado complexo mais utilizado em R. É nele que você armazena conjuntos de dados estruturados em linhas e colunas. Um data frame possui colunas nomeadas, sendo que todas as colunas possuem a mesma quantidade de linhas. Imagine o <code>dataframe</code> como uma tabela.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(senado)</code></pre>
+<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(senado)</code></pre>
+<pre><code>## [1] 9262   15</code></pre>
+<p>Outro tipo que já utilizamos bastante até agora, mas que não foi detalhado, é o <code>vector</code>, ou vetor. Vetores são sequências unidimensionais de valores de um mesmo tipo:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#faça as seguintes atribuições</span>
+vetor.chr &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;tipo1&#39;</span>, <span class="st">&#39;tipo2&#39;</span>, <span class="st">&#39;tipo3&#39;</span>, <span class="st">&#39;tipo4&#39;</span>)
+vetor.num &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">1001</span>)
+vetor.num.repetidos &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">50</span>)) <span class="co">#usando funcão para repetir números</span>
+vetor.num.sequencia &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">0</span>, <span class="dt">to=</span><span class="dv">100</span>, <span class="dt">by=</span><span class="dv">5</span>)) <span class="co">#usando função para criar sequências</span>
+vetor.logical &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>)
+<span class="co">##veja o conteúdo das variáveis</span>
+vetor.chr</code></pre>
+<pre><code>## [1] &quot;tipo1&quot; &quot;tipo2&quot; &quot;tipo3&quot; &quot;tipo4&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">vetor.num</code></pre>
+<pre><code>## [1]    1    2    5    8 1001</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">vetor.num.repetidos</code></pre>
+<pre><code>##  [1] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+## [36] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">vetor.num.sequencia</code></pre>
+<pre><code>##  [1]   0   5  10  15  20  25  30  35  40  45  50  55  60  65  70  75  80
+## [18]  85  90  95 100</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">vetor.logical</code></pre>
+<pre><code>## [1]  TRUE  TRUE  TRUE FALSE FALSE</code></pre>
+<p>Para a criação de vetores, usamos a função de combinação de valores <code>c()</code> (combine). Esta função vai combinar todos os parâmetros em um único vetor. Lembre-se: vetores são sequências que contêm apenas um tipo de dado.</p>
+<p>Conhecendo o <code>data.frame</code> e o <code>vector</code>, você será capaz de entender como os dois se relacionam. Cada coluna de um data frame é um vetor. Um data frame pode ter colunas de diferentes tipos, mas cada coluna só pode ter registros de um único tipo.</p>
+<p>Ficará mais claro a seguir. Veja como se cria um <code>data.frame</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#cria-se diferentes vetores</span>
+nome &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;João&#39;</span>, <span class="st">&#39;José&#39;</span>, <span class="st">&#39;Maria&#39;</span>, <span class="st">&#39;Joana&#39;</span>)
+idade &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">45</span>, <span class="dv">12</span>, <span class="dv">28</span>, <span class="dv">31</span>)
+adulto &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>)
+uf &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;DF&#39;</span>, <span class="st">&#39;SP&#39;</span>, <span class="st">&#39;RJ&#39;</span>, <span class="st">&#39;MG&#39;</span>)
+<span class="co">#cada vetor é uma combinação de elementos de um MESMO tipo de dados</span>
+<span class="co">#sendo assim, cada vetor pode ser uma coluna de um data.frame</span>
+clientes &lt;-<span class="st"> </span><span class="kw">data.frame</span>(nome, idade, adulto, uf)
+clientes</code></pre>
+<pre><code>##    nome idade adulto uf
+## 1  João    45   TRUE DF
+## 2  José    12  FALSE SP
+## 3 Maria    28   TRUE RJ
+## 4 Joana    31   TRUE MG</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(clientes)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    4 obs. of  4 variables:
+##  $ nome  : Factor w/ 4 levels &quot;Joana&quot;,&quot;João&quot;,..: 2 3 4 1
+##  $ idade : num  45 12 28 31
+##  $ adulto: logi  TRUE FALSE TRUE TRUE
+##  $ uf    : Factor w/ 4 levels &quot;DF&quot;,&quot;MG&quot;,&quot;RJ&quot;,..: 1 4 3 2</code></pre>
+<div id="conversoes-de-tipos-de-variaveis" class="section level3">
+<h3><span class="header-section-number">4.1.1</span> Conversões de tipos de variáveis</h3>
+<p>Quando é feito o carregamento de algum arquivo de dados no R, ele tenta “deduzir” os tipos de dados de cada coluna. Nem sempre essa dedução sai correta e, eventualmente, você precisará converter de um tipo para o outro. O R tem algumas funções para fazer essas conversões.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(<span class="st">&quot;2015&quot;</span>)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.numeric</span>(<span class="st">&quot;2015&quot;</span>)</code></pre>
+<pre><code>## [1] 2015</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(<span class="dv">55</span>)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.character</span>(<span class="dv">55</span>)</code></pre>
+<pre><code>## [1] &quot;55&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(<span class="fl">3.14</span>)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.integer</span>(<span class="fl">3.14</span>)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.numeric</span>(<span class="ot">TRUE</span>)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.numeric</span>(<span class="ot">FALSE</span>)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.logical</span>(<span class="dv">1</span>)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.logical</span>(<span class="dv">0</span>)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>O R também tenta “forçar a barra”, às vezes, para te ajudar. Quando você faz uma operação entre dois tipos diferentes, ele tenta fazer algo chamado <strong>coerção de tipos</strong>, ou seja, ele tenta converter os dados para que a operação faça sentido. Caso o R não consiga fazer a coerção, ele vai mostrar uma mensagem de erro.</p>
+<p>Experimente os comandos a seguir no console:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">7</span> <span class="op">+</span><span class="st"> </span><span class="ot">TRUE</span>
+<span class="dv">2015</span> <span class="op">&gt;</span><span class="st"> &quot;2016&quot;</span>
+<span class="st">&quot;2014&quot;</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">2017</span>
+<span class="co"># em alguns casos a coerção irá falhar ou dar resultado indesejado</span>
+<span class="dv">6</span> <span class="op">&gt;</span><span class="st"> &quot;100&quot;</span>
+<span class="st">&quot;6&quot;</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span>
+<span class="dv">1</span> <span class="op">+</span><span class="st"> &quot;1&quot;</span></code></pre>
+<p>Recomendamos fortemente que sempre se realize as conversões explicitamente com as funções apropriadas ao invés de confiar na coerção do R, a não ser que se tenha certeza do resultado.</p>
+</div>
+<div id="outros-tipos-de-variaveis" class="section level3">
+<h3><span class="header-section-number">4.1.2</span> Outros tipos de variáveis</h3>
+<p>Existem outros tipos de variáveis bastante utilizados. Citaremos alguns deles, pois nesse curso utilizaremos muito pouco os demais tipos.</p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="25%" />
+<col width="18%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th align="left">Descrição</th>
+<th>Dimensões</th>
+<th>Homogêneo</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>vector</strong></td>
+<td align="left">Coleção de elementos simples. Todos os elementos precisam ser do mesmo tipo básico de dado</td>
+<td>1</td>
+<td>Sim</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>array</strong></td>
+<td align="left">Coleção que se parece com o vector, mas é multidimensional</td>
+<td>n</td>
+<td>Sim</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>matrix</strong></td>
+<td align="left">Tipo especial de array com duas dimensões</td>
+<td>2</td>
+<td>Sim</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>list</strong></td>
+<td align="left">Objeto complexo com elementos que podem ser de diferentes tipos</td>
+<td>1</td>
+<td>Não</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>data.frame</strong></td>
+<td align="left">Tipo especial de lista, onde cada coluna é um vetor de apenas um tipo e todas as colunas têm o mesmo número de registros. É o tipo mais utilizado para se trabalhar com dados</td>
+<td>2</td>
+<td>Não</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>factor</strong></td>
+<td align="left">Tipo especial de vector, que só contém valores predefinidos (levels) e categóricos (characters). Não é possível adicionar novas categorias sem criação de novos levels</td>
+<td>1</td>
+<td>Não</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="valores-faltantes-e-o-na" class="section level3">
+<h3><span class="header-section-number">4.1.3</span> Valores faltantes e o ‘NA’</h3>
+<p>Em casos onde não existe valor em uma coluna de uma linha, o R atribui <code>NA</code>. É muito comum lidar com conjuntos de dados que tenham ocorrências de <code>NA</code> em alguns campos. É importante saber o que se fazer em casos de <code>NA</code>, e nem sempre a solução será a mesma: varia de acordo com as suas necessidades.</p>
+<p>Em algumas bases de dados, quem gera o dado atribui valores genéricos como <code>999</code> ou até mesmo um “texto vazio”, <code>' '</code>. Neste caso, você provavelmente terá que substituir esses valores “omissos” por <code>NA</code>. Imputar dados em casos de <code>NA</code> é uma das várias estratégias para lidar-se com ocorrência de missing no conjunto dos dados.</p>
+<p>Seguem algumas funções úteis para lidar-se com <code>NA</code>:</p>
+<ul>
+<li>A função <code>summary()</code> pode ser usada para averiguar a ocorrência de <code>NA</code>.</li>
+<li>A função <code>is.na()</code> realiza um teste para saber se a variável/coluna possui um valor <code>NA</code>. retorna TRUE se for <code>NA</code> e FALSE se não for.</li>
+<li>A função <code>complete.cases()</code> retorna TRUE para as linhas em que todas as colunas possuem valores válidos (preenchidos) e FALSE para as linhas em que, em alguma coluna, existe um <code>NA</code>. Ou seja, esta função diz quais são as linhas (amostras) completas em todas as suas características (campos).</li>
+<li>Algumas funções possuem o argumento <code>na.rm</code>, ou semelhantes, para desconsiderar <code>NA</code> no cálculo. É o caso da função <code>mean()</code> ou <code>sum()</code>.</li>
+</ul>
+<p>Por exemplo:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;airquality&quot;</span>) <span class="co"># carrega uma base de dados pré-carregada no R</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(airquality) <span class="co"># verificando ocorrência de NA</span></code></pre>
+<pre><code>##      Ozone           Solar.R           Wind             Temp      
+##  Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
+##  1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
+##  Median : 31.50   Median :205.0   Median : 9.700   Median :79.00  
+##  Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88  
+##  3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00  
+##  Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00  
+##  NA&#39;s   :37       NA&#39;s   :7                                       
+##      Month            Day      
+##  Min.   :5.000   Min.   : 1.0  
+##  1st Qu.:6.000   1st Qu.: 8.0  
+##  Median :7.000   Median :16.0  
+##  Mean   :6.993   Mean   :15.8  
+##  3rd Qu.:8.000   3rd Qu.:23.0  
+##  Max.   :9.000   Max.   :31.0  
+## </code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.na</span>(airquality<span class="op">$</span>Ozone)</code></pre>
+<pre><code>##   [1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE
+##  [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [23] FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE
+##  [34]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE
+##  [45]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+##  [56]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE
+##  [67] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE
+##  [78] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+##  [89] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [100] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [111] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [122] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [144] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE</code></pre>
+</div>
+<div id="estruturas-de-controle-de-fluxo" class="section level3">
+<h3><span class="header-section-number">4.1.4</span> Estruturas de Controle de Fluxo</h3>
+<p>Para auxiliar no processo de manipulação de dados, você eventualmente precisará de algumas técnicas e estruturas de controle de fluxo. Estruturas para controle de fluxo nada mais são do que loops e condições. São estruturas fundamentais para qualquer linguagem de programação.</p>
+</div>
+</div>
+<div id="if-e-else" class="section level2">
+<h2><span class="header-section-number">4.2</span> If e Else</h2>
+<p>A estrutura condicional é algo bastante intuitivo. A estrutura de if (se) e else (então) usa os operadores lógicos apresentados anteriormente. Se a condição do <code>if()</code> for verdadeira, executa-se uma tarefa específica, se for falsa, executa-se uma tarefa diferente. A estrutura parece algo do tipo:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span>( variavel <span class="op">&gt;=</span><span class="st"> </span><span class="dv">500</span> ) {
+  <span class="co">#executa uma tarefa se operação resultar TRUE</span>
+} <span class="cf">else</span> {
+  <span class="co">#executa outra tarefa se operação resultar FALSE</span>
+}</code></pre>
+<p>Da mesma forma, existe uma função que gera o mesmo resultado, o <code>ifelse()</code> (e uma do pacote <code>dplyr</code>, o <code>if_else()</code>).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ifelse</span>(variavel <span class="op">&gt;=</span><span class="st"> </span><span class="dv">500</span>, <span class="st">&#39;executa essa tarefa se TRUE&#39;</span>, <span class="st">&#39;executa outra se FALSE&#39;</span>)</code></pre>
+<p>Existe uma diferença entre as duas formas de “if else”: a estrutura <code>if() {} else {}</code> só opera variáveis, uma por uma, já a estrutura <code>ifelse()</code> opera vetores, ou seja, consegue fazer a comparação para todos os elementos. Isso faz com que a forma <code>if() {} else {}</code> seja mais utilizada para comparações fora dos dados, com variáveis avulsas. Já a estrutura <code>ifelse()</code> é mais usada para comparações dentro dos dados, com colunas, vetores e linhas.</p>
+<p>Qualquer uma dessas estruturas pode ser “aninhada”, ou seja, encadeada. Por exemplo:</p>
+<pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="dv">9823</span>
+
+<span class="cf">if</span>(a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10000</span>) {
+  b &lt;-<span class="st"> &#39;VALOR ALTO&#39;</span>
+} <span class="cf">else</span> <span class="cf">if</span>(a <span class="op">&lt;</span><span class="st"> </span><span class="dv">10000</span> <span class="op">&amp;</span><span class="st"> </span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1000</span>) {
+  b &lt;-<span class="st"> &#39;VALOR MEDIO&#39;</span> 
+} <span class="cf">else</span> <span class="cf">if</span>(a <span class="op">&lt;</span><span class="st"> </span><span class="dv">1000</span>) {
+  b &lt;-<span class="st"> &#39;VALOR BAIXO&#39;</span>
+}
+
+b</code></pre>
+<pre><code>## [1] &quot;VALOR MEDIO&quot;</code></pre>
+<p>Ou ainda:</p>
+<pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="dv">839</span>
+c &lt;-<span class="st"> </span><span class="kw">ifelse</span>(a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10000</span>, <span class="st">&#39;VALOR ALTO&#39;</span>, <span class="kw">ifelse</span>(a <span class="op">&lt;</span><span class="st"> </span><span class="dv">10000</span> <span class="op">&amp;</span><span class="st"> </span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1000</span>, <span class="st">&#39;VALOR MEDIO&#39;</span>, <span class="st">&#39;VALOR BAIXO&#39;</span>))
+c</code></pre>
+<pre><code>## [1] &quot;VALOR BAIXO&quot;</code></pre>
+</div>
+<div id="loops" class="section level2">
+<h2><span class="header-section-number">4.3</span> Loops</h2>
+<p>Trata-se de um dos conceitos mais importantes de qualquer linguagem de programação, em R não é diferente. Loops (ou laços) repetem uma sequência de comando quantas vezes você desejar, ou até que uma condição aconteça, variando-se alguns aspectos entre uma repetição e outra.</p>
+<p>Supondo que você tenha que ler 400 arquivos de dados que você obteve de um cliente. Você vai escrever 400 vezes a funcão de leitura? Nesse caso, basta fazer um loop para percorrer todos os arquivos da pasta e ler um por um com a função de leitura.</p>
+<div id="for" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> For</h3>
+<p>O <code>for()</code> é usado para realizar uma série de ordens para uma determinada sequência ou índices (vetor). Sua sintaxe é bem simples:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)) {
+  <span class="kw">print</span>(i<span class="op">^</span><span class="dv">2</span>)
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 4
+## [1] 9
+## [1] 16
+## [1] 25</code></pre>
+<p>Para cada valor (chamamos esse valor de <code>i</code>) dentro do vetor <code>c(1, 2, 3, 4, 5)</code>, execute o comando <code>print(i^2)</code>. Qualquer outro comando dentro das chaves <code>{ ... }</code> seria executado para cada valor do vetor.</p>
+<p>Para entendermos melhor, vamos repensar o exemplo das séries usando o <code>for()</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">lista.de.arquivos &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="st">&#39;dados/dados_loop&#39;</span>) <span class="co">#lista todos os arquivos de uma pasta</span>
+<span class="kw">is.vector</span>(lista.de.arquivos)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span>(i <span class="cf">in</span> lista.de.arquivos) {
+  <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&#39;Leia o arquivo:&#39;</span>, i))
+  <span class="co">#exemplo: read_delim(i, delim = &quot;|&quot;)</span>
+}</code></pre>
+<pre><code>## [1] &quot;Leia o arquivo: arquivo1.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo10.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo11.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo12.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo13.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo2.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo3.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo4.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo5.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo6.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo7.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo8.txt&quot;
+## [1] &quot;Leia o arquivo: arquivo9.txt&quot;</code></pre>
+<p>Também é possível utilizar loop com if. No exemplo a seguir, queremos ver todos os números de 1 a 1000 que são divisíveis por 29 e por 3 ao mesmo tempo. Para isso, utilizaremos o operador <code>%%</code>, que mostra o resto da divisão. Se o resto for zero, é divisível.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>){
+  <span class="cf">if</span>((i <span class="op">%%</span><span class="st"> </span><span class="dv">29</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) <span class="op">&amp;</span><span class="st"> </span>(i <span class="op">%%</span><span class="st"> </span><span class="dv">3</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)){
+    <span class="kw">print</span>(i)
+  }
+}</code></pre>
+<pre><code>## [1] 87
+## [1] 174
+## [1] 261
+## [1] 348
+## [1] 435
+## [1] 522
+## [1] 609
+## [1] 696
+## [1] 783
+## [1] 870
+## [1] 957</code></pre>
+</div>
+<div id="while" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> While</h3>
+<p>O <code>while()</code> também é uma estrutura de controle de fluxo do tipo loop, mas, diferentemente do <code>for()</code>, o while executa as tarefas repetidamente até que uma condição seja satisfeita, não percorrendo um vetor.</p>
+<pre class="sourceCode r"><code class="sourceCode r">i &lt;-<span class="st"> </span><span class="dv">1</span>
+<span class="cf">while</span>(i <span class="op">&lt;=</span><span class="st"> </span><span class="dv">5</span>){
+  <span class="kw">print</span>(i)
+  i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5</code></pre>
+<p>O uso do while é um pouco menos intuitivo, mas não menos importante. O while é mais apropriado para eventos de automação ou simulação, onde tarefas serão executadas quando um “gatilho” for acionado. Um simples exemplo para ajudar na intuição de seu uso é:</p>
+<pre class="sourceCode r"><code class="sourceCode r">automatico &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="st">&#39;dados/automatico/&#39;</span>)
+<span class="kw">length</span>(automatico) <span class="op">==</span><span class="st"> </span><span class="dv">0</span></code></pre>
+<p>Temos uma pasta vazia. O loop abaixo vai monitorar essa pasta. Enquanto essa pasta estiver vazia, ele estará em execução. Quando você colocar um arquivo dentro dessa pasta, vai mudar a condição <code>length(automatico) == 0</code> de <code>TRUE</code> para <code>FALSE</code> e vai mudar a condição <code>length(automatico) &gt; 0</code> de <code>FALSE</code> para <code>TRUE</code>, disparando todas as tarefas programadas. Usamos a função <code>Sys.sleep(5)</code> para que o código espere por mais cinco segundos antes de começar o loop novamente.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="cf">while</span> (<span class="kw">length</span>(automatico) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {
+  automatico &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="st">&#39;dados/automatico/&#39;</span>)
+  <span class="cf">if</span>(<span class="kw">length</span>(automatico) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {
+    <span class="kw">print</span>(<span class="st">&#39;O arquivo chegou!&#39;</span>)
+    <span class="kw">print</span>(<span class="st">&#39;Inicia a leitura dos dados&#39;</span>)
+    <span class="kw">print</span>(<span class="st">&#39;Faz a manipulação&#39;</span>)
+    <span class="kw">print</span>(<span class="st">&#39;Envia email informando conclusão dos cálculos&#39;</span>)
+  } <span class="cf">else</span> {
+    <span class="kw">print</span>(<span class="st">&#39;aguardando arquivo...&#39;</span>)
+    <span class="kw">Sys.sleep</span>(<span class="dv">5</span>)
+  }
+}</code></pre>
+<p>Faça o teste: execute o código acima, aguarde alguns segundos e perceba que nada aconteceu. Crie um arquivo qualquer dentro da pasta <code>dados/automatico/</code>. Imediatamente o loop será encerrado e as tarefas executadas. Observe o output em tela.</p>
+</div>
+<div id="funcoes-1" class="section level3">
+<h3><span class="header-section-number">4.3.3</span> Funções</h3>
+<p>Funções “encapsulam” uma sequência de comandos e instruções. É uma estrutura nomeada, que recebe parâmetros para iniciar sua execução e retorna um resultado ao final. Até o momento, você já usou diversas funções. Vejamos então como criar uma função:</p>
+<pre class="sourceCode r"><code class="sourceCode r">sua_funcao &lt;-<span class="st"> </span><span class="cf">function</span>(parametro1, parametro2){
+  
+  <span class="co"># sequência de tarefas</span>
+  
+  <span class="kw">return</span>(valores_retornados)
+}
+
+<span class="co"># chamada da função</span>
+sua_funcao</code></pre>
+<p>Agora tente entender a seguinte função:</p>
+<pre class="sourceCode r"><code class="sourceCode r">montanha_russa &lt;-<span class="st"> </span><span class="cf">function</span>(palavra) {
+  retorno &lt;-<span class="st"> </span><span class="ot">NULL</span>
+  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nchar</span>(palavra)) {
+    <span class="cf">if</span>(i <span class="op">%%</span><span class="st"> </span><span class="dv">2</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {
+      retorno &lt;-<span class="st"> </span><span class="kw">paste0</span>(retorno, <span class="kw">tolower</span>(<span class="kw">substr</span>(palavra, i, i)))
+    } <span class="cf">else</span> {
+      retorno &lt;-<span class="st"> </span><span class="kw">paste0</span>(retorno, <span class="kw">toupper</span>(<span class="kw">substr</span>(palavra, i, i)))
+    }
+  }
+  <span class="kw">return</span>(retorno)
+}
+
+<span class="kw">montanha_russa</span>(<span class="st">&#39;teste de função: letras maiúsculas e minúsculas&#39;)</span></code></pre>
+<pre><code>## [1] &quot;TeStE De fUnÇãO: lEtRaS MaIúScUlAs e mInÚsCuLaS&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">montanha_russa</span>(<span class="st">&#39;CONSEGUIU ENTENDER?&#39;</span>)</code></pre>
+<pre><code>## [1] &quot;CoNsEgUiU EnTeNdEr?&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">montanha_russa</span>(<span class="st">&#39;É Fácil Usar Funções!&#39;</span>)</code></pre>
+<pre><code>## [1] &quot;É FáCiL UsAr fUnÇõEs!&quot;</code></pre>
+</div>
+</div>
+<div id="manipulacoes-com-r-base" class="section level2">
+<h2><span class="header-section-number">4.4</span> Manipulações com R base</h2>
+<p>Dominar a manipulação de data frames e vetores é muito importante. Em geral, toda manipulação pode ser feita com o R base, mas acreditamos que utilizando técnicas do tidyverse a atividade fica bem mais fácil. Portanto, utilizaremos o <code>dplyr</code>, um dos principais pacotes do tidyverse. Porém, alguns conceitos do R base são clássicos e precisam ser dominados.</p>
+<div id="trabalhando-com-colunas-de-um-data.frame" class="section level3">
+<h3><span class="header-section-number">4.4.1</span> Trabalhando com colunas de um data.frame</h3>
+<p>Para selecionar ou trabalhar separadamente com apenas um campo (coluna) do seu data.frame, deve-se utilizar o <code>$</code>. Repare nas funções abaixo e no uso do sifrão.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(airquality<span class="op">$</span>Ozone)</code></pre>
+<pre><code>## [1] 41 36 12 18 NA 28</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(airquality<span class="op">$</span>Ozone)</code></pre>
+<pre><code>## [1] 14 30 NA 14 18 20</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(airquality<span class="op">$</span>Ozone) <span class="co"># Informa o tipo da coluna</span></code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.vector</span>(airquality<span class="op">$</span>Ozone) <span class="co"># Apenas para verificar que cada coluna de um data.frame é um vector</span></code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">unique</span>(senado<span class="op">$</span>Party) <span class="co"># Função que retorna apenas os valores únicos, sem repetição, de um vetor</span></code></pre>
+<pre><code>##  [1] &quot;PSDB&quot;    &quot;PT&quot;      &quot;PRB&quot;     &quot;PDT&quot;     &quot;PR&quot;      &quot;PFL/DEM&quot; &quot;PMDB&quot;   
+##  [8] &quot;PP&quot;      &quot;PSB&quot;     &quot;PTB&quot;     &quot;PCdoB&quot;   &quot;PSOL&quot;    &quot;S/PART&quot;  &quot;PSC&quot;    
+## [15] &quot;PV1&quot;</code></pre>
+<p>Lembre-se sempre: cada coluna de um data.frame é um vetor, portanto todos os registros (linhas) daquela coluna devem ser do mesmo tipo. Um data.frame pode ser considerado um conjunto de vetores nomeados, todos do mesmo tamanho, ou seja, todos com a mesma quantidade de registros.</p>
+<p>Usando termos mais técnicos, um data frame é um conjunto de dados HETEROGÊNEOS, pois cada coluna pode ser de um tipo, e BIDIMENSIONAL, por possuir apenas linhas e colunas. Já o vetor é um conjunto de dados HOMOGÊNEO, pois só pode ter valores de um mesmo tipo, e UNIDIMENSIONAL.</p>
+<p>Com esses conceitos em mente fica mais fácil entender o que mostraremos a seguir:</p>
+<pre class="sourceCode r"><code class="sourceCode r">vetor &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">0</span>, <span class="dt">to=</span><span class="dv">100</span>, <span class="dt">by=</span><span class="dv">15</span>)) <span class="co">#vetor de 0 a 100, de 15 em 15.</span>
+vetor <span class="co">#lista todos os elementos</span></code></pre>
+<pre><code>## [1]  0 15 30 45 60 75 90</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">vetor[<span class="dv">1</span>] <span class="co">#mostra apenas o elemento na posição 1</span></code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">vetor[<span class="dv">2</span>] <span class="co">#apenas o elemento na posição 2</span></code></pre>
+<pre><code>## [1] 15</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">vetor[<span class="dv">7</span>] <span class="co">#apenas o elemento na posição 7</span></code></pre>
+<pre><code>## [1] 90</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">vetor[<span class="dv">8</span>] <span class="co">#não existe nada na posição 8...</span></code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>A notação <code>[]</code> é usada para selecionar o elemento em uma ou mais posições do vetor.</p>
+<pre class="sourceCode r"><code class="sourceCode r">vetor[<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">7</span>)] <span class="co">#selecionando mais de um elemento no vetor</span></code></pre>
+<pre><code>## [1] 15 90</code></pre>
+<p>Uma notação parecida é usada para selecionar elementos no <code>data.frame</code>. Porém, como já comentamos, data frames são BIDIMENSIONAIS. Então usaremos a notação <code>[,]</code> com uma vírgula separando qual a linha (posição antes da vírgula) e a coluna (posição após a vírgula) que queremos selecionar.</p>
+<pre class="sourceCode r"><code class="sourceCode r">senado[<span class="dv">10</span>, ] <span class="co">#linha 10, todas as colunas</span></code></pre>
+<pre><code>## # A tibble: 1 x 15
+##   VoteNumber SenNumber  SenatorUpper Vote  Party GovCoalition State    FP
+##        &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;        &lt;chr&gt; &lt;int&gt;
+## 1    2007001 PRS0002/07 MAO SANTA    S     PMDB  TRUE         PI        2
+## # ... with 7 more variables: Origin &lt;int&gt;, Contentious &lt;int&gt;,
+## #   PercentYes &lt;dbl&gt;, IndGov &lt;chr&gt;, VoteType &lt;int&gt;, Content &lt;chr&gt;,
+## #   Round &lt;int&gt;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">senado[<span class="dv">72</span>, <span class="dv">3</span>] <span class="co">#linha 72, coluna 3</span></code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   SenatorUpper      
+##   &lt;chr&gt;             
+## 1 WELLINGTON SALGADO</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">senado[<span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">200</span>), <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>)] <span class="co"># selecionando mais de uma linha e coluna em um data.frame</span></code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   SenNumber  SenatorUpper       Vote 
+##   &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;
+## 1 PLS0229/06 MARISA SERRANO     S    
+## 2 PLS0134/06 EPITACIO CAFETEIRA S</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">senado[<span class="kw">c</span>(<span class="dv">10</span><span class="op">:</span><span class="dv">20</span>), ]</code></pre>
+<pre><code>## # A tibble: 11 x 15
+##    VoteNumber SenNumber  SenatorUpper Vote  Party GovCoalition State    FP
+##         &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;        &lt;chr&gt; &lt;int&gt;
+##  1    2007001 PRS0002/07 MAO SANTA    S     PMDB  TRUE         PI        2
+##  2    2007001 PRS0002/07 MAGNO MALTA  S     PR    TRUE         ES        2
+##  3    2007001 PRS0002/07 EDUARDO SUP~ S     PT    TRUE         SP        2
+##  4    2007001 PRS0002/07 GILVAM BORG~ S     PMDB  TRUE         AP        2
+##  5    2007001 PRS0002/07 RAIMUNDO CO~ S     PFL/~ FALSE        SC        2
+##  6    2007001 PRS0002/07 CICERO LUCE~ S     PSDB  FALSE        PB        2
+##  7    2007001 PRS0002/07 FRANCISCO D~ S     PP    TRUE         RJ        2
+##  8    2007001 PRS0002/07 OSMAR DIAS   N     PDT   FALSE        PR        2
+##  9    2007001 PRS0002/07 ALFREDO NAS~ S     PR    TRUE         AM        2
+## 10    2007001 PRS0002/07 VALDIR RAUPP S     PMDB  TRUE         RO        2
+## 11    2007001 PRS0002/07 GARIBALDI A~ S     PMDB  TRUE         RN        2
+## # ... with 7 more variables: Origin &lt;int&gt;, Contentious &lt;int&gt;,
+## #   PercentYes &lt;dbl&gt;, IndGov &lt;chr&gt;, VoteType &lt;int&gt;, Content &lt;chr&gt;,
+## #   Round &lt;int&gt;</code></pre>
+<p>Repare na notação c(10:20), você pode usar <code>:</code> para criar sequências. Experimente <code>1:1000</code></p>
+<p>Também é possível selecionar o item desejado utilizando o próprio nome da coluna:</p>
+<pre class="sourceCode r"><code class="sourceCode r">senado[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="kw">c</span>(<span class="st">&#39;SenatorUpper&#39;</span>, <span class="st">&#39;Party&#39;</span>, <span class="st">&#39;State&#39;</span>)]</code></pre>
+<pre><code>## # A tibble: 10 x 3
+##    SenatorUpper       Party   State
+##    &lt;chr&gt;              &lt;chr&gt;   &lt;chr&gt;
+##  1 FLEXA RIBEIRO      PSDB    PA   
+##  2 ARTHUR VIRGILIO    PSDB    AM   
+##  3 FLAVIO ARNS        PT      PR   
+##  4 MARCELO CRIVELLA   PRB     RJ   
+##  5 JOAO DURVAL        PDT     BA   
+##  6 PAULO PAIM         PT      RS   
+##  7 EXPEDITO JUNIOR    PR      RO   
+##  8 EFRAIM MORAIS      PFL/DEM PB   
+##  9 ALOIZIO MERCADANTE PT      SP   
+## 10 MAO SANTA          PMDB    PI</code></pre>
+<p>Existem diversas outras formas de seleção e manipulação de dados, como, por exemplo, seleção condicional:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(senado[senado<span class="op">$</span>Party <span class="op">==</span><span class="st"> &#39;PDT&#39;</span>, ])</code></pre>
+<pre><code>## # A tibble: 6 x 15
+##   VoteNumber SenNumber  SenatorUpper  Vote  Party GovCoalition State    FP
+##        &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;        &lt;chr&gt; &lt;int&gt;
+## 1    2007001 PRS0002/07 JOAO DURVAL   N     PDT   FALSE        BA        2
+## 2    2007001 PRS0002/07 OSMAR DIAS    N     PDT   FALSE        PR        2
+## 3    2007001 PRS0002/07 CRISTOVAM BU~ A     PDT   FALSE        DF        2
+## 4    2007002 PLS0229/06 JOAO DURVAL   S     PDT   FALSE        BA        2
+## 5    2007002 PLS0229/06 OSMAR DIAS    S     PDT   FALSE        PR        2
+## 6    2007002 PLS0229/06 CRISTOVAM BU~ S     PDT   FALSE        DF        2
+## # ... with 7 more variables: Origin &lt;int&gt;, Contentious &lt;int&gt;,
+## #   PercentYes &lt;dbl&gt;, IndGov &lt;chr&gt;, VoteType &lt;int&gt;, Content &lt;chr&gt;,
+## #   Round &lt;int&gt;</code></pre>
+<p>Em todas as comparações do R usamos operadores lógicos. São operações matemáticas em que o resultado é <code>TRUE</code> ou <code>FALSE</code> (tipo <code>logic</code>). Para melhor entendimento, selecionamos alguns operadores lógicos e seus significados:</p>
+<ul>
+<li><code>==</code> igual a: compara dois objetos e se forem iguais retorna TRUE, caso contrário, FALSE;</li>
+<li><code>!=</code> diferente: compara dois objetos e se forem diferentes retorna TRUE, caso contrário, FALSE;</li>
+<li><code>|</code> ou (or): compara dois objetos, se um dos dois for TRUE, retorna TRUE, se os dois forem FALSE, retorna FALSE;</li>
+<li><code>&amp;</code> e (and): compara dois objetos, se os dois forem TRUE, retorna TRUE, se um dos dois ou os dois forem FALSE, retorna FALSE;</li>
+<li><code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code> maior, maior ou igual, menor, menor ou igual: compara grandeza de dois números e retorna TRUE ou FALSE conforme a condição;</li>
+</ul>
+<p>É possível fazer muita coisa com o R base, porém, vamos avançar com as manipulações, utilizando o pacote <code>dplyr</code>, por ser mais simples e, por isso, de mais rápido aprendizado.</p>
+</div>
+</div>
+<div id="pacote-dplyr" class="section level2">
+<h2><span class="header-section-number">4.5</span> Pacote dplyr</h2>
+<p>O forte do pacote <code>dplyr</code> é a sintaxe simples e concisa, o que facilita o aprendizado e torna o pacote um dos preferidos para as tarefas do dia a dia. Também conta como ponto forte sua otimização de performance para manipulação de dados. Ao carregar o pacote <code>tidyverse</code>, você já carregará automaticamente o pacote <code>dplyr</code>, mas você também pode carregá-lo individualmente:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)
+<span class="kw">library</span>(dplyr)
+?dplyr</code></pre>
+<div id="verbetes-do-dplyr-e-o-operador" class="section level3">
+<h3><span class="header-section-number">4.5.1</span> Verbetes do dplyr e o operador <code>%&gt;%</code></h3>
+<p>O <code>dplyr</code> cobre praticamente todas as tarefas básicas da manipulação de dados: agregar, sumarizar, filtrar, ordenar, criar variáveis, joins, dentre outras.</p>
+<p>As funções do <code>dplyr</code> reproduzem as principais tarefas da manipulação, de forma bastante intuitiva. Veja só:</p>
+<ul>
+<li>select()</li>
+<li>filter()</li>
+<li>arrange()</li>
+<li>mutate()</li>
+<li>group_by()</li>
+<li>summarise()</li>
+</ul>
+<p>Esses são os principais verbetes, mas existem outros disponíveis, como por exemplo <code>slice()</code>, <code>rename()</code> e <code>transmute()</code>.
+Além de nomes de funções intuitivos, o <code>dplyr</code> também faz uso de um recurso disponível em boa parte dos pacotes do Hadley, o operador <code>%&gt;%</code> (originário do pacote <code>magrittr</code>). Este operador encadeia as chamadas de funções de forma que você não vai precisar ficar chamando uma função dentro da outra ou ficar fazendo atribuições usando diversas linhas para concluir suas manipulações. Aliás, podemos dizer que esse operador <code>%&gt;%</code>, literalmente, cria um fluxo sequencial bastante claro e legível para todas as atividades de manipulação.</p>
+</div>
+<div id="select" class="section level3">
+<h3><span class="header-section-number">4.5.2</span> Select</h3>
+<p>O <code>select()</code> é a função mais simples de ser entendida. É usada para selecionar variáveis (colunas, campos, features…) do seu data frame.</p>
+<pre class="sourceCode r"><code class="sourceCode r">senadores.partido &lt;-<span class="st"> </span>senado <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(SenatorUpper, Party)
+<span class="kw">head</span>(senadores.partido)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   SenatorUpper     Party
+##   &lt;chr&gt;            &lt;chr&gt;
+## 1 FLEXA RIBEIRO    PSDB 
+## 2 ARTHUR VIRGILIO  PSDB 
+## 3 FLAVIO ARNS      PT   
+## 4 MARCELO CRIVELLA PRB  
+## 5 JOAO DURVAL      PDT  
+## 6 PAULO PAIM       PT</code></pre>
+<p>Você pode, também, fazer uma “seleção negativa”, ou seja, escolher as colunas que não quer:</p>
+<pre class="sourceCode r"><code class="sourceCode r">senadores.partido &lt;-<span class="st"> </span>senado <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>SenatorUpper, <span class="op">-</span>Party)
+<span class="kw">head</span>(senadores.partido)</code></pre>
+<pre><code>## # A tibble: 6 x 13
+##   VoteNumber SenNumber  Vote  GovCoalition State    FP Origin Contentious
+##        &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;lgl&gt;        &lt;chr&gt; &lt;int&gt;  &lt;int&gt;       &lt;int&gt;
+## 1    2007001 PRS0002/07 S     FALSE        PA        2     11           0
+## 2    2007001 PRS0002/07 S     FALSE        AM        2     11           0
+## 3    2007001 PRS0002/07 N     TRUE         PR        2     11           0
+## 4    2007001 PRS0002/07 S     TRUE         RJ        2     11           0
+## 5    2007001 PRS0002/07 N     FALSE        BA        2     11           0
+## 6    2007001 PRS0002/07 S     TRUE         RS        2     11           0
+## # ... with 5 more variables: PercentYes &lt;dbl&gt;, IndGov &lt;chr&gt;,
+## #   VoteType &lt;int&gt;, Content &lt;chr&gt;, Round &lt;int&gt;</code></pre>
+</div>
+<div id="filter" class="section level3">
+<h3><span class="header-section-number">4.5.3</span> Filter</h3>
+<p>Além de escolher apenas alguns campos, você pode escolher apenas algumas linhas, utilizando alguma condição como filtragem. Para isso, basta utilizar a função <code>filter</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">senadores.pdt.df &lt;-<span class="st"> </span>senado <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(SenatorUpper, Party, State) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(State <span class="op">==</span><span class="st"> &#39;RJ&#39;</span>, Party <span class="op">==</span><span class="st"> &#39;PMDB&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>() <span class="co">#semelhante ao unique(), traz registros únicos sem repetição</span>
+
+<span class="kw">head</span>(senadores.pdt.df)</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   SenatorUpper   Party State
+##   &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;
+## 1 PAULO DUQUE    PMDB  RJ   
+## 2 REGIS FICHTNER PMDB  RJ</code></pre>
+</div>
+<div id="mutate" class="section level3">
+<h3><span class="header-section-number">4.5.4</span> Mutate</h3>
+<p>Para criar novos campos, podemos usar o <code>mutate</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">senadores.pdt.df &lt;-<span class="st"> </span>senado <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(SenatorUpper, Party, State) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(Party <span class="op">==</span><span class="st"> &#39;PMDB&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>() <span class="co">#semelhante ao unique(), traz registros únicos sem repetição</span>
+
+<span class="kw">head</span>(senadores.pdt.df)</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   SenatorUpper          Party State
+##   &lt;chr&gt;                 &lt;chr&gt; &lt;chr&gt;
+## 1 MAO SANTA             PMDB  PI   
+## 2 GILVAM BORGES         PMDB  AP   
+## 3 VALDIR RAUPP          PMDB  RO   
+## 4 GARIBALDI ALVES FILHO PMDB  RN   
+## 5 GERSON CAMATA         PMDB  ES   
+## 6 JARBAS VASCONCELOS    PMDB  PE</code></pre>
+</div>
+<div id="group-by-e-summarise" class="section level3">
+<h3><span class="header-section-number">4.5.5</span> Group By e Summarise</h3>
+<p>O <code>group_by()</code> e o <code>summarise()</code> são operações que trabalham na agregação dos dados, ou seja, um dado mais detalhado passa a ser um dado mais agregado e agrupado, em consequência disso, menos detalhado. O agrupamento de dados geralmente é trabalhado em conjunção com sumarizações, que usam funções matemáticas do tipo soma, média, desvio padrão etc.</p>
+<p>Enquanto o <code>group_by()</code> “separa” seus dados nos grupos que você selecionar, o <code>summarise()</code> faz operações de agregação de linhas limitadas a esse grupo.</p>
+<p>Vale observar que operações de agrupamento e sumarização geralmente DIMINUEM a quantidade de linhas dos seus dados, pois está reduzindo o nível de detalhe. Ou seja, de alguma forma, você está “perdendo” detalhe para “ganhar” agregação.</p>
+<p>Como exemplo, utilizaremos os dados disponíveis no pacote nycflights13:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;nycflights13&quot;</span>)
+<span class="kw">library</span>(nycflights13)
+<span class="kw">data</span>(<span class="st">&quot;flights&quot;</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(flights)</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    336776 obs. of  19 variables:
+##  $ year          : int  2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 ...
+##  $ month         : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ day           : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ dep_time      : int  517 533 542 544 554 554 555 557 557 558 ...
+##  $ sched_dep_time: int  515 529 540 545 600 558 600 600 600 600 ...
+##  $ dep_delay     : num  2 4 2 -1 -6 -4 -5 -3 -3 -2 ...
+##  $ arr_time      : int  830 850 923 1004 812 740 913 709 838 753 ...
+##  $ sched_arr_time: int  819 830 850 1022 837 728 854 723 846 745 ...
+##  $ arr_delay     : num  11 20 33 -18 -25 12 19 -14 -8 8 ...
+##  $ carrier       : chr  &quot;UA&quot; &quot;UA&quot; &quot;AA&quot; &quot;B6&quot; ...
+##  $ flight        : int  1545 1714 1141 725 461 1696 507 5708 79 301 ...
+##  $ tailnum       : chr  &quot;N14228&quot; &quot;N24211&quot; &quot;N619AA&quot; &quot;N804JB&quot; ...
+##  $ origin        : chr  &quot;EWR&quot; &quot;LGA&quot; &quot;JFK&quot; &quot;JFK&quot; ...
+##  $ dest          : chr  &quot;IAH&quot; &quot;IAH&quot; &quot;MIA&quot; &quot;BQN&quot; ...
+##  $ air_time      : num  227 227 160 183 116 150 158 53 140 138 ...
+##  $ distance      : num  1400 1416 1089 1576 762 ...
+##  $ hour          : num  5 5 5 5 6 5 6 6 6 6 ...
+##  $ minute        : num  15 29 40 45 0 58 0 0 0 0 ...
+##  $ time_hour     : POSIXct, format: &quot;2013-01-01 05:00:00&quot; &quot;2013-01-01 05:00:00&quot; ...</code></pre>
+<p>Gostaríamos de obter a média de atraso da chegada para cada mês. Para isso, primeiro agrupamos no nível necessário e depois sumarizamos.</p>
+<pre class="sourceCode r"><code class="sourceCode r">media &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(month) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">arr_delay_media =</span> <span class="kw">mean</span>(arr_delay, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), 
+            <span class="dt">dep_delay_media =</span> <span class="kw">mean</span>(dep_delay, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))
+
+media</code></pre>
+<pre><code>## # A tibble: 12 x 3
+##    month arr_delay_media dep_delay_media
+##    &lt;int&gt;           &lt;dbl&gt;           &lt;dbl&gt;
+##  1     1           6.13            10.0 
+##  2     2           5.61            10.8 
+##  3     3           5.81            13.2 
+##  4     4          11.2             13.9 
+##  5     5           3.52            13.0 
+##  6     6          16.5             20.8 
+##  7     7          16.7             21.7 
+##  8     8           6.04            12.6 
+##  9     9          -4.02             6.72
+## 10    10          -0.167            6.24
+## 11    11           0.461            5.44
+## 12    12          14.9             16.6</code></pre>
+</div>
+<div id="arrange" class="section level3">
+<h3><span class="header-section-number">4.5.6</span> Arrange</h3>
+<p>A função <code>arrange()</code> serve para organizar os dados em sua ordenação. Costuma ser uma das últimas operações, normalmente usada para organizar os dados e facilitar visualizações ou criação de relatórios. Utilizando o exemplo anterior, gostaríamos de ordenar os meses pelas menores médias de decolagem (para ordens decrescentes basta usar o sinal de menos <code>-</code>)</p>
+<pre class="sourceCode r"><code class="sourceCode r">media &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(month) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">arr_delay_media =</span> <span class="kw">mean</span>(arr_delay, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), 
+            <span class="dt">dep_delay_media =</span> <span class="kw">mean</span>(dep_delay, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(dep_delay_media)
+
+media</code></pre>
+<pre><code>## # A tibble: 12 x 3
+##    month arr_delay_media dep_delay_media
+##    &lt;int&gt;           &lt;dbl&gt;           &lt;dbl&gt;
+##  1    11           0.461            5.44
+##  2    10          -0.167            6.24
+##  3     9          -4.02             6.72
+##  4     1           6.13            10.0 
+##  5     2           5.61            10.8 
+##  6     8           6.04            12.6 
+##  7     5           3.52            13.0 
+##  8     3           5.81            13.2 
+##  9     4          11.2             13.9 
+## 10    12          14.9             16.6 
+## 11     6          16.5             20.8 
+## 12     7          16.7             21.7</code></pre>
+</div>
+<div id="o-operador" class="section level3">
+<h3><span class="header-section-number">4.5.7</span> O operador %&gt;%</h3>
+<p>Observe novamente as manipulações feitas acima. Repare que apenas acrescentamos verbetes e encadeamos a manipulação com o uso de <code>%&gt;%</code>.</p>
+<p>A primeira parte <code>serie.orig %&gt;%</code> é a passagem onde você informa o data.frame que utilizará na sequência de manipulação. A partir daí, as chamadas seguintes <code>select() %&gt;%</code>, <code>filter() %&gt;%</code>, <code>mutate() %&gt;%</code> etc, são os encadeamentos de manipulação que você pode fazer sem precisar atribuir resultados ou criar novos objetos.</p>
+<p>Em outras palavras, usando o operador <code>%&gt;%</code>, você estará informando que um resultado da operação anterior será a entrada para a nova operação. Esse encadeamento facilita muito as coisas, tornando a manipulação mais legível e intuitiva.</p>
+</div>
+</div>
+<div id="exercicios-3" class="section level2">
+<h2><span class="header-section-number">4.6</span> Exercícios</h2>
+<p>Utilizando os dados em <code>senado.csv</code>, tente usar da manipulação de dados para responder às perguntas a seguir:</p>
+<ol style="list-style-type: decimal">
+<li><p>Verifique a existência de registros <code>NA</code> em <code>State</code>. Caso existam, crie um novo data.frame <code>senado2</code> sem esses registros e utilize-o para os próximos exercícios. <code>Dica: is.na(State)</code></p></li>
+<li><p>Quais partidos foram parte da coalizão do governo? E quais não foram? <code>Dica: filter()</code></p></li>
+<li><p>Quantos senadores tinha cada partido? Qual tinha mais? Quais tinham menos? <code>Dica: group_by(), summarise() e n_distinct()</code></p></li>
+<li><p>Qual partido votou mais “sim”? E qual voltou menos “sim”? <code>Dica: sum(Vote == 'S')</code></p></li>
+<li><p>Qual região do país teve mais votos “sim”? Primeiro será necessário criar uma coluna região para depois contabilizar o total de votos por região.</p></li>
+</ol>
+<blockquote>
+<p>Dica: mutate(Regiao = ifelse(State %in% c(“AM”, “AC”, “TO”, “PA”, “RO”, “RR”), “Norte”,
+ifelse(State %in% c(“SP”, “MG”, “RJ”, “ES”), “Sudeste”,
+ifelse(State %in% c(“MT”, “MS”, “GO”, “DF”), “Centro-Oeste”,
+ifelse(State %in% c(“PR”, “SC”, “RS”), “Sul”, “Nordeste”)))))</p>
+</blockquote>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="lendo-os-dados.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="limpando-dados.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["cdr-intro.pdf"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

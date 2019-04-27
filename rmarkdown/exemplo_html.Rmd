@@ -1,0 +1,159 @@
+---
+title: '`r paste0("Exportações de ", params$prod)`'
+author: "MDIC"
+date: "5 de novembro de 2016"
+output:
+  word_document: default
+params:
+  prod: Minérios de ferro e seus concentrados
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+
+```
+
+# Dados
+
+Os dados desse exemplo foram extraídos das séries históricas disponíveis no site do [MDIC](www.mdic.gov.br).
+```{r, echo=FALSE}
+options(OutDec = ",", scipen = 999)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(knitr)
+library(forecast)
+library(tidyr)
+library(DT)
+
+
+dados <- read_excel('../dados/FAT_PPE_PPI.xlsx', sheet = 1)
+
+# Dados apenas com todos anos e meses disponíveis. Será usado posteriormente.
+dados.base <- dados %>% 
+  filter(TIPO == "EXP", `NO_PPE/NO_PPI` == "Soja Mesmo Triturada") %>%
+  select(CO_ANO, CO_MES)
+
+# Filtrar por TIPO == EXP
+dados <- dados %>%
+  filter(TIPO == "EXP") %>%
+  rename(CO_PPE = `CO_PPE/CO_PPI`,
+         NO_PPE = `NO_PPE/NO_PPI`)
+
+# Calcular o preço e a participação por PPE para cada Mês/Ano
+
+dados <- dados %>%
+  group_by(CO_ANO, CO_MES) %>%
+  mutate(PRECO = VL_FOB/KG_LIQUIDO,
+         PART = VL_FOB/sum(VL_FOB),
+         DATA = as.Date(paste0(CO_ANO, "-", CO_MES, "-01"))) %>%
+  ungroup()
+
+# Filtrar para Soja
+
+dados <- dados %>%
+  filter(NO_PPE == params$prod)
+
+
+```
+
+Amostra dos dados:
+```{r}
+kable(dados %>%
+        select(DATA, VL_FOB, KG_LIQUIDO, PRECO) %>%
+        mutate(DATA = format.Date(DATA, "%b/%Y")) %>%
+        head(10), format.args = list(big.mark = "."))
+```
+
+
+```{r}
+# Valor
+ggplot(dados, aes(x = DATA, y = VL_FOB/1e6)) +
+  geom_line() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ".", decimal.mark = ",")) +
+  labs(title = paste0("Valor Exportado de ", params$prod),
+       caption = "Fonte: MDIC.",
+       subtitle = "US$ Milhões") +
+  theme_fivethirtyeight()
+```
+
+```{r}
+# Volume
+ggplot(dados, aes(x = DATA, y = KG_LIQUIDO/1e3)) +
+  geom_line() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ".", decimal.mark = ",")) +
+  labs(title = paste0("Volume Exportado de ", params$prod),
+       caption = "Fonte: MDIC.",
+       caption = "Toneladas") +
+  theme_fivethirtyeight()
+```
+
+```{r}
+# Preço
+
+ggplot(dados, aes(x = DATA, y = PRECO)) +
+  geom_line() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ".", decimal.mark = ",")) +
+  labs(title = paste0("Preço ", params$prod),
+       caption = "Fonte: MDIC.",
+       subtitle = "US$/KG",
+       x = "Data",
+       y = "US$ Milhões") +
+  theme_fivethirtyeight()
+```
+
+## Convertendo em objeto ts
+
+Antes de converter para um objeto da classe `ts` é necessário garantir que o objeto `dados` possua uma linha para cada mês/ano do período. No arquivo original, se a exportação de um produto foi zero em um determinado mês, não haverá uma linha para aquele mês. Dessa forma, se fizermos algo do tipo `x <- ts(dados, start = c(1997, 1), freq = 12)` e existirem apenas 12 observações, o R entenderá que há observações de jan/1997 a dez/1997, o que pode não ser o caso. Assim, usaremos o data.frame `dados.base` que possui uma linha para cada período entre jan/1997 e o último mês disponível.
+
+```{r}
+dados.ts <- left_join(dados.base, dados) %>%
+  replace_na(list(VL_FOB = 0, KG_LIQUIDO = 0))
+
+
+dados.ts <- ts(dados %>% 
+               select(VL_FOB, KG_LIQUIDO, PRECO, PART),
+               start = c(1997, 1), 
+               freq = 12)
+```
+## Investigando a existência de sazonalidade
+
+```{r}
+ggmonthplot(dados.ts[,"KG_LIQUIDO"]/1e3) +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ".", decimal.mark = ",")) +
+  labs(title = paste0("Volume Exportado ", params$prod),
+       caption = "Fonte: MDIC.",
+       subtitle = "Toneladas",
+       x = "Data",
+       y = "Toneladas") +
+  theme_fivethirtyeight() 
+```
+
+## Tabela interativa
+  
+```{r}
+pt <- jsonlite::fromJSON(url("https://cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"))
+pt$buttons <- list('copy' = 'Copiar', 'print' = 'Imprimir')
+
+datatable(dados %>% 
+            mutate(TON = KG_LIQUIDO/1e3,
+                   PART = PART * 100) %>%
+            select(-NO_FAT_AGREG, -CO_FAT_AGREG, -DATA,
+                   -KG_LIQUIDO),
+          filter = 'bottom', rownames = FALSE,
+          extensions = 'ColReorder',
+          options = list(pageLength = 12,
+                         columnDefs = list(list(className = 'dt-center',
+                                                targets = c(0, 1, 2, 3, 4))),
+                         language = pt,
+                         colReorder = TRUE),
+          colnames = c("Tipo", "Ano", "Mês", "Codigo PPE", "PPE",
+                       "Valor FOB", "Preço", "Participação", "Toneladas"),
+          class = 'stripe hover') %>% 
+  formatCurrency("VL_FOB", currency = "US$ ", mark = ".", digits = 0) %>% 
+  formatCurrency(c("TON", "PRECO"), currency ="", digits = 3, mark = ".", dec.mark = ",") %>%
+  formatCurrency("PART", currency = "%", digits = 3, , mark = ".", dec.mark = ",",
+                 before = FALSE)
+```
+

@@ -1,0 +1,41 @@
+---
+title: "Primeiro Exemplo para o Curso de R"
+author: "Paulo"
+date: "`r format(Sys.time(), '%d de %B de %Y')`"
+output:
+  html_document: default
+  pdf_document:
+    fig_caption: yes
+    fig_height: 3.5
+    fig_width: 7
+    number_sections: yes
+lang: pt-br
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(OutDec = ",")
+```
+
+# Cabeçalho de primeiro nível
+## Cabeçalho de segundo nível
+### Cabeçalho de terceiro nível
+
+# Hello World
+
+Este é um primeiro exemplo de *RMarkdown* para o **Curso de Introdução ao `R`**.
+
+## Outra Seção
+
+Vamos executar um código:
+
+```{r, fig.cap="Exemplo de Figura", collapse=TRUE}
+library(ggplot2)
+x <- rnorm(100)
+y <- rnorm(100)
+dados <- data.frame(x, y)
+ggplot(dados, aes(x = x, y = y)) +
+  geom_point()
+```
+
+A média de x é `r mean(x)`.

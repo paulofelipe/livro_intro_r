@@ -1,0 +1,575 @@
+
+# Manipulando os dados
+
+```{r eval=TRUE, echo=FALSE, message=FALSE}
+library(readr)
+senado <- read_csv("dados/senado.csv")
+```
+
+Após obter uma boa fonte de dados, e carregá-los para poder trabalhá-los no R, você certamente precisará realizar algumas limpezas e manipulações para que os dados estejam no ponto ideal para as fases finais de uma análise: execução de modelos econométricos, visualizações de dados, tabelas agregadas, relatórios etc. A realidade é que, na prática, os dados nunca estarão do jeito que você de fato precisa. Portanto, é fundamental dominar técnicas de manipulação de dados.
+
+Entendamos a manipulação de dados como o ato de transformar, reestruturar, limpar, agregar e juntar os dados. Para se ter uma noção da importância dessa fase, alguns estudiosos da área de Ciência de Dados costumam afirmar que 80% do trabalho é encontrar uma boa fonte de dados, limpar e preparar os dados, sendo que os 20% restantes seriam o trabalho de aplicar modelos e realizar alguma análise propriamente dita.
+
+>80% of data analysis is spent on the process of cleaning and preparing the data (Dasu and Johnson, 2003). 
+
+>Data preparation is not just a first step, but must be repeated many over the course of analysis as new problems come to light or new data is collected (Hadley Wickham).
+
+## Tipos de Variáveis e Colunas
+
+Existem diversos tipos de objetos, e cada tipo "armazena" um conteúdo diferente, desde tabelas de dados recém-carregados a textos, números, ou simplesmente a afirmação de verdadeiro ou falso (Boleano).
+
+```{r}
+inteiro <- 928
+outro.inteiro <- 5e2
+decimal <- 182.93
+caracter <- 'exportação'
+logico <- TRUE
+outro.logico <- FALSE
+```
+
+Repare nas atribuições acima. Usaremos a função `class()` para ver o tipo de cada uma:
+
+```{r}
+class(inteiro)
+class(outro.inteiro)
+class(decimal)
+class(caracter)
+class(logico)
+class(outro.logico)
+```
+
+Esses são alguns dos tipos básicos de objetos/variáveis no R. Para valores inteiros ou decimais, `numeric` , `character` para valores textuais e `logical` para valores lógicos (verdadeiro ou falso). Existe também o tipo `integer`, que representa apenas números inteiros, sem decimais, porém, na maioria das vezes, o R interpreta o `integer` como `numeric`, pois o `integer` também é um `numeric`.
+
+Além dos tipos básicos, existem também os tipos "complexos", que são `vector`, `array`, `matrix`, `list`, `data.frame` e `factor`. 
+
+Data frame é, provavelmente, o tipo de dado complexo mais utilizado em R. É nele que você armazena conjuntos de dados estruturados em linhas e colunas. Um data frame possui colunas nomeadas, sendo que todas as colunas possuem a mesma quantidade de linhas. Imagine o `dataframe` como uma tabela.
+
+```{r eval=TRUE}
+class(senado)
+```
+
+```{r}
+dim(senado)
+```
+
+Outro tipo que já utilizamos bastante até agora, mas que não foi detalhado, é o `vector`, ou vetor. Vetores são sequências unidimensionais de valores de um mesmo tipo:
+
+```{r}
+#faça as seguintes atribuições
+vetor.chr <- c('tipo1', 'tipo2', 'tipo3', 'tipo4')
+vetor.num <- c(1, 2, 5, 8, 1001)
+vetor.num.repetidos <- c(rep(2, 50)) #usando funcão para repetir números
+vetor.num.sequencia <- c(seq(from=0, to=100, by=5)) #usando função para criar sequências
+vetor.logical <- c(TRUE, TRUE, TRUE, FALSE, FALSE)
+##veja o conteúdo das variáveis
+vetor.chr
+vetor.num
+vetor.num.repetidos
+vetor.num.sequencia
+vetor.logical
+```
+
+Para a criação de vetores, usamos a função de combinação de valores `c()` (combine). Esta função vai combinar todos os parâmetros em um único vetor. Lembre-se: vetores são sequências que contêm apenas um tipo de dado.
+
+Conhecendo o `data.frame` e o `vector`, você será capaz de entender como os dois se relacionam. Cada coluna de um data frame é um vetor. Um data frame pode ter colunas de diferentes tipos, mas cada coluna só pode ter registros de um único tipo.
+
+Ficará mais claro a seguir. Veja como se cria um `data.frame`:
+```{r}
+#cria-se diferentes vetores
+nome <- c('João', 'José', 'Maria', 'Joana')
+idade <- c(45, 12, 28, 31)
+adulto <- c(TRUE, FALSE, TRUE, TRUE)
+uf <- c('DF', 'SP', 'RJ', 'MG')
+#cada vetor é uma combinação de elementos de um MESMO tipo de dados
+#sendo assim, cada vetor pode ser uma coluna de um data.frame
+clientes <- data.frame(nome, idade, adulto, uf)
+clientes
+str(clientes)
+```
+
+### Conversões de tipos de variáveis
+
+Quando é feito o carregamento de algum arquivo de dados no R, ele tenta "deduzir" os tipos de dados de cada coluna. Nem sempre essa dedução sai correta e, eventualmente, você precisará converter de um tipo para o outro. O R tem algumas funções para fazer essas conversões.
+
+```{r}
+class("2015")
+as.numeric("2015")
+
+class(55)
+as.character(55)
+
+class(3.14)
+as.integer(3.14)
+
+as.numeric(TRUE)
+as.numeric(FALSE)
+
+as.logical(1)
+as.logical(0)
+```
+
+O R também tenta "forçar a barra", às vezes, para te ajudar. Quando você faz uma operação entre dois tipos diferentes, ele tenta fazer algo chamado **coerção de tipos**, ou seja, ele tenta converter os dados para que a operação faça sentido. Caso o R não consiga fazer a coerção, ele vai mostrar uma mensagem de erro.
+
+Experimente os comandos a seguir no console:
+```{r eval=FALSE}
+7 + TRUE
+2015 > "2016"
+"2014" < 2017
+# em alguns casos a coerção irá falhar ou dar resultado indesejado
+6 > "100"
+"6" < 5
+1 + "1"
+```
+
+Recomendamos fortemente que sempre se realize as conversões explicitamente com as funções apropriadas ao invés de confiar na coerção do R, a não ser que se tenha certeza do resultado.
+
+### Outros tipos de variáveis
+
+Existem outros tipos de variáveis bastante utilizados. Citaremos alguns deles, pois nesse curso utilizaremos muito pouco os demais tipos.
+
+| Tipo | Descrição | Dimensões | Homogêneo |
+|---|:---|---|---|---|
+| **vector** | Coleção de elementos simples. Todos os elementos precisam ser do mesmo tipo básico de dado | 1 | Sim |
+| **array** | Coleção que se parece com o vector, mas é multidimensional | n | Sim |
+| **matrix** | Tipo especial de array com duas dimensões | 2 | Sim |
+| **list** | Objeto complexo com elementos que podem ser de diferentes tipos | 1 | Não |
+| **data.frame** | Tipo especial de lista, onde cada coluna é um vetor de apenas um tipo e todas as colunas têm o mesmo número de registros. É o tipo mais utilizado para se trabalhar com dados | 2 | Não |
+| **factor** | Tipo especial de vector, que só contém valores predefinidos (levels) e categóricos (characters). Não é possível adicionar novas categorias sem criação de novos levels | 1 |  Não |
+
+### Valores faltantes e o 'NA'
+
+Em casos onde não existe valor em uma coluna de uma linha, o R atribui `NA`. É muito comum lidar com conjuntos de dados que tenham ocorrências de `NA` em alguns campos. É importante saber o que se fazer em casos de `NA`, e nem sempre a solução será a mesma: varia de acordo com as suas necessidades.
+
+Em algumas bases de dados, quem gera o dado atribui valores genéricos como `999` ou até mesmo um "texto vazio", `' '`. Neste caso, você provavelmente terá que substituir esses valores "omissos" por `NA`. Imputar dados em casos de `NA` é uma das várias estratégias para lidar-se com ocorrência de missing no conjunto dos dados.
+
+Seguem algumas funções úteis para lidar-se com `NA`:
+
+- A função `summary()` pode ser usada para averiguar a ocorrência de `NA`.
+- A função `is.na()` realiza um teste para saber se a variável/coluna possui um valor `NA`. retorna TRUE se for `NA` e FALSE se não for.
+- A função `complete.cases()` retorna TRUE para as linhas em que todas as colunas possuem valores válidos (preenchidos) e FALSE para as linhas em que, em alguma coluna, existe um `NA`. Ou seja, esta função diz quais são as linhas (amostras) completas em todas as suas características (campos).
+- Algumas funções possuem o argumento `na.rm`, ou semelhantes, para desconsiderar `NA` no cálculo. É o caso da função `mean()` ou `sum()`.
+
+Por exemplo:
+
+```{r}
+data("airquality") # carrega uma base de dados pré-carregada no R
+```
+
+```{r}
+summary(airquality) # verificando ocorrência de NA
+```
+
+```{r}
+is.na(airquality$Ozone)
+```
+
+### Estruturas de Controle de Fluxo
+
+Para auxiliar no processo de manipulação de dados, você eventualmente precisará de algumas técnicas e estruturas de controle de fluxo. Estruturas para controle de fluxo nada mais são do que loops e condições. São estruturas fundamentais para qualquer linguagem de programação.
+
+## If e Else
+
+A estrutura condicional é algo bastante intuitivo. A estrutura de if (se) e else (então) usa os operadores lógicos apresentados anteriormente. Se a condição do `if()` for verdadeira, executa-se uma tarefa específica, se for falsa, executa-se uma tarefa diferente. A estrutura parece algo do tipo:
+
+```{r eval=FALSE}
+if( variavel >= 500 ) {
+  #executa uma tarefa se operação resultar TRUE
+} else {
+  #executa outra tarefa se operação resultar FALSE
+}
+``` 
+
+Da mesma forma, existe uma função que gera o mesmo resultado, o `ifelse()` (e uma do pacote `dplyr`, o `if_else()`).
+
+```{r eval=FALSE}
+ifelse(variavel >= 500, 'executa essa tarefa se TRUE', 'executa outra se FALSE')
+```
+
+Existe uma diferença entre as duas formas de "if else": a estrutura `if() {} else {}` só opera variáveis, uma por uma, já a estrutura `ifelse()` opera vetores, ou seja, consegue fazer a comparação para todos os elementos. Isso faz com que a forma `if() {} else {}` seja mais utilizada para comparações fora dos dados, com variáveis avulsas. Já a estrutura `ifelse()` é mais usada para comparações dentro dos dados, com colunas, vetores e linhas.
+
+Qualquer uma dessas estruturas pode ser "aninhada", ou seja, encadeada. Por exemplo:
+
+```{r}
+a <- 9823
+
+if(a >= 10000) {
+  b <- 'VALOR ALTO'
+} else if(a < 10000 & a >= 1000) {
+  b <- 'VALOR MEDIO' 
+} else if(a < 1000) {
+  b <- 'VALOR BAIXO'
+}
+
+b
+```
+
+Ou ainda:
+
+```{r}
+a <- 839
+c <- ifelse(a >= 10000, 'VALOR ALTO', ifelse(a < 10000 & a >= 1000, 'VALOR MEDIO', 'VALOR BAIXO'))
+c
+```
+
+## Loops
+
+Trata-se de um dos conceitos mais importantes de qualquer linguagem de programação, em R não é diferente. Loops (ou laços) repetem uma sequência de comando quantas vezes você desejar, ou até que uma condição aconteça, variando-se alguns aspectos entre uma repetição e outra.
+
+Supondo que você tenha que ler 400 arquivos de dados que você obteve de um cliente. Você vai escrever 400 vezes a funcão de leitura? Nesse caso, basta fazer um loop para percorrer todos os arquivos da pasta e ler um por um com a função de leitura.
+
+### For
+
+O `for()` é usado para realizar uma série de ordens para uma determinada sequência ou índices (vetor). Sua sintaxe é bem simples:
+
+```{r}
+for(i in c(1, 2, 3, 4, 5)) {
+  print(i^2)
+}
+```
+
+Para cada valor (chamamos esse valor de `i`) dentro do vetor `c(1, 2, 3, 4, 5)`, execute o comando `print(i^2)`. Qualquer outro comando dentro das chaves `{ ... }` seria executado para cada valor do vetor.
+
+Para entendermos melhor, vamos repensar o exemplo das séries usando o `for()`.
+
+```{r}
+lista.de.arquivos <- list.files('dados/dados_loop') #lista todos os arquivos de uma pasta
+is.vector(lista.de.arquivos)
+
+for(i in lista.de.arquivos) {
+  print(paste('Leia o arquivo:', i))
+  #exemplo: read_delim(i, delim = "|")
+}
+```
+
+Também é possível utilizar loop com if. No exemplo a seguir, queremos ver todos os números de 1 a 1000 que são divisíveis por 29 e por 3 ao mesmo tempo. Para isso, utilizaremos o operador `%%`, que mostra o resto da divisão. Se o resto for zero, é divisível.
+
+```{r}
+for(i in 1:1000){
+  if((i %% 29 == 0) & (i %% 3 == 0)){
+    print(i)
+  }
+}
+```
+
+### While
+
+O `while()` também é uma estrutura de controle de fluxo do tipo loop, mas, diferentemente do `for()`, o while executa as tarefas repetidamente até que uma condição seja satisfeita, não percorrendo um vetor.
+
+```{r}
+i <- 1
+while(i <= 5){
+  print(i)
+  i <- i + 1
+}
+```
+
+O uso do while é um pouco menos intuitivo, mas não menos importante. O while é mais apropriado para eventos de automação ou simulação, onde tarefas serão executadas quando um "gatilho" for acionado. Um simples exemplo para ajudar na intuição de seu uso é:
+
+```{r eval=FALSE}
+automatico <- list.files('dados/automatico/')
+length(automatico) == 0
+```
+
+Temos uma pasta vazia. O loop abaixo vai monitorar essa pasta. Enquanto essa pasta estiver vazia, ele estará em execução. Quando você colocar um arquivo dentro dessa pasta, vai mudar a condição `length(automatico) == 0` de `TRUE` para `FALSE` e vai mudar a condição `length(automatico) > 0` de `FALSE` para `TRUE`, disparando todas as tarefas programadas. Usamos a função `Sys.sleep(5)` para que o código espere por mais cinco segundos antes de começar o loop novamente.
+
+```{r eval=FALSE}
+while (length(automatico) == 0) {
+  automatico <- list.files('dados/automatico/')
+  if(length(automatico) > 0) {
+    print('O arquivo chegou!')
+    print('Inicia a leitura dos dados')
+    print('Faz a manipulação')
+    print('Envia email informando conclusão dos cálculos')
+  } else {
+    print('aguardando arquivo...')
+    Sys.sleep(5)
+  }
+}
+```
+ 
+Faça o teste: execute o código acima, aguarde alguns segundos e perceba que nada aconteceu. Crie um arquivo qualquer dentro da pasta `dados/automatico/`. Imediatamente o loop será encerrado e as tarefas executadas. Observe o output em tela.
+
+### Funções
+
+Funções "encapsulam" uma sequência de comandos e instruções. É uma estrutura nomeada, que recebe parâmetros para iniciar sua execução e retorna um resultado ao final. Até o momento, você já usou diversas funções. Vejamos então como criar uma função:
+
+```{r eval=FALSE}
+sua_funcao <- function(parametro1, parametro2){
+  
+  # sequência de tarefas
+  
+  return(valores_retornados)
+}
+
+# chamada da função
+sua_funcao
+```
+
+Agora tente entender a seguinte função:
+
+```{r}
+montanha_russa <- function(palavra) {
+  retorno <- NULL
+  for(i in 1:nchar(palavra)) {
+    if(i %% 2 == 0) {
+      retorno <- paste0(retorno, tolower(substr(palavra, i, i)))
+    } else {
+      retorno <- paste0(retorno, toupper(substr(palavra, i, i)))
+    }
+  }
+  return(retorno)
+}
+
+montanha_russa('teste de função: letras maiúsculas e minúsculas')
+montanha_russa('CONSEGUIU ENTENDER?')
+montanha_russa('É Fácil Usar Funções!')
+```
+
+## Manipulações com R base
+
+Dominar a manipulação de data frames e vetores é muito importante. Em geral, toda manipulação pode ser feita com o R base, mas acreditamos que utilizando técnicas do tidyverse a atividade fica bem mais fácil. Portanto, utilizaremos o `dplyr`, um dos principais pacotes do tidyverse. Porém, alguns conceitos do R base são clássicos e precisam ser dominados.
+
+### Trabalhando com colunas de um data.frame
+
+Para selecionar ou trabalhar separadamente com apenas um campo (coluna) do seu data.frame, deve-se utilizar o `$`. Repare nas funções abaixo e no uso do sifrão.
+
+```{r}
+head(airquality$Ozone)
+tail(airquality$Ozone)
+class(airquality$Ozone) # Informa o tipo da coluna
+is.vector(airquality$Ozone) # Apenas para verificar que cada coluna de um data.frame é um vector
+```
+
+
+```{r}
+unique(senado$Party) # Função que retorna apenas os valores únicos, sem repetição, de um vetor
+```
+
+Lembre-se sempre: cada coluna de um data.frame é um vetor, portanto todos os registros (linhas) daquela coluna devem ser do mesmo tipo. Um data.frame pode ser considerado um conjunto de vetores nomeados, todos do mesmo tamanho, ou seja, todos com a mesma quantidade de registros.
+
+Usando termos mais técnicos, um data frame é um conjunto de dados HETEROGÊNEOS, pois cada coluna pode ser de um tipo, e BIDIMENSIONAL, por possuir apenas linhas e colunas. Já o vetor é um conjunto de dados HOMOGÊNEO, pois só pode ter valores de um mesmo tipo, e UNIDIMENSIONAL.
+
+Com esses conceitos em mente fica mais fácil entender o que mostraremos a seguir:
+
+```{r}
+vetor <- c(seq(from=0, to=100, by=15)) #vetor de 0 a 100, de 15 em 15.
+vetor #lista todos os elementos
+vetor[1] #mostra apenas o elemento na posição 1
+vetor[2] #apenas o elemento na posição 2
+vetor[7] #apenas o elemento na posição 7
+vetor[8] #não existe nada na posição 8...
+```
+
+A notação `[]` é usada para selecionar o elemento em uma ou mais posições do vetor.
+
+```{r}
+vetor[c(2,7)] #selecionando mais de um elemento no vetor
+```
+
+Uma notação parecida é usada para selecionar elementos no `data.frame`. Porém, como já comentamos, data frames são BIDIMENSIONAIS. Então usaremos a notação `[,]` com uma vírgula separando qual a linha (posição antes da vírgula) e a coluna (posição após a vírgula) que queremos selecionar.
+
+```{r}
+senado[10, ] #linha 10, todas as colunas
+senado[72, 3] #linha 72, coluna 3
+senado[c(100, 200), c(2,3,4)] # selecionando mais de uma linha e coluna em um data.frame
+senado[c(10:20), ]
+```
+
+Repare na notação c(10:20), você pode usar `:` para criar sequências. Experimente `1:1000`
+
+Também é possível selecionar o item desejado utilizando o próprio nome da coluna:
+```{r}
+senado[1:10, c('SenatorUpper', 'Party', 'State')]
+```
+
+Existem diversas outras formas de seleção e manipulação de dados, como, por exemplo, seleção condicional:
+
+```{r}
+head(senado[senado$Party == 'PDT', ])
+```
+
+Em todas as comparações do R usamos operadores lógicos. São operações matemáticas em que o resultado é `TRUE` ou `FALSE` (tipo `logic`). Para melhor entendimento, selecionamos alguns operadores lógicos e seus significados:
+
+- `==` igual a: compara dois objetos e se forem iguais retorna TRUE, caso contrário, FALSE;
+- `!=` diferente: compara dois objetos e se forem diferentes retorna TRUE, caso contrário, FALSE;
+- `|` ou (or): compara dois objetos, se um dos dois for TRUE, retorna TRUE, se os dois forem FALSE, retorna FALSE;
+- `&` e (and): compara dois objetos, se os dois forem TRUE, retorna TRUE, se um dos dois ou os dois forem FALSE, retorna FALSE;
+- `>`, `>=`, `<`, `<=` maior, maior ou igual, menor, menor ou igual: compara grandeza de dois números e retorna TRUE ou FALSE conforme a condição;
+
+É possível fazer muita coisa com o R base, porém, vamos avançar com as manipulações, utilizando o pacote `dplyr`, por ser mais simples e, por isso, de mais rápido aprendizado.
+
+## Pacote dplyr
+
+O forte do pacote `dplyr` é a sintaxe simples e concisa, o que facilita o aprendizado e torna o pacote um dos preferidos para as tarefas do dia a dia. Também conta como ponto forte sua otimização de performance para manipulação de dados. Ao carregar o pacote `tidyverse`, você já carregará automaticamente o pacote `dplyr`, mas você também pode carregá-lo individualmente:
+
+```{r, eval=FALSE}
+install.packages("dplyr")
+library(dplyr)
+?dplyr
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+```
+
+### Verbetes do dplyr e o operador `%>%`
+
+O `dplyr` cobre praticamente todas as tarefas básicas da manipulação de dados: agregar, sumarizar, filtrar, ordenar, criar variáveis, joins, dentre outras.
+
+As funções do `dplyr` reproduzem as principais tarefas da manipulação, de forma bastante intuitiva. Veja só:
+
+- select()
+- filter()
+- arrange()
+- mutate()
+- group_by()
+- summarise()
+
+Esses são os principais verbetes, mas existem outros disponíveis, como por exemplo `slice()`, `rename()` e `transmute()`. 
+Além de nomes de funções intuitivos, o `dplyr` também faz uso de um recurso disponível em boa parte dos pacotes do Hadley, o operador `%>%` (originário do pacote `magrittr`). Este operador encadeia as chamadas de funções de forma que você não vai precisar ficar chamando uma função dentro da outra ou ficar fazendo atribuições usando diversas linhas para concluir suas manipulações. Aliás, podemos dizer que esse operador `%>%`, literalmente, cria um fluxo sequencial bastante claro e legível para todas as atividades de manipulação.
+
+### Select
+
+O `select()` é a função mais simples de ser entendida. É usada para selecionar variáveis (colunas, campos, features...) do seu data frame.
+
+```{r}
+senadores.partido <- senado %>% select(SenatorUpper, Party)
+head(senadores.partido)
+```
+
+Você pode, também, fazer uma "seleção negativa", ou seja, escolher as colunas que não quer:
+
+```{r}
+senadores.partido <- senado %>% select(-SenatorUpper, -Party)
+head(senadores.partido)
+```
+
+### Filter
+
+Além de escolher apenas alguns campos, você pode escolher apenas algumas linhas, utilizando alguma condição como filtragem. Para isso, basta utilizar a função `filter`.
+
+```{r}
+senadores.pdt.df <- senado %>% 
+  select(SenatorUpper, Party, State) %>% 
+  filter(State == 'RJ', Party == 'PMDB') %>% 
+  distinct() #semelhante ao unique(), traz registros únicos sem repetição
+
+head(senadores.pdt.df)
+```
+
+### Mutate
+
+Para criar novos campos, podemos usar o `mutate`:
+
+```{r}
+senadores.pdt.df <- senado %>% 
+  select(SenatorUpper, Party, State) %>% 
+  filter(Party == 'PMDB') %>% 
+  distinct() #semelhante ao unique(), traz registros únicos sem repetição
+
+head(senadores.pdt.df)
+```
+
+### Group By e Summarise
+
+O `group_by()` e o `summarise()` são operações que trabalham na agregação dos dados, ou seja, um dado mais detalhado passa a ser um dado mais agregado e agrupado, em consequência disso, menos detalhado. O agrupamento de dados geralmente é trabalhado em conjunção com sumarizações, que usam funções matemáticas do tipo soma, média, desvio padrão etc.
+
+Enquanto o `group_by()` "separa" seus dados nos grupos que você selecionar, o `summarise()` faz operações de agregação de linhas limitadas a esse grupo.
+
+Vale observar que operações de agrupamento e sumarização geralmente DIMINUEM a quantidade de linhas dos seus dados, pois está reduzindo o nível de detalhe. Ou seja, de alguma forma, você está "perdendo" detalhe para "ganhar" agregação.
+
+
+Como exemplo, utilizaremos os dados disponíveis no pacote nycflights13:
+```{r eval=TRUE, message=FALSE, echo=FALSE}
+library(nycflights13)
+data("flights")
+```
+
+```{r eval=FALSE}
+install.packages("nycflights13")
+library(nycflights13)
+data("flights")
+```
+
+```{r}
+str(flights)
+```
+
+Gostaríamos de obter a média de atraso da chegada para cada mês. Para isso, primeiro agrupamos no nível necessário e depois sumarizamos.
+
+```{r}
+media <- flights %>%
+  group_by(month) %>%
+  summarise(arr_delay_media = mean(arr_delay, na.rm=TRUE), 
+            dep_delay_media = mean(dep_delay, na.rm=TRUE))
+
+media
+```
+
+
+### Arrange
+
+A função `arrange()` serve para organizar os dados em sua ordenação. Costuma ser uma das últimas operações, normalmente usada para organizar os dados e facilitar visualizações ou criação de relatórios. Utilizando o exemplo anterior, gostaríamos de ordenar os meses pelas menores médias de decolagem (para ordens decrescentes basta usar o sinal de menos `-`)
+
+```{r}
+media <- flights %>%
+  group_by(month) %>%
+  summarise(arr_delay_media = mean(arr_delay, na.rm=TRUE), 
+            dep_delay_media = mean(dep_delay, na.rm=TRUE)) %>% 
+  arrange(dep_delay_media)
+
+media
+```
+### O operador %>%
+
+Observe novamente as manipulações feitas acima. Repare que apenas acrescentamos verbetes e encadeamos a manipulação com o uso de `%>%`.
+
+A primeira parte `serie.orig %>%` é a passagem onde você informa o data.frame que utilizará na sequência de manipulação. A partir daí, as chamadas seguintes `select() %>%`, `filter() %>%`, `mutate() %>%` etc, são os encadeamentos de manipulação que você pode fazer sem precisar atribuir resultados ou criar novos objetos.
+
+Em outras palavras, usando o operador `%>%`, você estará informando que um resultado da operação anterior será a entrada para a nova operação. Esse encadeamento facilita muito as coisas, tornando a manipulação mais legível e intuitiva.
+
+## Exercícios
+
+Utilizando os dados em `senado.csv`, tente usar da manipulação de dados para responder às perguntas a seguir:
+
+
+```{r eval=FALSE, echo=FALSE}
+#1
+senado2 <- senado %>% filter(!is.na(State))
+#2
+senado2 %>% filter(GovCoalition) %>% select(Party) %>% distinct()
+senado2 %>% filter(!GovCoalition) %>% select(Party) %>% distinct()
+#3
+senado2 %>% group_by(Party) %>% summarise(qtd = n_distinct(SenatorUpper)) %>% arrange(-qtd)
+#4
+senado2 %>% group_by(Party) %>% summarise(total_s = sum(Vote == 'S')) %>% arrange(-total_s)
+#5
+senado2 %>% 
+  mutate(Regiao = ifelse(State %in% c("AM", "AC", "TO", "PA", "RO", "RR"), "Norte",
+                         ifelse(State %in% c("SP", "MG", "RJ", "ES"), "Sudeste",
+                                ifelse(State %in% c("MT", "MS", "GO", "DF"), "Centro-Oeste",
+                                       ifelse(State %in% c("PR", "SC", "RS"), "Sul", "Nordeste"))))) %>%
+  group_by(Regiao) %>% 
+  summarise(total_s = sum(Vote == 'S')) %>% 
+  arrange(-total_s)
+  
+```
+1. Verifique a existência de registros `NA` em `State`. Caso existam, crie um novo data.frame `senado2` sem esses registros e utilize-o para os próximos exercícios. `Dica: is.na(State)`
+
+2. Quais partidos foram parte da coalizão do governo? E quais não foram? `Dica: filter()`
+
+3. Quantos senadores tinha cada partido? Qual tinha mais? Quais tinham menos? `Dica: group_by(), summarise() e n_distinct()`
+
+4. Qual partido votou mais "sim"? E qual voltou menos "sim"? `Dica: sum(Vote == 'S')`
+
+5. Qual região do país teve mais votos "sim"? Primeiro será necessário criar uma coluna região para depois contabilizar o total de votos por região.
+
+>Dica: mutate(Regiao = ifelse(State %in% c("AM", "AC", "TO", "PA", "RO", "RR"), "Norte",
+                         ifelse(State %in% c("SP", "MG", "RJ", "ES"), "Sudeste",
+                                ifelse(State %in% c("MT", "MS", "GO", "DF"), "Centro-Oeste",
+                                       ifelse(State %in% c("PR", "SC", "RS"), "Sul", "Nordeste")))))
+                                       
+
+
+
+

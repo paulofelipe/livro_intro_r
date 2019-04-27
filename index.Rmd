@@ -1,0 +1,142 @@
+--- 
+title: "Ciência de Dados com R - Introdução"
+author: "Saulo Guerra, Paulo Felipe de Oliveira e Robert McDonnell"
+date: "`r format.Date(Sys.Date(), '%d/%m/%Y')`"
+site: bookdown::bookdown_site
+output: 
+  bookdown::gitbook:
+    includes:
+      in_header: header.html
+    config:
+      sharing:
+        facebook: false
+        twitter: false
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+description: "Aprendendo a programar com R"
+---
+
+```{r, include=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(fig.align='center', fig.width = 7, fig.asp = 0.618,
+                      out.width = '100%')
+```
+
+# Prefácio {-}
+
+Este livro foi criado por Saulo Guerra e Paulo Felipe para o curso Introdução à Ciência de Dados com R, oferecido pelo IBPAD. Para a construção deste livro, foi utilizado o Bookdown. Em alguns trechos, este livro foi baseado no material produzido por Robert McDonnell.
+
+```{r echo=FALSE}
+knitr::include_graphics("./imagens/logo.png")
+```
+
+
+# Introdução
+
+## O que é Ciência de Dados?
+
+Trata-se de um termo cada vez mais utilizado para designar uma área de conhecimento voltada para o estudo e a análise de dados, onde busca-se extrair conhecimento e criar novas informações. É uma atividade interdisciplinar, que concilia principalmente duas grandes áreas: Ciência da Computação e Estatística. A Ciência de Dados vem sendo aplicada como apoio em diferentes outras áreas de conhecimento, tais como: Medicina, Biologia, Economia, Comunicação, Ciências Políticas etc. Apesar de não ser uma área nova, o tema vem se popularizando cada vez mais, graças à explosão na produção de dados e crescente dependência dos dados para a tomada de decisão.
+
+## Workflow da Ciência de Dados
+
+Não existe apenas uma forma de estruturar e aplicar os conhecimentos da Ciência de Dados. A forma de aplicação varia bastante conforme a necessidade do projeto ou do objetivo que se busca alcançar. Neste curso, usaremos um modelo de workflow bastante utilizado, apresentado no livro R for Data Science [@R-for-Data-Science].
+
+```{r echo=FALSE, fig.cap='Workflow básico para ciência de dados'}
+knitr::include_graphics("imagens/workflow.png")
+```
+
+Esse workflow propõe basicamente os seguintes passos:
+
+- Carregar os dados;
+- Limpar os dados;
+- Transformar, visualizar e modelar (fase exploratória);
+- Comunicar o resultado.
+
+## Linguagens para Ciência de dados
+
+Para a aplicação dessas atividades comuns da Ciência de Dados, é necessário dominar-se as ferramentas corretas. Existem diversas linguagens/ferramentas: R, Python, SAS, SQL, Matlab, Stata, Aplicações de BI etc.
+
+Cabe ao cientista de dados avaliar qual é a ferramenta mais adequada para alcançar seus objetivos.
+
+## O que é R e por que devo aprendê-lo?
+
+R é uma linguagem de programação estatística que vem passando por diversas evoluções e se tornando cada vez mais uma linguagem de amplos objetivos. Podemos entender o R também como um conjunto de pacotes e ferramentas estatísticas, munido de funções que facilitam sua utilização, desde a criação de simples rotinas até análises de dados complexas, com visualizações bem acabadas.
+
+Segue alguns motivos para aprender-se R:
+
+- É completamente gratuito e de livre distribuição;
+- Curva de aprendizado bastante amigável, sendo muito fácil de se aprender;
+- Enorme quantidade de tutoriais e ajuda disponíveis gratuitamente na internet;
+- É excelente para criar rotinas e sistematizar tarefas repetitivas;
+- Amplamente utilizado pela comunidade acadêmica e pelo mercado;
+- Quantidade enorme de pacotes, para diversos tipos de necessidades;
+- Ótima ferramenta para criar relatórios e gráficos.
+
+Apenas para exemplificar-se sua versatilidade, este eBook e os slides das aulas foram todos feitos em R.
+
+## RStudio
+
+O R puro se apresenta como uma simples "tela preta" com uma linha para inserir comandos. Isso é bastante assustador para quem está começando e bastante improdutivo para quem já faz uso intensivo da ferramenta. Felizmente existe o RStudio, ferramenta auxiliar que usaremos durante todo o curso.
+
+Entenda o RStudio como uma interface gráfica com diversas funcionalidades que melhoram ainda mais o uso e aprendizado do R. Na prática, o RStudio facilita muito o dia a dia de trabalho. Portanto, desde já, ao falarmos em R, falaremos automaticamente no RStudio.
+
+Essa é a "cara" do RStudio:
+
+```{r echo=FALSE, fig.cap='RStudio se divide em 4 partes'}
+knitr::include_graphics("imagens/RStudio_001.png")
+```
+
+Repare que, além da barra de menu superior, o RStudio é divido em quatro partes principais:
+
+<h4> 1. Editor de Código </h4>
+No editor de código, você poderá escrever e editar os scripts. Script nada mais é do que uma sequência de comandos/ordens que serão executados em sequência pelo R. O editor do RStudio oferece facilidades como organização dos comandos, "auto-complete" de comandos, destaque da sintaxe dos comandos etc. Provavelmente é a parte que mais utilizaremos.
+
+<h4> 2. Console </h4>
+É no console que o R mostrará a maioria dos resultados dos comandos. Também é possível escrever os comandos diretamente no console, sem o uso do editor de código. É muito utilizado para testes e experimentos rápidos. Um uso rápido do console é, por exemplo, chamar a ajuda do R usando o comando `?` (isso mesmo, a interrogação é um comando!). Voltaremos a falar deste comando `?` em breve.
+
+<h4> 3. Environment e History </h4>
+No Environment ficarão guardados todos os objetos que forem criados na sessão do R. Entenda sessão como o espaço de tempo entre o momento em que você inicia o R e o momento em que finaliza. Neste período, tudo que você faz usa memória RAM e o processador do computador. E na aba History, como você deve imaginar, o RStudio cria um histórico de comandos utilizados.
+
+<h4> 4. Files, Plots, Packages, Help e Viewer. </h4>
+Nesta janela, estão várias funcionalidades do RStudio. Na aba Files, você terá uma navegação de arquivos do seu computador. Também será possível definir o diretório de trabalho (você também pode definir diretamente no código, mas isto será tratado posteriormente), ou seja, o R entende o seu diretório de trabalho como ponto de partida para localizar arquivos que sejam chamados no script.
+
+<h5> 4.1 Aba Plots </h5>
+A aba Plots trará os gráficos gerados, possibilitando a exportação para alguns formatos diferentes, como .png e .pdf.
+
+<h5> 4.2 Aba Packages </h5>
+Em Packages estão listados os pacotes instalados. Você pode verificar quais estão carregados e, caso necessário, poderá carregar algum pacote necessário para a sua análise. Também é possível instalar e atualizar pacotes. Novamente, tudo isto é possível fazer diretamente no código.
+
+<h5> 4.3 Aba Help </h5>
+O nome já diz tudo. Esta aba será bastante utilizada por você. Saber usar o help é fundamental para evitar desperdício de tempo. Os usuários de R, em geral, são bastante solícitos. Entretanto, uma olhadinha rápida no help pode evitar que você gaste “créditos” desnecessariamente.
+
+<h5> 4.4 Aba Viewer </h5>
+Por fim, o Viewer. Esta funcionalidade é utilizada para visualizar-se localmente conteúdo web. O gráfico da figura está na aba Viewer porque é uma visualização em javascript, que pode ser adicionada a documentos html gerados usando o RMarkdown ou em aplicações web com suporte do Shiny.
+
+## Buscando Ajuda
+
+Independentemente do seu nível de conhecimento, sempre haverá a necessidade de buscar ajuda. Ou seja, saber procurar ajuda é essencial para aprimorar seus conhecimentos em Ciência de Dados. Segue algumas dicas de como buscar ajuda para sanar dúvidas e resolver problemas em R:
+
+- Sempre procure em inglês. Apesar da comunidade R em língua portuguesa ser bem grande, a de língua inglesa é maior ainda. É muito provável que seus problemas e dúvidas já tenham sido sanados;
+- Explore bem o help do próprio R;
+- Conheça e aprenda a usar o stack overflow, a maior comunidade de ajuda técnica da internet.
+
+Se mesmo explorando todas as dicas acima não conseguir resolver seu problema, procure por fóruns específicos.
+
+Se você for realizar uma pergunta em algum fórum ou site de perguntas e respostas, é importante atentar para alguns pontos que deverão ser informados para que fique mais fácil de alguém te ajudar:
+
+- Versão do R que está usando;
+- Sistema operacional;
+- Forneça um exemplo replicável;
+- Veja se a sua dúvida já não foi abordada em outro tópico.
+
+## Exercícios
+
+1. Digite o comando `R.Version()`. O que acontece?
+
+2. Encontre o item de menu `Help` e descubra como identificar a versão do seu RStudio.
+
+3. Encontre o item de menu `Cheatsheets`. O que este menu oferece?
+
+4. Entre no site https://stackoverflow.com e digite `[r]` na caixa de busca. O que acontece?

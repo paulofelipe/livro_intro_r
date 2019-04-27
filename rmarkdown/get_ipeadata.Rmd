@@ -1,0 +1,159 @@
+---
+title: "Baixar dados do ipeadata"
+author: "Paulo Felipe"
+date: "29 de novembro de 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# A função 
+
+```{r}
+get_ipeadata <- function(serie_id = "600803243", freq="M", start = NULL){
+  require(rvest, quietly = TRUE)
+  require(stringr, quietly = TRUE)
+  require(tidyr, quietly = TRUE)
+  require(dplyr, quietly = TRUE)
+  require(methods, quietly = TRUE)
+  
+  link <- paste0("http://ipeadata.gov.br/ExibeSerie.aspx?serid=",serie_id,"&module=M")
+  pagina <- read_html(link)
+  
+  dados.ipea<-pagina %>%
+    html_nodes(".dxgvTable") %>%
+    html_table(fill = TRUE, dec = ",")
+  
+  dados.ipea <- dados.ipea[[1]] %>%
+    tbl_df(.) %>%
+    select(X1, X2) %>%
+    slice(-(1:3))
+  
+  if(freq == "M"){
+    dados.ipea <- dados.ipea %>%
+      mutate(ano = as.numeric(str_sub(X1, 1, 4)),
+             mes = as.numeric(str_sub(X1, 6, 7)),
+             valor = str_replace_all(X2, "\\.", ""),
+             valor = str_replace_all(valor, ",", "."),
+             valor = as.numeric(valor)) %>%
+      select(ano, mes, valor) %>%
+      na.omit()
+    
+    min.ano <- min(dados.ipea$ano)
+    min.mes <- min(dados.ipea$mes[dados.ipea$ano == min.ano])
+    t <- ts(dados.ipea$valor, start = c(min.ano, min.mes), freq = 12)  
+    if(!is.null(start)){
+      t <- window(t, start = start)
+    }
+    t
+  } else if (freq == "T"){
+    dados.ipea <- dados.ipea %>%
+      mutate(ano = as.numeric(str_sub(X1, 1, 4)),
+             trimestre = as.numeric(str_sub(X1, 7, 7)),
+             valor = str_replace_all(X2, "\\.", ""),
+             valor = str_replace_all(valor, ",", "."),
+             valor = as.numeric(valor)) %>%
+      select(ano, trimestre, valor) %>%
+      na.omit()
+    
+    min.ano <- min(dados.ipea$ano)
+    min.trimestre <- min(dados.ipea$trimestre[dados.ipea$ano == min.ano])
+    t <- ts(dados.ipea$valor, start = c(min.ano, min.trimestre), freq = 4)  
+    if(!is.null(start)){
+      t <- window(t, start = start)
+    }
+    t
+  } else if (freq == "A"){
+    dados.ipea <- dados.ipea %>% 
+      mutate(ano = as.numeric(X1),
+             valor = str_replace_all(X2, "\\.", ""),
+             valor = str_replace_all(valor, ",", "."),
+             valor = as.numeric(valor)) %>% 
+      select(ano, valor) %>% 
+      na.omit()
+    min.ano <- min(dados.ipea$ano)
+    t <- ts(dados.ipea$valor, start = c(min.ano), freq = 1)
+    if(!is.null(start)){
+      t <- window(t, start = start)
+    }
+    t
+  }
+}
+```
+
+### Parâmetros
+
+* `serie_id`: id da série no site www.ipeadata.gov.br
+
+* `freq`: frequência da série **M**ensal, **T**rimestral ou **A**nual
+
+* `start`: vetor de dois valores indicando o ano e o mês desejado para início da série
+
+
+### Exemplo de uso com ggplot2
+
+```{r, message=FALSE}
+ind_q_exp <- get_ipeadata(serie_id = "35690", freq = "M", start = c(1997, 1))
+class(ind_q_exp)
+```
+#### Convertendo um objeto ts para um data.frame
+
+Para converter um objeto `ts` gerado pela função `get_ipeadata()`, faremos o seguinte:
+
+```{r, message=FALSE}
+library(zoo) 
+# O pacote zoo fornece um as.Date que recupera as datas de um objeto ts
+ind_q_exp <- data.frame(indice = as.numeric(ind_q_exp), data = as.Date(ind_q_exp))
+head(ind_q_exp)
+```
+
+
+```{r, fig.width=10, message=FALSE, warning=FALSE}
+library(ggplot2)
+
+ggplot(ind_q_exp, aes(x = data, y = indice)) +
+  geom_line() +
+  labs(y = "Índice",
+       x = "Data",
+       title= "Índice de Quantum das Exportações",
+       caption = "Fonte: Ipeadata")
+```
+
+### Exemplo de uso com dygraphs
+
+```{r, warning=FALSE}
+library(dygraphs)
+ind_q_exp <- get_ipeadata(serie_id = "35690", freq = "M", start = c(1997, 1))
+dygraph(ind_q_exp, main = "Índice de Quantum das Exportações",
+        xlab = "Data",
+        y = "Índice",
+        width = "100%") %>% 
+  dyRangeSelector()
+```
+
+### Exemplo de uso com DT
+
+```{r}
+pt <- jsonlite::fromJSON(url("https://cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"))
+pt$buttons <- list('copy' = 'Copiar', 'print' = 'Imprimir')
+library(DT)
+library(dplyr)
+ind_q_exp <- data.frame(indice = as.numeric(ind_q_exp), data = as.Date(ind_q_exp))
+ind_q_exp <- ind_q_exp %>% 
+  mutate(Ano = format.Date(data, "%Y"),
+         Mes = format.Date(data, "%m")) %>% 
+  select(Ano, Mes, indice)
+
+datatable(ind_q_exp, filter = "top", rownames = FALSE, width = "100%", 
+          extensions = 'Buttons',
+          options = list(pageLength = 12,
+                         dom = 'Bfrtip',
+                         buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+                         language = pt,
+                         columnDefs = list(list(className = "dt-center", targets = c(0, 1, 2)))),
+          colnames = c("Ano", "Mês", "Índice")) %>% 
+  formatRound("indice", digits = 2, mark = ".", dec.mark = ",") 
+```
+

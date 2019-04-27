@@ -1,0 +1,75 @@
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+
+/*  Estilo da sidebar */
+.book-summary {
+	background-color: #162e48 !important;
+	color: #FFFFFF !important;
+}
+
+/*  Estilo da sidebar */
+.book .book-summary ul.summary li a, .book .book-summary ul.summary li.active > a {
+	color: #ededed;
+	font-weight: bold;
+	background: 0 0;
+	text-decoration: none;
+}
+
+.book .book-summary ul.summary li a:hover, .book .book-summary ul.summary li.active > a {
+	color: #fff;
+	background: 0 0;
+	text-decoration: none;
+}
+
+.hexcurso{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.book .book-summary ul.summary li.divider {
+	height: 1px;
+	margin: 7px 0;
+	overflow: hidden;
+	background: rgba(255, 255, 255, 0.3);
+}
+
+.book .book-body .page-wrapper {
+	position: relative;
+	outline: 0;
+	background-color: #f4f4f4;
+}
+
+.book .book-body .page-wrapper .page-inner section.normal {
+	display: block;
+	word-wrap: break-word;
+	overflow: hidden;
+	color: #333;
+	line-height: 1.7;
+	text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	background-color: #f4f4f4;
+}
+
+.book .book-body .page-wrapper .page-inner section.normal pre {
+	overflow: auto;
+	word-wrap: normal;
+	margin: 0 0 1.275em;
+	padding: .85em 1em;
+	background: #ececec;
+}

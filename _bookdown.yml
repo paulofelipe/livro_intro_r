@@ -1,0 +1,8 @@
+book_filename: "cdr-intro"
+language:
+  label:
+    fig: 'Figura '
+    tab: 'Tabela '
+  ui:
+    chapter_name: ""
+delete_merged_file: true

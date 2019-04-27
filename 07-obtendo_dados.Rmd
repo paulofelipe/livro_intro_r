@@ -1,0 +1,99 @@
+
+# Obtendo dados
+
+A base da ciência de dados é, obviamente, o DADO. Portanto, é fundamental sempre ter boas fontes de dados. Se você der sorte, conseguirá dados estruturados para iniciar sua análise. Porém, eventualmente precisará recorrer a fontes de dados não estruturados ou semiestruturados.
+
+Muito provavelmente você algum dia precisará recorrer a uma Application Programming Interface (API) de dados, ou até mesmo precisará utilizar técnicas de Web Scrapping para obter dados diretamente em um próprio site.
+
+## API
+
+API é uma forma de comunicação de dados mais apropriada para as trocas de informações entre softwares. Normalmente APIs trocam dados em formato hierárquico. Os dois formatos hierárquicos mais comuns são Javascript Object Notation (JSON) e eXtensible Markup Language (XML).
+
+Para obter-se e utilizar-se dados de API em R recomendamos a utilização do pacote `jsonlite`.
+
+```{r message=FALSE, warning=FALSE}
+library(jsonlite)
+```
+
+```{r message=FALSE, echo=FALSE}
+library(tidyverse)
+```
+A seguir apresentaremos alguns exemplos de APIs e seu uso. Existem diversas APIs e formas de consumi-las, portanto não iremos exaurir nesse texto todas as possibilidades de uso de APIs. O principal aqui é entender-se APIs como uma fonte rica de dados que pode ser explorada em suas análises.
+
+No exemplo a seguir utilizamos a API do github (portal para repositórios) e veremos quais os repositórios do Hadley Wickham:
+
+```{r}
+hadley.rep <- jsonlite::fromJSON("https://api.github.com/users/hadley/repos")
+
+dim(hadley.rep)
+
+head(hadley.rep[,c('name', 'description')], 15)
+```
+
+Outro exemplo de API muito interessante é o portal de dados abertos da Câmara dos Deputados. Eles possuem diversas APIs para consultar os dados do processo legislativo. Veja o exemplo a seguir, que resgata as proposições utilizando API:
+
+```{r}
+proposicoes <- jsonlite::fromJSON("https://dadosabertos.camara.leg.br/api/v2/proposicoes")
+
+head(proposicoes$dados %>% select(siglaTipo, numero, ano, ementa))
+```
+
+Hoje em dia, todas as redes sociais possuem APIs para consumir os dados dos usuários e postagens. Normalmente essas APIs pedem um cadastro anterior (apesar de gratuitas, em sua maior parte). O R possui diversos pacotes para consumir APIs interessantes:
+
+- Quandl: pacote que fornece diversos dados econômicos de diversos países;
+- Rfacebook: pacote que facilita o uso da API do facebook (requer cadastro prévio);
+- twitterR: pacote que facilita o uso da API do twitter (requer cadastro prévio);
+- ggmap: pacote que facilita o uso da API do google maps.
+
+Sempre procure por APIs para obter dados que possam enriquecer suas análises.
+
+## Web Scrapping
+
+Eventualmente você não terá dados estruturados de forma fácil e nem terá uma API com os dados que procura. Nesses casos pode ser que um próprio site da internet seja sua fonte de dados. Para isso utiliza-se técnicas chamadas de Web Scrapping.
+
+Sites da internet são construídos utilizando-se uma linguagem que é interpretada pelos browsers: _HyperText Markup Language_ (HTML). Esta é uma linguagem que trabalha com tags de forma hierárquica. Nesse site você pode aprender um pouco mais sobre o que é HTML: http://www.w3schools.com/html/tryit.asp?filename=tryhtml_basic_document
+
+Existe um pacote em R que facilita muito o cosumo de dados em HTML: `rvest`, criado também por Hadley Wickham. O `rvest` mapeia os elementos HTML (tags) de uma página web e facilita a "navegação" do R por esses nós da árvore do HTML. Veja o exemplo a seguir:
+
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+library(rvest)
+
+html <- read_html("https://pt.wikipedia.org/wiki/Lista_de_redes_de_televis%C3%A3o_do_Brasil")
+
+html.table <- html %>% html_nodes("table")
+dados <- html.table[[1]] %>% html_table()
+
+dados <- dados %>% 
+  select(-`Lista de emissoras`)
+
+head(dados)
+```
+
+Obtivemos todo o HTML da página, mapeamos os nós de tabela (table) e pegamos seu conteúdo. A partir daí, trata-se de um dataframe normal, que pode ser manipulado com o dplyr.
+
+## Exercícios
+
+1. Obtenha a tabela exibida em http://globoesporte.globo.com/futebol/brasileirao-serie-a/ e chegue ao seguinte resultado:
+
+
+```{r echo=FALSE, eval=TRUE, message=FALSE, eval=FALSE}
+
+html2 <- read_html("http://globoesporte.globo.com/futebol/brasileirao-serie-a/")
+
+html2.table <- html2 %>% html_nodes("table")
+tabela1 <- html2.table[[1]] %>% html_table()
+tabela2 <- html2.table[[2]] %>% html_table()
+
+tabela1 <- tabela1[,c(1,2)]
+names(tabela1) <- c('id', 'Time')
+tabela2$id <- 1:20
+
+classificacao <- tabela1 %>% 
+  inner_join(tabela2, by = c('id' = 'id')) %>% 
+  select(everything(), Aproveitamento = `%`, -`ÚLT. JOGOS`)
+
+classificacao
+
+```
+
+2. Escolha um site do seu interesse e faça um dataframe com uma parte do seu conteúdo (tabelas, listas etc.).

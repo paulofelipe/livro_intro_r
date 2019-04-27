@@ -1,0 +1,180 @@
+
+# Conceitos Básicos
+
+Entenda o R como uma grande calculadora científica cheia de botões, mas, ao invés de apertar os botões, você irá escrever os comandos. Ou seja, aprender R significa se familiarizar com os comandos e saber quando usá-los. Todos os comandos são baseados em inglês e seus nomes, normalmente, dão dicas a respeito do seu uso.
+
+## Console
+
+O console é uma das quatro partes principais do RStudio. Lá é onde você vai digitar suas ordens (comandos) e também é onde o R vai "responder". Para que o R possa interpretar corretamente, será necessário que você conheça a sintaxe da linguagem e a escrita correta dos comandos.
+
+Olhando para o console, você verá o símbolo `>`. Este símbolo indica a linha onde você deve inserir os comandos. Clique nesse símbolo para posicionar o cursor na linha de comandos e digite seu primeiro comando em R: `2 * 3`. Digite e aperte _enter_. Você verá o seguinte resultado:
+
+```{r echo=FALSE}
+2 * 3
+```
+
+Além de outras funcionalidades mais interessantes, o R é como uma grande calculadora científica, como apontado anteriormente. Para entender melhor esse conceito, vamos exercitar um pouco o console de comandos. Digite um por um os seguintes comandos e acompanhe os resultados:
+
+```{r eval=FALSE}
+7 * 9 + 2 * 6
+2.5 * 4
+(50 + 7)/(8 * (3 - 5/2))
+3 ^ 4
+```
+
+Repare que, na medida em que executa os comandos, o R vai respondendo. Esse é o comportamento básico do console, muito utilizado para obter-se resultados rápidos de comandos específicos.
+
+Uma funcionalidade importante é o fato de que o R guarda um histórico dos últimos comandos executados e para acessá-los basta apertar a seta para cima no teclado.
+
+## Scripts
+
+Enquanto no console seus comandos são executados na medida em que você os "envia" com a ordem _enter_, em um script você ordena a execução de uma sequência de comandos, escritos previamente, um seguido do outro. Esses scripts são escritos no editor de códigos do RStudio. Para entender melhor, localize o editor de códigos no RStudio e copie os mesmos comandos anteriores, executados no console. No editor de códigos, a ordem para a execução dos comandos não é o _enter_, para executá-los, clique em **_Source_**, no canto superior direito da área do editor de códigos. Repare bem, pois há uma setinha escura que revelará duas opções de _Source_ (execução do script): **_Source_**, e **_Source With Echo_**. A diferença entre as duas opções é que a primeira executa mas não exibe as respostas no console, já a segunda executa mostrando as respostas no mesmo. A primeira opção será útil em outros casos de scripts muito grandes, ou em situações nas quais não convenha "poluir" o console com um monte de mensagens.
+
+Há um atalho de teclado para o **_Source_**: _ctrl + shift + enter_. Aprenda este atalho, pois você usará muito mais o editor de códigos do que o console para executar os passos da sua análise.
+
+Agora posicione o cursor do mouse com um clique em apenas um dos comandos do seu script. Em seguida, clique no ícone **_Run_**, também no canto superior na área do editor de códigos. Repare que, dessa vez, o R executou apenas um comando, aquele que estava na linha selecionada. Esse tipo de execução também é bastante útil, mas esteja atento, pois é muito comum que comandos em sequência dependam da execução de comandos anteriores para funcionarem corretamente.
+
+Há, também, um atalho de teclado para o **_Run_**: _ctrl + enter_. Este é outro comando importante de ser lembrado, pois é muito importante e será muito utilizado.
+
+### Salvando Scripts
+
+Ao digitar seus comandos no console, o máximo que você consegue recuperar são os comandos imediatamente anteriores, usando a seta para cima. Já no editor de códigos, existe a possibilidade de salvar os seus scripts para continuar em outro momento ou em outro computador, preservar trabalhos passados ou compartilhar seus códigos com a equipe.
+
+Um script em R tem a extensão (terminação) `.R`. Se você tiver o RStudio instalado e der dois clicks em um arquivo com extesão `.R`, o windows abrirá esse arquivo diretamente no RStudio.
+
+Ainda utilizando os comandos digitados no editor de códigos, vá em **_File > Save_**, escolha um local e um nome para seu script e confirme no botão **_Save_**. Lembre-se sempre de ser organizado na hora de armazenar os seus arquivos. Utilize pastas para os diferentes projetos e dentro delas escolha nomes explicativos para os seus trabalhos. Para salvar mais rapidamente, utilize o atalho **_ctrl + S_**.
+
+### Comentários de Código
+
+Ao utilizar o símbolo `#` em uma linha, você está dizendo para o R ignorar aquela linha, pois trata-se de um comentário.
+
+Clique na primeira linha do seu script, aperte _enter_ para adicionar uma linha a mais e digite `# Meu primeiro comentário de código!`. Repare que a cor do comentário é diferente. Execute novamente seu script com o *_Source (ctrl + shift + enter)_* e veja que nada mudou na execução. A título de experimento, retire o símbolo `#` e mantenha o texto do comentário. Execute novamente. O R tenta interpretar essa linha como comando e já que ele não consegue entendê-lo, exibe uma mensagem de erro no console.
+
+O símbolo de comentário também é muito útil para suprimir linhas de código que servem para testar determinados comportamentos. Para exemplificar, adicione o símbolo `#` em qualquer uma das linhas com as operações e veja que ela não será mais executada, será ignorada, pois foi entendida pelo R como um simples comentário de código.
+
+## Objetos (Variáveis)
+
+Para que o R deixe de ser uma simples calculadora, será necessário aprender, dentre outras coisas, o uso de variáveis. Se você tem alguma noção de estatística, provavelmente já tem a intuição do que é uma variável para uma linguagem de programação. No contexto do R, vamos entender variável como um objeto, ou seja, como uma estrutura predefinida que vai "receber" algum valor. Utilizando uma linguagem mais técnica, objeto (ou variável) é um pequeno espaço na memória do seu computador onde o R armazenará um valor ou o resultado de um comando, utilizando um nome que você mesmo definiu.
+
+Conhecer os tipos de objetos do R é fundamental. Para criar objetos, utiliza-se o símbolo `<-`. Este provavelmente é o símbolo que você mais verá daqui para frente.
+
+Execute, no console ou no editor de códigos, o seguinte comando `x <- 15`. Pronto, agora o nome `x` representa o valor `15`. Para comprovar, execute apenas o nome do objeto `x`, o R mostrará o conteúdo dele. A partir de então, você poderá utilizar esse objeto como se fosse o valor 15. Experimente os seguintes resultados:
+
+```{r eval=FALSE}
+x + 5
+x * x / 2
+2 ^ x
+y <- x / 3
+```
+
+Dê uma boa lida em *Dicas e boas práticas para um código organizado* para aprender a organizar seus objetos e funções da melhor maneira possível. 
+
+Todos os objetos que você criar estarão disponíveis na aba **_Environment_**.
+
+O RStudio possui a função _auto complete_. Digite as primeiras letras de um objeto (ou função) que você criou e, em seguida, use o atalho **_ctrl + barra de espaço_**. O RStudio listará tudo que começar com essas letras no arquivo. Selecione algum item e aperte _enter_ para escrevê-lo no editor de códigos.
+
+## Funções
+
+Entenda função como uma sequência de comandos preparados para serem usados de forma simples e, assim, facilitar sua vida. Funções são usadas para tudo que você possa imaginar: cálculos mais complexos, estatística, análise de dados, manipulação de dados, gráficos, relatórios etc. Assim que você o instala, o R já vem configurado com várias funções prontas para uso. A partir de agora, chamaremos esse conjunto de funções que já vem por padrão com o R de *R Base*. 
+
+Claro que as funções do R base não serão suficientes para resolver todos os problemas que você encontrará pela frente. Nesse sentido, o R também mostra outro ponto forte. Você pode instalar conjuntos extras de funções específicas de maneira muito simples: usando pacotes.
+
+Funcões do R base.
+
+```{r eval=FALSE}
+raiz.quadrada <- sqrt(16) # função para calcular raiz quadrada
+
+round(5.3499999, 2) # função para arredondamento
+```
+
+Uma função tem dois elementos básicos: o nome e o(s) parâmetro(s) (também chamados de argumentos). Por exemplo, a função `log(10)` possui o nome `log()` e apenas um parâmetro, que é o número que você quer calcular o log. Já a função `round()` possui dois parâmetros, o número que você quer arredondar e a quantidade de dígitos para arredondamento.
+
+Quando você usa uma função, você pode informar os parâmetros de duas formas: sequencialmente, sem explicitar o nome dos parâmetros, ou na ordem que quiser, explicitando o nome dos parâmetros. Veja o exemplo a seguir:
+
+```{r eval=FALSE}
+round(5.3499999, 2)
+# o mesmo que:
+round(digits = 2, x = 5.3499999)
+```
+
+Para saber como informar os parâmetros corretamente, utilize o comando `?` (ou coloque o cursor no nome da função e pressione F1) para ver a documentação de funções, ou seja, conhecer para que serve, entender cada um dos seus parâmetros e ver exemplos de uso.
+
+```{r eval=FALSE}
+?round
+?rnorm
+??inner_join # procurar ajuda de funções que não estão "instaladas" ainda
+```
+
+Vale comentar que é possível informar objetos nos parâmetros das funções. 
+
+```{r eval=TRUE}
+x <- 3.141593
+round(x, 3)
+ceiling(x)
+floor(x)
+```
+
+Observe algumas das principais funções para estatísticas básicas no R:
+
+Função R       Estatística 
+------------  -------------- 
+`sum()`        Soma de valores 
+`mean()`          Média 
+`var()`         Variância 
+`median()`        Mediana 
+`summary()`     Resumo Estatístico 
+`quantile()`     Quantis 
+---------------------------------
+
+## Pacotes
+
+Como dito antes, pacotes são conjuntos extras de funções que podem ser instalados além do R base. Existem pacotes para auxiliar as diversas linhas de estudo que você possa imaginar: estatística, econometria, ciências sociais, medicina, biologia, gráficos, machine learning etc.
+
+Caso você precise de algum pacote específico, procure no Google pelo tema que necessita. Você encontrará o nome do pacote e o instalará normalmente.
+
+[Nesse link](https://cran.r-project.org/web/packages/available_packages_by_name.html) você pode ver uma lista de todos os pacotes disponíveis no repositório central. Além desses, ainda existe a possibilidade de instalar-se pacotes "não oficiais", que ainda não fazem parte de um repositório central.
+
+Para instalar um pacote, execute o seguinte comando:
+
+```{r eval = FALSE}
+install.packages("dplyr") # instala um famoso pacote de manipulação de dados
+```
+
+Uma vez instalado, esse pacote estará disponível para uso sempre que quiser, sem a necessidade de instalá-lo novamente. Mas, sempre que iniciar um código novo, você precisará carregá-lo na memória. Para isso, use o seguinte comando:
+
+```{r eval = FALSE}
+library(dplyr)
+```
+
+Para instalar um pacote, você precisa informar o nome entre aspas install.packages(“readxl”), caso contrário o pacote não funcionará. Porém, para carregar o pacote em memória, você pode usar com ou sem aspas library(readxl) ou library(“readxl”), ambas as formas funcionam.
+
+## Boas práticas
+
+Rapidamente você perceberá que quanto mais organizado e padronizado mantiverem-se os seus códigos, melhor para você e para sua equipe.
+
+Existem dois guias de boas práticas bastante famosos na comunidade do R. Um sugerido pelo Hadley Wickham e outro por uma equipe do Google.
+
+Dentre as dicas de boa prática, algumas são mais importantes, como, por exemplo: não use acentos e caracteres especiais. Outro ponto importante: o R não aceita variáveis que comecem com números. Você pode até usar números no meio do nome, mas nunca começar com números.
+
+O principal de tudo é: seja qual for o padrão que você preferir, escolha apenas um padrão e seja consistente a ele.
+
+- Guia sugerido Hadley Wickham: http://adv-r.had.co.nz/Style.html
+
+_ Guia sugerido pelo Google: https://google.github.io/styleguide/Rguide.xml
+
+
+## Tidyverse
+
+Como já dito, eventualmente as funções do R base não são suficientes ou simplesmente não fornecem a maneira mais fácil de resolver-se um problema. Neste curso utilizaremos o Tidyverse: uma coleção de pacotes R cuidadosamente desenhados para atuarem no workflow comum da ciência de dados: importação, manipulação, exploração e visualização de dados. Uma vez carregado, esse pacote disponibiliza todo o conjunto de ferramentas de outros pacotes importantes: ggplot2, tibble, tidyr, readr, purrr e dplyr. Oportunamente, detalharemos cada um deles.
+
+O Tidyverse foi idealizado, dentre outros responsáveis, por Hadley Wickham, um dos maiores colaboradores da comunidade R. Se você não o conhece e pretende seguir em frente com o R, certamente ouvirá falar muito dele. Recomendamos segui-lo nas redes sociais para ficar por dentro das novidades do Tidyverse.
+
+## Exercícios
+
+1. Quais as principais diferenças entre um script e o console?
+
+2. Digite `?dplyr`. O que acontece? E se digitar `??dplyr`? Para que serve esse pacote?
+
+3. Para que serve a função `rnorm()`? Quais os seus parâmetros/atributos?
+
+4. Para que serve a função `rm()`? Quais os seus parâmetros/atributos?

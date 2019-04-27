@@ -1,0 +1,5 @@
+"artist"$$$"plays"$$$"BANDA"
+"1"$$$"John"$$$"guitar"$$$"Beatles"
+"2"$$$"Paul"$$$"bass"$$$"Beatles"
+"3"$$$"Keith"$$$"guitar"$$$NA
+"4"$$$"Mick"$$$NA$$$"Stones"

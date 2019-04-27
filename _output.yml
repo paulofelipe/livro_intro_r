@@ -1,0 +1,18 @@
+bookdown::gitbook:
+  css: style.css
+  config:
+    toc:
+      collapse: section
+      before: |
+        <li><a href="./">Ciência de Dados com R - Introdução</a></li>
+        <img src="hexcdr.png" class="hexcurso" alt="hex">
+      after: |
+        <li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado com bookdown</a></li>
+    download: ["pdf"]
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+  latex_engine: xelatex
+  citation_package: natbib
+  keep_tex: yes
+bookdown::epub_book: default

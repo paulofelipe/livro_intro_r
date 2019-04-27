@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>3 Lendo os dados | Ciência de Dados com R - Introdução</title>
+  <meta name="description" content="Aprendendo a programar com R">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="3 Lendo os dados | Ciência de Dados com R - Introdução" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Aprendendo a programar com R" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Lendo os dados | Ciência de Dados com R - Introdução" />
+  
+  <meta name="twitter:description" content="Aprendendo a programar com R" />
+  
+
+<meta name="author" content="Saulo Guerra, Paulo Felipe de Oliveira e Robert McDonnell">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="conceitos-basicos.html">
+<link rel="next" href="manipulando-os-dados.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.5/dygraphs.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+<link href="libs/leaflet-markercluster-1.0.5/MarkerCluster.css" rel="stylesheet" />
+<link href="libs/leaflet-markercluster-1.0.5/MarkerCluster.Default.css" rel="stylesheet" />
+<script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.js"></script>
+<script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.freezable.js"></script>
+<script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.layersupport.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-61574597-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-61574597-1');
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ciência de Dados com R - Introdução</a></li>
+<img src="hexcdr.png" class="hexcurso" alt="hex">
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefácio</a></li>
+<li class="chapter" data-level="1" data-path="introducao.html"><a href="introducao.html"><i class="fa fa-check"></i><b>1</b> Introdução</a><ul>
+<li class="chapter" data-level="1.1" data-path="introducao.html"><a href="introducao.html#o-que-e-ciencia-de-dados"><i class="fa fa-check"></i><b>1.1</b> O que é Ciência de Dados?</a></li>
+<li class="chapter" data-level="1.2" data-path="introducao.html"><a href="introducao.html#workflow-da-ciencia-de-dados"><i class="fa fa-check"></i><b>1.2</b> Workflow da Ciência de Dados</a></li>
+<li class="chapter" data-level="1.3" data-path="introducao.html"><a href="introducao.html#linguagens-para-ciencia-de-dados"><i class="fa fa-check"></i><b>1.3</b> Linguagens para Ciência de dados</a></li>
+<li class="chapter" data-level="1.4" data-path="introducao.html"><a href="introducao.html#o-que-e-r-e-por-que-devo-aprende-lo"><i class="fa fa-check"></i><b>1.4</b> O que é R e por que devo aprendê-lo?</a></li>
+<li class="chapter" data-level="1.5" data-path="introducao.html"><a href="introducao.html#rstudio"><i class="fa fa-check"></i><b>1.5</b> RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="introducao.html"><a href="introducao.html#buscando-ajuda"><i class="fa fa-check"></i><b>1.6</b> Buscando Ajuda</a></li>
+<li class="chapter" data-level="1.7" data-path="introducao.html"><a href="introducao.html#exercicios"><i class="fa fa-check"></i><b>1.7</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html"><i class="fa fa-check"></i><b>2</b> Conceitos Básicos</a><ul>
+<li class="chapter" data-level="2.1" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#console"><i class="fa fa-check"></i><b>2.1</b> Console</a></li>
+<li class="chapter" data-level="2.2" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#scripts"><i class="fa fa-check"></i><b>2.2</b> Scripts</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#salvando-scripts"><i class="fa fa-check"></i><b>2.2.1</b> Salvando Scripts</a></li>
+<li class="chapter" data-level="2.2.2" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#comentarios-de-codigo"><i class="fa fa-check"></i><b>2.2.2</b> Comentários de Código</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#objetos-variaveis"><i class="fa fa-check"></i><b>2.3</b> Objetos (Variáveis)</a></li>
+<li class="chapter" data-level="2.4" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#funcoes"><i class="fa fa-check"></i><b>2.4</b> Funções</a></li>
+<li class="chapter" data-level="2.5" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#pacotes"><i class="fa fa-check"></i><b>2.5</b> Pacotes</a></li>
+<li class="chapter" data-level="2.6" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#boas-praticas"><i class="fa fa-check"></i><b>2.6</b> Boas práticas</a></li>
+<li class="chapter" data-level="2.7" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#tidyverse"><i class="fa fa-check"></i><b>2.7</b> Tidyverse</a></li>
+<li class="chapter" data-level="2.8" data-path="conceitos-basicos.html"><a href="conceitos-basicos.html#exercicios-1"><i class="fa fa-check"></i><b>2.8</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html"><i class="fa fa-check"></i><b>3</b> Lendo os dados</a><ul>
+<li class="chapter" data-level="3.1" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#tipos-de-estrutura-dos-dados"><i class="fa fa-check"></i><b>3.1</b> Tipos de Estrutura dos Dados</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#dados-estruturados"><i class="fa fa-check"></i><b>3.1.1</b> Dados Estruturados</a></li>
+<li class="chapter" data-level="3.1.2" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#dados-nao-estruturados"><i class="fa fa-check"></i><b>3.1.2</b> Dados Não Estruturados</a></li>
+<li class="chapter" data-level="3.1.3" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#dados-semiestruturados"><i class="fa fa-check"></i><b>3.1.3</b> Dados Semiestruturados</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#definindo-o-local-dos-dados"><i class="fa fa-check"></i><b>3.2</b> Definindo o Local dos Dados</a></li>
+<li class="chapter" data-level="3.3" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#pacote-para-leitura-dos-dados"><i class="fa fa-check"></i><b>3.3</b> Pacote para leitura dos dados</a></li>
+<li class="chapter" data-level="3.4" data-path="lendo-os-dados.html"><a href="lendo-os-dados.html#exercicios-2"><i class="fa fa-check"></i><b>3.4</b> Exercícios:</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html"><i class="fa fa-check"></i><b>4</b> Manipulando os dados</a><ul>
+<li class="chapter" data-level="4.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#tipos-de-variaveis-e-colunas"><i class="fa fa-check"></i><b>4.1</b> Tipos de Variáveis e Colunas</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#conversoes-de-tipos-de-variaveis"><i class="fa fa-check"></i><b>4.1.1</b> Conversões de tipos de variáveis</a></li>
+<li class="chapter" data-level="4.1.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#outros-tipos-de-variaveis"><i class="fa fa-check"></i><b>4.1.2</b> Outros tipos de variáveis</a></li>
+<li class="chapter" data-level="4.1.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#valores-faltantes-e-o-na"><i class="fa fa-check"></i><b>4.1.3</b> Valores faltantes e o ‘NA’</a></li>
+<li class="chapter" data-level="4.1.4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#estruturas-de-controle-de-fluxo"><i class="fa fa-check"></i><b>4.1.4</b> Estruturas de Controle de Fluxo</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#if-e-else"><i class="fa fa-check"></i><b>4.2</b> If e Else</a></li>
+<li class="chapter" data-level="4.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#loops"><i class="fa fa-check"></i><b>4.3</b> Loops</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#for"><i class="fa fa-check"></i><b>4.3.1</b> For</a></li>
+<li class="chapter" data-level="4.3.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#while"><i class="fa fa-check"></i><b>4.3.2</b> While</a></li>
+<li class="chapter" data-level="4.3.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#funcoes-1"><i class="fa fa-check"></i><b>4.3.3</b> Funções</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#manipulacoes-com-r-base"><i class="fa fa-check"></i><b>4.4</b> Manipulações com R base</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#trabalhando-com-colunas-de-um-data.frame"><i class="fa fa-check"></i><b>4.4.1</b> Trabalhando com colunas de um data.frame</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#pacote-dplyr"><i class="fa fa-check"></i><b>4.5</b> Pacote dplyr</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#verbetes-do-dplyr-e-o-operador"><i class="fa fa-check"></i><b>4.5.1</b> Verbetes do dplyr e o operador <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="4.5.2" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#select"><i class="fa fa-check"></i><b>4.5.2</b> Select</a></li>
+<li class="chapter" data-level="4.5.3" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#filter"><i class="fa fa-check"></i><b>4.5.3</b> Filter</a></li>
+<li class="chapter" data-level="4.5.4" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#mutate"><i class="fa fa-check"></i><b>4.5.4</b> Mutate</a></li>
+<li class="chapter" data-level="4.5.5" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#group-by-e-summarise"><i class="fa fa-check"></i><b>4.5.5</b> Group By e Summarise</a></li>
+<li class="chapter" data-level="4.5.6" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#arrange"><i class="fa fa-check"></i><b>4.5.6</b> Arrange</a></li>
+<li class="chapter" data-level="4.5.7" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#o-operador"><i class="fa fa-check"></i><b>4.5.7</b> O operador %&gt;%</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="manipulando-os-dados.html"><a href="manipulando-os-dados.html#exercicios-3"><i class="fa fa-check"></i><b>4.6</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="limpando-dados.html"><a href="limpando-dados.html"><i class="fa fa-check"></i><b>5</b> Limpando dados</a><ul>
+<li class="chapter" data-level="5.1" data-path="limpando-dados.html"><a href="limpando-dados.html#o-formato-ideal-dos-dados"><i class="fa fa-check"></i><b>5.1</b> O formato “ideal” dos dados</a></li>
+<li class="chapter" data-level="5.2" data-path="limpando-dados.html"><a href="limpando-dados.html#pacote-tidyr"><i class="fa fa-check"></i><b>5.2</b> Pacote tidyr</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="limpando-dados.html"><a href="limpando-dados.html#gather"><i class="fa fa-check"></i><b>5.2.1</b> Gather</a></li>
+<li class="chapter" data-level="5.2.2" data-path="limpando-dados.html"><a href="limpando-dados.html#spread"><i class="fa fa-check"></i><b>5.2.2</b> Spread</a></li>
+<li class="chapter" data-level="5.2.3" data-path="limpando-dados.html"><a href="limpando-dados.html#separate"><i class="fa fa-check"></i><b>5.2.3</b> Separate</a></li>
+<li class="chapter" data-level="5.2.4" data-path="limpando-dados.html"><a href="limpando-dados.html#unite"><i class="fa fa-check"></i><b>5.2.4</b> Unite</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="limpando-dados.html"><a href="limpando-dados.html#manipulacao-de-texto"><i class="fa fa-check"></i><b>5.3</b> Manipulação de texto</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="limpando-dados.html"><a href="limpando-dados.html#pacote-stringr"><i class="fa fa-check"></i><b>5.3.1</b> Pacote stringr</a></li>
+<li class="chapter" data-level="5.3.2" data-path="limpando-dados.html"><a href="limpando-dados.html#regex"><i class="fa fa-check"></i><b>5.3.2</b> Regex</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="limpando-dados.html"><a href="limpando-dados.html#exercicios-4"><i class="fa fa-check"></i><b>5.4</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="juntando-dados.html"><a href="juntando-dados.html"><i class="fa fa-check"></i><b>6</b> Juntando dados</a><ul>
+<li class="chapter" data-level="6.1" data-path="juntando-dados.html"><a href="juntando-dados.html#uniao-de-dados-union"><i class="fa fa-check"></i><b>6.1</b> União de dados (Union)</a></li>
+<li class="chapter" data-level="6.2" data-path="juntando-dados.html"><a href="juntando-dados.html#cruzamento-de-dados-join"><i class="fa fa-check"></i><b>6.2</b> Cruzamento de Dados (Join)</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="juntando-dados.html"><a href="juntando-dados.html#inner-join-ou-apenas-join"><i class="fa fa-check"></i><b>6.2.1</b> Inner Join (ou apenas Join)</a></li>
+<li class="chapter" data-level="6.2.2" data-path="juntando-dados.html"><a href="juntando-dados.html#left-outer-join"><i class="fa fa-check"></i><b>6.2.2</b> Left Outer Join</a></li>
+<li class="chapter" data-level="6.2.3" data-path="juntando-dados.html"><a href="juntando-dados.html#right-outer-join"><i class="fa fa-check"></i><b>6.2.3</b> Right Outer Join</a></li>
+<li class="chapter" data-level="6.2.4" data-path="juntando-dados.html"><a href="juntando-dados.html#full-outer-join"><i class="fa fa-check"></i><b>6.2.4</b> Full Outer Join</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="juntando-dados.html"><a href="juntando-dados.html#exercicios-5"><i class="fa fa-check"></i><b>6.3</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html"><i class="fa fa-check"></i><b>7</b> Escrevendo dados</a><ul>
+<li class="chapter" data-level="7.1" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#escrevendo-csv"><i class="fa fa-check"></i><b>7.1</b> Escrevendo csv</a></li>
+<li class="chapter" data-level="7.2" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#rdata"><i class="fa fa-check"></i><b>7.2</b> Rdata</a></li>
+<li class="chapter" data-level="7.3" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#escrevendo-outros-tipos-de-arquivos"><i class="fa fa-check"></i><b>7.3</b> Escrevendo outros tipos de arquivos</a></li>
+<li class="chapter" data-level="7.4" data-path="escrevendo-dados.html"><a href="escrevendo-dados.html#exercicios-6"><i class="fa fa-check"></i><b>7.4</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="obtendo-dados.html"><a href="obtendo-dados.html"><i class="fa fa-check"></i><b>8</b> Obtendo dados</a><ul>
+<li class="chapter" data-level="8.1" data-path="obtendo-dados.html"><a href="obtendo-dados.html#api"><i class="fa fa-check"></i><b>8.1</b> API</a></li>
+<li class="chapter" data-level="8.2" data-path="obtendo-dados.html"><a href="obtendo-dados.html#web-scrapping"><i class="fa fa-check"></i><b>8.2</b> Web Scrapping</a></li>
+<li class="chapter" data-level="8.3" data-path="obtendo-dados.html"><a href="obtendo-dados.html#exercicios-7"><i class="fa fa-check"></i><b>8.3</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>9</b> Visualizações de dados (ggplot2)</a><ul>
+<li class="chapter" data-level="9.1" data-path="ggplot2.html"><a href="ggplot2.html#mapeamento-estetico"><i class="fa fa-check"></i><b>9.1</b> Mapeamento Estético</a></li>
+<li class="chapter" data-level="9.2" data-path="ggplot2.html"><a href="ggplot2.html#objetos-geometricos"><i class="fa fa-check"></i><b>9.2</b> Objetos geométricos</a></li>
+<li class="chapter" data-level="9.3" data-path="ggplot2.html"><a href="ggplot2.html#escalas"><i class="fa fa-check"></i><b>9.3</b> Escalas</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="ggplot2.html"><a href="ggplot2.html#tipos-de-variaveis"><i class="fa fa-check"></i><b>9.3.1</b> Tipos de Variáveis</a></li>
+<li class="chapter" data-level="9.3.2" data-path="ggplot2.html"><a href="ggplot2.html#eixos"><i class="fa fa-check"></i><b>9.3.2</b> Eixos</a></li>
+<li class="chapter" data-level="9.3.3" data-path="ggplot2.html"><a href="ggplot2.html#escalas-de-cores-color-e-preenchimento-fill"><i class="fa fa-check"></i><b>9.3.3</b> Escalas de Cores (color) e Preenchimento (fill)</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="ggplot2.html"><a href="ggplot2.html#subplots-facet"><i class="fa fa-check"></i><b>9.4</b> Subplots (facet)</a></li>
+<li class="chapter" data-level="9.5" data-path="ggplot2.html"><a href="ggplot2.html#temas"><i class="fa fa-check"></i><b>9.5</b> Temas</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="ggplot2.html"><a href="ggplot2.html#temas-disponiveis-no-ggplot2"><i class="fa fa-check"></i><b>9.5.1</b> Temas disponíveis no ggplot2</a></li>
+<li class="chapter" data-level="9.5.2" data-path="ggplot2.html"><a href="ggplot2.html#temas-no-pacote-ggthemes"><i class="fa fa-check"></i><b>9.5.2</b> Temas no pacote ggthemes</a></li>
+<li class="chapter" data-level="9.5.3" data-path="ggplot2.html"><a href="ggplot2.html#hrbrthemes"><i class="fa fa-check"></i><b>9.5.3</b> hrbrthemes</a></li>
+<li class="chapter" data-level="9.5.4" data-path="ggplot2.html"><a href="ggplot2.html#setando-o-tema-globalmente"><i class="fa fa-check"></i><b>9.5.4</b> Setando o tema globalmente</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="ggplot2.html"><a href="ggplot2.html#legendas"><i class="fa fa-check"></i><b>9.6</b> Legendas</a></li>
+<li class="chapter" data-level="9.7" data-path="ggplot2.html"><a href="ggplot2.html#escolhendo-o-tipo-de-grafico"><i class="fa fa-check"></i><b>9.7</b> Escolhendo o tipo de gráfico</a></li>
+<li class="chapter" data-level="9.8" data-path="ggplot2.html"><a href="ggplot2.html#grafico-de-dispersao-geom_point"><i class="fa fa-check"></i><b>9.8</b> Gráfico de Dispersão (<code>geom_point()</code>)</a></li>
+<li class="chapter" data-level="9.9" data-path="ggplot2.html"><a href="ggplot2.html#graficos-de-bolhas"><i class="fa fa-check"></i><b>9.9</b> Gráficos de Bolhas</a></li>
+<li class="chapter" data-level="9.10" data-path="ggplot2.html"><a href="ggplot2.html#graficos-de-barras"><i class="fa fa-check"></i><b>9.10</b> Gráficos de Barras</a></li>
+<li class="chapter" data-level="9.11" data-path="ggplot2.html"><a href="ggplot2.html#graficos-de-linhas"><i class="fa fa-check"></i><b>9.11</b> Gráficos de linhas</a></li>
+<li class="chapter" data-level="9.12" data-path="ggplot2.html"><a href="ggplot2.html#histogramas-e-freqpoly"><i class="fa fa-check"></i><b>9.12</b> Histogramas e freqpoly</a></li>
+<li class="chapter" data-level="9.13" data-path="ggplot2.html"><a href="ggplot2.html#boxplots-jitterplots-e-violinplots"><i class="fa fa-check"></i><b>9.13</b> Boxplots, jitterplots e violinplots</a></li>
+<li class="chapter" data-level="9.14" data-path="ggplot2.html"><a href="ggplot2.html#anotacoes"><i class="fa fa-check"></i><b>9.14</b> Anotações</a></li>
+<li class="chapter" data-level="9.15" data-path="ggplot2.html"><a href="ggplot2.html#cleveland-dot-plot"><i class="fa fa-check"></i><b>9.15</b> Cleveland Dot Plot</a></li>
+<li class="chapter" data-level="9.16" data-path="ggplot2.html"><a href="ggplot2.html#textosrotulos"><i class="fa fa-check"></i><b>9.16</b> Textos/Rótulos</a></li>
+<li class="chapter" data-level="9.17" data-path="ggplot2.html"><a href="ggplot2.html#plotando-funcoes"><i class="fa fa-check"></i><b>9.17</b> Plotando funções</a></li>
+<li class="chapter" data-level="9.18" data-path="ggplot2.html"><a href="ggplot2.html#mapas"><i class="fa fa-check"></i><b>9.18</b> Mapas</a><ul>
+<li class="chapter" data-level="9.18.1" data-path="ggplot2.html"><a href="ggplot2.html#simplificando-o-shapefile"><i class="fa fa-check"></i><b>9.18.1</b> Simplificando o shapefile</a></li>
+<li class="chapter" data-level="9.18.2" data-path="ggplot2.html"><a href="ggplot2.html#encoding-dos-dados-do-shapefile"><i class="fa fa-check"></i><b>9.18.2</b> Encoding dos dados do shapefile</a></li>
+</ul></li>
+<li class="chapter" data-level="9.19" data-path="ggplot2.html"><a href="ggplot2.html#salvando-graficos"><i class="fa fa-check"></i><b>9.19</b> Salvando Gráficos</a></li>
+<li class="chapter" data-level="9.20" data-path="ggplot2.html"><a href="ggplot2.html#extensoes-do-ggplot2"><i class="fa fa-check"></i><b>9.20</b> Extensões do ggplot2</a><ul>
+<li class="chapter" data-level="9.20.1" data-path="ggplot2.html"><a href="ggplot2.html#ggrepel"><i class="fa fa-check"></i><b>9.20.1</b> ggrepel</a></li>
+<li class="chapter" data-level="9.20.2" data-path="ggplot2.html"><a href="ggplot2.html#gganimate"><i class="fa fa-check"></i><b>9.20.2</b> gganimate</a></li>
+</ul></li>
+<li class="chapter" data-level="9.21" data-path="ggplot2.html"><a href="ggplot2.html#exercicios-8"><i class="fa fa-check"></i><b>9.21</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="htmlwidgets.html"><a href="htmlwidgets.html"><i class="fa fa-check"></i><b>10</b> Visualizações Interativas</a><ul>
+<li class="chapter" data-level="10.1" data-path="htmlwidgets.html"><a href="htmlwidgets.html#introducao-1"><i class="fa fa-check"></i><b>10.1</b> Introdução</a></li>
+<li class="chapter" data-level="10.2" data-path="htmlwidgets.html"><a href="htmlwidgets.html#plotly"><i class="fa fa-check"></i><b>10.2</b> Plotly</a></li>
+<li class="chapter" data-level="10.3" data-path="htmlwidgets.html"><a href="htmlwidgets.html#dygraphs"><i class="fa fa-check"></i><b>10.3</b> dygraphs</a></li>
+<li class="chapter" data-level="10.4" data-path="htmlwidgets.html"><a href="htmlwidgets.html#leaflet"><i class="fa fa-check"></i><b>10.4</b> Leaflet</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="htmlwidgets.html"><a href="htmlwidgets.html#primeiro-exemplo"><i class="fa fa-check"></i><b>10.4.1</b> Primeiro exemplo</a></li>
+<li class="chapter" data-level="10.4.2" data-path="htmlwidgets.html"><a href="htmlwidgets.html#marcadores"><i class="fa fa-check"></i><b>10.4.2</b> Marcadores</a></li>
+<li class="chapter" data-level="10.4.3" data-path="htmlwidgets.html"><a href="htmlwidgets.html#poligonos"><i class="fa fa-check"></i><b>10.4.3</b> Polígonos</a></li>
+</ul></li>
+<li class="chapter" data-level="10.5" data-path="htmlwidgets.html"><a href="htmlwidgets.html#exercicios-9"><i class="fa fa-check"></i><b>10.5</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="rmarkdown.html"><a href="rmarkdown.html"><i class="fa fa-check"></i><b>11</b> RMarkdown</a><ul>
+<li class="chapter" data-level="11.1" data-path="rmarkdown.html"><a href="rmarkdown.html#usos-do-rmarkdown"><i class="fa fa-check"></i><b>11.1</b> Usos do RMarkdown</a></li>
+<li class="chapter" data-level="11.2" data-path="rmarkdown.html"><a href="rmarkdown.html#estrutura-de-um-rmarkdown"><i class="fa fa-check"></i><b>11.2</b> Estrutura de um RMarkdown</a></li>
+<li class="chapter" data-level="11.3" data-path="rmarkdown.html"><a href="rmarkdown.html#renderizando-um-documento"><i class="fa fa-check"></i><b>11.3</b> Renderizando um documento</a></li>
+<li class="chapter" data-level="11.4" data-path="rmarkdown.html"><a href="rmarkdown.html#sintaxe"><i class="fa fa-check"></i><b>11.4</b> Sintaxe</a></li>
+<li class="chapter" data-level="11.5" data-path="rmarkdown.html"><a href="rmarkdown.html#opcoes-de-chunk"><i class="fa fa-check"></i><b>11.5</b> Opções de Chunk</a></li>
+<li class="chapter" data-level="11.6" data-path="rmarkdown.html"><a href="rmarkdown.html#principais-formatos"><i class="fa fa-check"></i><b>11.6</b> Principais Formatos</a><ul>
+<li class="chapter" data-level="11.6.1" data-path="rmarkdown.html"><a href="rmarkdown.html#html"><i class="fa fa-check"></i><b>11.6.1</b> HTML</a></li>
+<li class="chapter" data-level="11.6.2" data-path="rmarkdown.html"><a href="rmarkdown.html#pdf"><i class="fa fa-check"></i><b>11.6.2</b> PDF</a></li>
+<li class="chapter" data-level="11.6.3" data-path="rmarkdown.html"><a href="rmarkdown.html#word"><i class="fa fa-check"></i><b>11.6.3</b> Word</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="rmarkdown.html"><a href="rmarkdown.html#excercicios"><i class="fa fa-check"></i><b>11.7</b> Excercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="modelos.html"><a href="modelos.html"><i class="fa fa-check"></i><b>12</b> Modelos</a><ul>
+<li class="chapter" data-level="12.1" data-path="modelos.html"><a href="modelos.html#modelo-linear"><i class="fa fa-check"></i><b>12.1</b> Modelo Linear</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="modelos.html"><a href="modelos.html#regressao"><i class="fa fa-check"></i><b>12.1.1</b> Regressão</a></li>
+<li class="chapter" data-level="12.1.2" data-path="modelos.html"><a href="modelos.html#classificacao"><i class="fa fa-check"></i><b>12.1.2</b> Classificação</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="modelos.html"><a href="modelos.html#exercicios-10"><i class="fa fa-check"></i><b>12.2</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="revisao-titanic.html"><a href="revisao-titanic.html"><i class="fa fa-check"></i><b>13</b> Revisão - Titanic</a><ul>
+<li class="chapter" data-level="13.1" data-path="revisao-titanic.html"><a href="revisao-titanic.html#objetivo"><i class="fa fa-check"></i><b>13.1</b> Objetivo</a></li>
+<li class="chapter" data-level="13.2" data-path="revisao-titanic.html"><a href="revisao-titanic.html#carregando-os-dados"><i class="fa fa-check"></i><b>13.2</b> Carregando os Dados</a></li>
+<li class="chapter" data-level="13.3" data-path="revisao-titanic.html"><a href="revisao-titanic.html#manipulando-os-dados-1"><i class="fa fa-check"></i><b>13.3</b> Manipulando os dados</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="revisao-titanic.html"><a href="revisao-titanic.html#variavel-survived"><i class="fa fa-check"></i><b>13.3.1</b> Variável Survived</a></li>
+<li class="chapter" data-level="13.3.2" data-path="revisao-titanic.html"><a href="revisao-titanic.html#variavel-name"><i class="fa fa-check"></i><b>13.3.2</b> Variável Name</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="revisao-titanic.html"><a href="revisao-titanic.html#idade"><i class="fa fa-check"></i><b>13.4</b> Idade</a><ul>
+<li class="chapter" data-level="13.4.1" data-path="revisao-titanic.html"><a href="revisao-titanic.html#exercicio"><i class="fa fa-check"></i><b>13.4.1</b> Exercício</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="revisao-titanic.html"><a href="revisao-titanic.html#visualizacoes"><i class="fa fa-check"></i><b>13.5</b> Visualizações</a></li>
+<li class="chapter" data-level="13.6" data-path="revisao-titanic.html"><a href="revisao-titanic.html#modelo-preditivo"><i class="fa fa-check"></i><b>13.6</b> Modelo Preditivo</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i><b>14</b> Referências</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado com bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ciência de Dados com R - Introdução</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="lendo-os-dados" class="section level1">
+<h1><span class="header-section-number">3</span> Lendo os dados</h1>
+<p>Após o entendimento do problema/projeto que se resolverá com a ciência de dados, será necessário fazer com que o R leia os dados. Seja lá qual for o assunto do projeto, é muito importante garantir uma boa fonte de dados. Dados ruins, inconsistentes, não confiáveis ou mal formatados podem gerar muita dor de cabeça para o analista.</p>
+<div id="tipos-de-estrutura-dos-dados" class="section level2">
+<h2><span class="header-section-number">3.1</span> Tipos de Estrutura dos Dados</h2>
+<p>Os dados podem ser apresentados de diversas maneiras, não existe um padrão único para a difusão ou divulgação. Sendo assim, é bom que você esteja preparado para lidar com qualquer tipo de estrutura de dados.</p>
+<p>Existem diversas classificações de estrutura de dados. Vamos utilizar uma classificação mais generalista, que diz respeito a como os dados são disponibilizados. Sendo assim, podemos classificar os dados em três grandes tipos quanto à sua estrutura ou forma: dados estruturados, semiestruturados e não estruturados.</p>
+<div id="dados-estruturados" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Dados Estruturados</h3>
+<p>Talvez seja o formato de dados mais fácil de se trabalhar no R. São conjuntos de informações organizadas em colunas (atributos, variáveis, features etc.) e linhas (registros, itens, observações etc.). São dados mais comumente encontrados diretamente em bancos de dados, arquivos com algum tipo de separação entre as colunas, Excel, arquivos com campos de tamanho fixo etc.</p>
+</div>
+<div id="dados-nao-estruturados" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Dados Não Estruturados</h3>
+<p>Como o nome diz, estes dados não têm uma estrutura previsível, ou seja, cada conjunto de informações possui uma forma única. Geralmente são arquivos com forte teor textual. Não podemos dizer que são dados “desorganizados”, e sim que são organizações particulares para cada conjunto de informações. Podemos citar, por exemplo, e-mails, twitters, PDF, imagens, vídeos etc.</p>
+<p>Analisar este tipo de dado é muito mais complexo e exige conhecimento avançado em mineração de dados. Apesar disso, é o tipo de dado mais abundante na realidade.</p>
+</div>
+<div id="dados-semiestruturados" class="section level3">
+<h3><span class="header-section-number">3.1.3</span> Dados Semiestruturados</h3>
+<p>São dados que também possuem uma organização fixa, porém não seguem o padrão de estrutura linha/coluna, ou seja, seguem uma estrutura mais complexa e flexível, geralmente hierárquica, estruturada em tags ou marcadores de campos. São exemplos de arquivos semiestruturados: JSON, XML, HTML, YAML etc. É o formato mais usado em troca de dados pela internet e consumo de Application programming interface (API). Dados semiestruturados, algumas vezes, são facilmente transformados em dados estruturados.</p>
+</div>
+</div>
+<div id="definindo-o-local-dos-dados" class="section level2">
+<h2><span class="header-section-number">3.2</span> Definindo o Local dos Dados</h2>
+<p>O R sempre trabalha com o conceito de <em>Working direcotry</em>, ou seja, uma pasta de trabalho onde vai “ler” e “escrever” os dados. Para verificar qual o diretório que o R está “olhando”, utilize o seguinte comando:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getwd</span>() <span class="co">#Get Working Directory</span></code></pre>
+<p>Para informar ao R em qual pasta ele deve ler os arquivos, utilizamos o comando <em>set working directory</em>, que muda o diretório padrão do R para leitura e escrita:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setwd</span>(<span class="st">&#39;D:/caminho/do/arquivo/arquivo.csv&#39;</span>)</code></pre>
+</div>
+<div id="pacote-para-leitura-dos-dados" class="section level2">
+<h2><span class="header-section-number">3.3</span> Pacote para leitura dos dados</h2>
+<p>O R base possui funções para a leitura dos principais tipos de arquivos. Um outro pacote específico, e muito bom para isso, é o <code>readr</code>. O Tidyverse inclui o carregamento do pacote <code>readr</code>.</p>
+<p>Diversos tipos de arquivos são lidos pelo R: Comma-Separated Values (csv), Excel, arquivos separados por delimitadores, colunas de tamanho fixo etc. Talvez o tipo de arquivo (estruturado) mais comum hoje em dia, e mais simples de trabalhar, seja o csv. Começaremos a importar dados com arquivos csv.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse) <span class="co"># já carrega o readr</span>
+<span class="co">#ou</span>
+<span class="kw">library</span>(readr)</code></pre>
+<p>Vamos importar um csv chamado <code>senado.csv</code>. Caso o arquivo esteja em seu working directory (<code>getwd()</code>), basta passar apenas o nome do arquivo para a função, caso contrário será necessário informar todo o caminho até a pasta do arquivo. Usamos o read_csv() para fazer isso.</p>
+<pre class="sourceCode r"><code class="sourceCode r">senado &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;senado.csv&quot;</span>)</code></pre>
+<p>Esse comando carrega o conteúdo do arquivo <code>senado.csv</code> para o objeto (variável) senado. Após o carregamento, começaremos a investigar o conteúdo desse objeto: os dados.</p>
+<p>O <code>head</code> e o <code>tail</code> são funções para ver a “cabeça” e o “rabo” dos seus dados, ou seja, o começo e o fim das amostras. É muito importante sempre observar a “aparência” dos dados após o carregamento. Essa observação ajuda a identificar erros básicos no carregamento, possibilitando ajustes o quanto antes, impedindo que esses erros se propaguem. Repare que na primeira linha temos os nomes das colunas e, em seguida, os registros.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(senado)</code></pre>
+<pre><code>## # A tibble: 6 x 15
+##   VoteNumber SenNumber  SenatorUpper  Vote  Party GovCoalition State    FP
+##        &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;        &lt;chr&gt; &lt;int&gt;
+## 1    2007001 PRS0002/07 FLEXA RIBEIRO S     PSDB  FALSE        PA        2
+## 2    2007001 PRS0002/07 ARTHUR VIRGI~ S     PSDB  FALSE        AM        2
+## 3    2007001 PRS0002/07 FLAVIO ARNS   N     PT    TRUE         PR        2
+## 4    2007001 PRS0002/07 MARCELO CRIV~ S     PRB   TRUE         RJ        2
+## 5    2007001 PRS0002/07 JOAO DURVAL   N     PDT   FALSE        BA        2
+## 6    2007001 PRS0002/07 PAULO PAIM    S     PT    TRUE         RS        2
+## # ... with 7 more variables: Origin &lt;int&gt;, Contentious &lt;int&gt;,
+## #   PercentYes &lt;dbl&gt;, IndGov &lt;chr&gt;, VoteType &lt;int&gt;, Content &lt;chr&gt;,
+## #   Round &lt;int&gt;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(senado)</code></pre>
+<pre><code>## # A tibble: 6 x 15
+##   VoteNumber SenNumber  SenatorUpper  Vote  Party GovCoalition State    FP
+##        &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;        &lt;chr&gt; &lt;int&gt;
+## 1    2010027 PLC0010/10 EDISON LOBAO  S     PMDB  TRUE         MA        1
+## 2    2010027 PLC0010/10 EDUARDO SUPL~ S     PT    TRUE         SP        1
+## 3    2010027 PLC0010/10 JARBAS VASCO~ N     PMDB  TRUE         PE        1
+## 4    2010027 PLC0010/10 MARISA SERRA~ S     PSDB  FALSE        MS        1
+## 5    2010027 PLC0010/10 EPITACIO CAF~ S     PTB   FALSE        MA        1
+## 6    2010027 PLC0010/10 INACIO ARRUDA S     PCdoB TRUE         CE        1
+## # ... with 7 more variables: Origin &lt;int&gt;, Contentious &lt;int&gt;,
+## #   PercentYes &lt;dbl&gt;, IndGov &lt;chr&gt;, VoteType &lt;int&gt;, Content &lt;chr&gt;,
+## #   Round &lt;int&gt;</code></pre>
+<p>Outros comandos muito importantes para começar a investigar os dados são o <code>str()</code>, o <code>class()</code> e o <code>summary()</code>.</p>
+<p>Para verificar o tipo do objeto, ou seja, sua classe, utilize:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(senado)</code></pre>
+<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<p>Já para verificar a estrutura do objeto, ou seja, seus campos (quando aplicável), insira:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(senado) <span class="co">#STRucture</span></code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    9262 obs. of  15 variables:
+##  $ VoteNumber  : int  2007001 2007001 2007001 2007001 2007001 2007001 2007001 2007001 2007001 2007001 ...
+##  $ SenNumber   : chr  &quot;PRS0002/07&quot; &quot;PRS0002/07&quot; &quot;PRS0002/07&quot; &quot;PRS0002/07&quot; ...
+##  $ SenatorUpper: chr  &quot;FLEXA RIBEIRO&quot; &quot;ARTHUR VIRGILIO&quot; &quot;FLAVIO ARNS&quot; &quot;MARCELO CRIVELLA&quot; ...
+##  $ Vote        : chr  &quot;S&quot; &quot;S&quot; &quot;N&quot; &quot;S&quot; ...
+##  $ Party       : chr  &quot;PSDB&quot; &quot;PSDB&quot; &quot;PT&quot; &quot;PRB&quot; ...
+##  $ GovCoalition: logi  FALSE FALSE TRUE TRUE FALSE TRUE ...
+##  $ State       : chr  &quot;PA&quot; &quot;AM&quot; &quot;PR&quot; &quot;RJ&quot; ...
+##  $ FP          : int  2 2 2 2 2 2 2 2 2 2 ...
+##  $ Origin      : int  11 11 11 11 11 11 11 11 11 11 ...
+##  $ Contentious : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ PercentYes  : num  85.5 85.5 85.5 85.5 85.5 ...
+##  $ IndGov      : chr  &quot;S&quot; &quot;S&quot; &quot;S&quot; &quot;S&quot; ...
+##  $ VoteType    : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Content     : chr  &quot;Creates the Senate Commission of Science, Technology, Innovation, Communication, and Information Technology (CCT).&quot; &quot;Creates the Senate Commission of Science, Technology, Innovation, Communication, and Information Technology (CCT).&quot; &quot;Creates the Senate Commission of Science, Technology, Innovation, Communication, and Information Technology (CCT).&quot; &quot;Creates the Senate Commission of Science, Technology, Innovation, Communication, and Information Technology (CCT).&quot; ...
+##  $ Round       : int  1 1 1 1 1 1 1 1 1 1 ...
+##  - attr(*, &quot;spec&quot;)=List of 2
+##   ..$ cols   :List of 15
+##   .. ..$ VoteNumber  : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   .. ..$ SenNumber   : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ SenatorUpper: list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ Vote        : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ Party       : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ GovCoalition: list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_logical&quot; &quot;collector&quot;
+##   .. ..$ State       : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ FP          : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   .. ..$ Origin      : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   .. ..$ Contentious : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   .. ..$ PercentYes  : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_double&quot; &quot;collector&quot;
+##   .. ..$ IndGov      : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ VoteType    : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   .. ..$ Content     : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ Round       : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_integer&quot; &quot;collector&quot;
+##   ..$ default: list()
+##   .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_guess&quot; &quot;collector&quot;
+##   ..- attr(*, &quot;class&quot;)= chr &quot;col_spec&quot;</code></pre>
+<p>Para verificar estatísticas básicas do objeto (média, mediana, quantis, mínimo, máximo etc.), quando aplicáveis:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(senado)</code></pre>
+<pre><code>##    VoteNumber       SenNumber         SenatorUpper      
+##  Min.   :2007001   Length:9262        Length:9262       
+##  1st Qu.:2008006   Class :character   Class :character  
+##  Median :2009003   Mode  :character   Mode  :character  
+##  Mean   :2008483                                        
+##  3rd Qu.:2009048                                        
+##  Max.   :2010027                                        
+##      Vote              Party           GovCoalition       State          
+##  Length:9262        Length:9262        Mode :logical   Length:9262       
+##  Class :character   Class :character   FALSE:3480      Class :character  
+##  Mode  :character   Mode  :character   TRUE :5782      Mode  :character  
+##                                                                          
+##                                                                          
+##                                                                          
+##        FP            Origin        Contentious        PercentYes     
+##  Min.   :1.000   Min.   : 1.000   Min.   :0.00000   Min.   :  2.174  
+##  1st Qu.:2.000   1st Qu.: 1.000   1st Qu.:0.00000   1st Qu.: 66.667  
+##  Median :2.000   Median : 2.000   Median :0.00000   Median : 96.078  
+##  Mean   :1.878   Mean   : 2.595   Mean   :0.01781   Mean   : 82.509  
+##  3rd Qu.:2.000   3rd Qu.: 4.000   3rd Qu.:0.00000   3rd Qu.: 98.148  
+##  Max.   :2.000   Max.   :11.000   Max.   :1.00000   Max.   :100.000  
+##     IndGov             VoteType       Content              Round      
+##  Length:9262        Min.   :1.000   Length:9262        Min.   :1.000  
+##  Class :character   1st Qu.:1.000   Class :character   1st Qu.:1.000  
+##  Mode  :character   Median :1.000   Mode  :character   Median :1.000  
+##                     Mean   :1.159                      Mean   :1.358  
+##                     3rd Qu.:1.000                      3rd Qu.:2.000  
+##                     Max.   :2.000                      Max.   :4.000</code></pre>
+<p>Acontece que nem sempre o separador será o <code>;</code>, típico do csv. Nesse caso será necessário usar o <code>read_delim()</code>, onde você pode informar qualquer tipo de separador. Outro tipo de arquivo bastante comum é o de colunas com tamanho fixo (fixed width), também conhecido como colunas posicionais. Nesse caso, será necessário usar o <code>read_fwf()</code> informando o tamanho de cada coluna.</p>
+<p>Exemplo:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#lendo arquivo com delimitador #</span>
+<span class="kw">read_delim</span>(<span class="st">&#39;caminho/do/arquivo/arquivo_separado_por#.txt&#39;</span>, <span class="dt">delim =</span> <span class="st">&#39;#&#39;</span>)
+
+<span class="co">#lendo arquivo de coluna fixa</span>
+<span class="co">#coluna 1 de tamanho 5, coluna 2 de tamanho 2 e coluna 3 de tamanho 10</span>
+<span class="kw">read_fwf</span>(<span class="st">&#39;caminho/do/arquivo/arquivo_posicional.txt&#39;</span>, <span class="dt">col_positions =</span> <span class="kw">fwf_widths</span>(<span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">10</span>), <span class="kw">c</span>(<span class="st">&quot;col1&quot;</span>, <span class="st">&quot;col2&quot;</span>, <span class="st">&quot;col3&quot;</span>)))</code></pre>
+<p>No capítulo a seguir exploraremos melhor os tipos de objetos mais comuns no R.</p>
+</div>
+<div id="exercicios-2" class="section level2">
+<h2><span class="header-section-number">3.4</span> Exercícios:</h2>
+<ol style="list-style-type: decimal">
+<li><p>Leia o arquivo <code>TA_PRECOS_MEDICAMENTOS.csv</code>, cujo separador é uma barra <code>|</code>.</p></li>
+<li><p>Leia o arquivo de colunas fixas <code>fwf-sample.txt</code>, cuja primeira coluna (nomes) tem tamanho vinte, a segunda (estado) tem tamanho dez e a terceira (código) tem tamanho doze.</p></li>
+<li><p>Investigue os parâmetros das funções de leitura do R base: <code>read.csv()</code>, <code>read.delim()</code> e <code>read.fwf()</code>. Notou as diferenças das funções do <code>readr</code>?</p></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="conceitos-basicos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="manipulando-os-dados.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["cdr-intro.pdf"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
